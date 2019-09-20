@@ -3,11 +3,12 @@ import { Header, Left, Right, Container,Body, Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
 
-export default class ThongTin extends Component {
+export default class GioHangScreen extends Component {
     static navigationOptions = {
+        title: 'Giỏ Hàng',
         fontWeight: 'bold',
         tabBarIcon: ({ tintColor }) => {
-            return <Icon name="person" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
+            return <Icon name="cart" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
         }
     };
     constructor(props) {
@@ -29,12 +30,12 @@ export default class ThongTin extends Component {
                         </TouchableOpacity>
                     </Left>
                     <Body>
-                        <Text style={styles.textCont}>Thông tin cá nhân</Text>
+                        <Text style={styles.textCont}>Giỏ Hàng</Text>
                     </Body> 
                     <Right>
                         <TouchableOpacity>
                             <View style={styles.viewContent}>
-                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
+                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }}/>
                             </View>
                         </TouchableOpacity>
                     </Right>
@@ -47,13 +48,13 @@ export default class ThongTin extends Component {
 }
 const styles = StyleSheet.create({
     container: {
-        //backgroundColor: 'steelblue',
+        //backgroundColor: '#90ee90',
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     textCont:{
-        fontSize: 18,
+        fontSize: 20,
         color: 'white',
         //fontWeight: '500',
         marginLeft: 2,
@@ -66,4 +67,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center'
     },
+    // textBody:{
+    //     fontSize: 18,
+    //     fontWeight: 'bold',
+    //     color: 'white'
+    // },
+    // viewBody:{
+    //     flex: 1,
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     flexDirection: 'row',
+    //     padding: 60
+    // }
 });

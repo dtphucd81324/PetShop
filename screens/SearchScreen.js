@@ -14,9 +14,9 @@ var Touchable = [
 var DESTRUCTIVE_INDEX = 3;
 var CANCEL_INDEX = 4;
 
-export default class Search extends Component {
+export default class SearchScreen extends Component {
     static navigationOptions ={
-        headerVisible: false
+        title: 'Tìm kiếm'
     }
 
     constructor(props) {

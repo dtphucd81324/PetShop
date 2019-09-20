@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
-import { Icon, Header, Left, Right, Container, Body } from 'native-base';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, ImageBackground, Image } from 'react-native';
+import { Icon, Header, Left, Right, Body } from 'native-base';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Slideshow from 'react-native-image-slider-show';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import Search from './Search';
-import GioHang from './GioHang';
-import ThongTin from './ThongTin';
+import SearchScreen from './SearchScreen';
+import GioHangScreen from './GioHangScreen';
+import ThongTinScreen from './ThongTinScreen';
+
 //import HinhAnh from './HinhAnh';
 
 
-
 class Homepage extends Component {
-
+    static navigationOptions = {
+        title: 'Trang chủ'
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -63,47 +65,43 @@ class Homepage extends Component {
                         </TouchableOpacity>
                     </Right>
                 </Header>
-                <View style={{paddingLeft: 10, paddingRight: 10 }}>
-                    {/* <View >
-                        <ImageBackground source={require('./src/images/dog.jpg')} 
-                            style={{ width: '100%', height: '100%', 
-                            alignItems: 'center', justifyContent: 'center' }}>
-                        </ImageBackground>
-                    </View> */}
-                    <View style={{flex: 1, paddingTop: 20, }}>
+                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+                    <View style={{ flex: 1, paddingTop: 20, }}>
                         <Slideshow
-                                dataSource={this.state.dataSource}
-                                position={this.state.position}
-                                onPositionChanged={position => this.setState({ position })} />
+                            dataSource={this.state.dataSource}
+                            position={this.state.position}
+                            onPositionChanged={position => this.setState({ position })} />
                     </View>
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Alaska</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20}}>
+                    <View style={{ height: 130, marginTop: 20 }}>
                         <ScrollView horizontal={true} scrollEventThrottle={16} pagingEnabled>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/alaska1.jpg')}
-                                        style={{ flex: 1, width: null, height: null, 
-                                        resizeMode: 'cover'}} />
+                                        style={{
+                                            flex: 1, width: null, height: null,
+                                            resizeMode: 'cover'
+                                        }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/alaska2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/alaska3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/alaska4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
                         </ScrollView>
@@ -111,31 +109,33 @@ class Homepage extends Component {
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Husky</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20}}>
+                    <View style={{ height: 130, marginTop: 20 }}>
                         <ScrollView horizontal={true} scrollEventThrottle={10}>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/husky1.jpg')}
-                                        style={{ flex: 1, width: null, height: null, 
-                                        resizeMode: 'cover'}} />
+                                        style={{
+                                            flex: 1, width: null, height: null,
+                                            resizeMode: 'cover'
+                                        }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/husky2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/husky3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/husky4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
                         </ScrollView>
@@ -143,31 +143,33 @@ class Homepage extends Component {
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Poodle</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20}}>
+                    <View style={{ height: 130, marginTop: 20 }}>
                         <ScrollView horizontal={true} scrollEventThrottle={10}>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/poodle1.jpg')}
-                                        style={{ flex: 1, width: null, height: null, 
-                                        resizeMode: 'cover'}} />
+                                        style={{
+                                            flex: 1, width: null, height: null,
+                                            resizeMode: 'cover'
+                                        }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/poodle2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/poodle3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/poodle4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
                         </ScrollView>
@@ -175,31 +177,33 @@ class Homepage extends Component {
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Pug</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20}}>
+                    <View style={{ height: 130, marginTop: 20 }}>
                         <ScrollView horizontal={true} scrollEventThrottle={10}>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pug1.jpg')}
-                                        style={{ flex: 1, width: null, height: null, 
-                                        resizeMode: 'cover'}} />
+                                        style={{
+                                            flex: 1, width: null, height: null,
+                                            resizeMode: 'cover'
+                                        }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pug2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pug3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pug4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
                         </ScrollView>
@@ -207,66 +211,43 @@ class Homepage extends Component {
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Pull</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20}}>
+                    <View style={{ height: 130, marginTop: 20 }}>
                         <ScrollView horizontal={true} scrollEventThrottle={10}>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pull1.jpg')}
-                                        style={{ flex: 1, width: null, height: null, 
-                                        resizeMode: 'cover'}} />
+                                        style={{
+                                            flex: 1, width: null, height: null,
+                                            resizeMode: 'cover'
+                                        }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pull2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pull3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
-                            <View style={styles.image}>                   
+                            <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/pull4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover'}} />
+                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
                                 </View>
                             </View>
                         </ScrollView>
-                    </View>  
-                </View>                                                                                 
-            </ScrollView>                
+                    </View>
+                </View>
+            </ScrollView>
         );
     }
 }
-const styles = StyleSheet.create({
-    container: {
-        //backgroundColor: '#455a64',
-        flex: 1,
-        alignItems: 'center',
 
-    },
-    textCont: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color: 'white'
-    },
-    textContent:{
-        fontSize: 20,
-        color: 'black',
-        fontWeight: 'bold'
-    },
-    image:{
-        height: 130,
-        width: 130,
-        marginLeft: 10,
-        borderWidth: 0.5,
-        borderColor: '#dddddd'
-    }
-});
 
 export default createAppContainer(createBottomTabNavigator(
     {
@@ -286,8 +267,8 @@ export default createAppContainer(createBottomTabNavigator(
                 },
             },
         },
-        Search: {
-            screen: Search,
+        SearchScreen: {
+            screen: SearchScreen,
             header: {
                 headerMode: 'none',
             },
@@ -300,11 +281,13 @@ export default createAppContainer(createBottomTabNavigator(
             }
 
         },
-        GioHang: {
-            screen: GioHang,
+        GioHangScreen: {
+            screen: GioHangScreen,
 
         },
-        ThongTin: ThongTin
+        ThongTinScreen: {
+            screen: ThongTinScreen
+        },
     }, {
     initialRouteName: 'Homepage',
     animationEnabled: true,
@@ -315,3 +298,29 @@ export default createAppContainer(createBottomTabNavigator(
     }
 }
 ));
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+
+    },
+    textCont: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'white'
+    },
+    textContent: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    image: {
+        height: 130,
+        width: 130,
+        marginLeft: 10,
+        borderWidth: 0.5,
+        borderColor: '#dddddd'
+    }
+});
+

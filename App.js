@@ -7,17 +7,19 @@
  */
 
 import React, { Component } from 'react';
-//import { Button, View, Text } from 'react-native';
-//import Icon from 'react-native'
+import { StatusBar } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Login from './screens/Login';
 import Homepage from './screens/Homepage';
 import Register from './screens/Register';
-import Search from './screens/Search';
-import GioHang from './screens/GioHang';
-import ThongTin from './screens/ThongTin';
+import SearchScreen from './screens/SearchScreen';
+import GioHangScreen from './screens/GioHangScreen';
+import ThongTinScreen from './screens/ThongTinScreen';
 import DanhSach from './screens/DanhSach';
+import { Feather } from 'react-native-vector-icons';
 //import HinhAnh from './screens/HinhAnh';
+
+StatusBar.setHidden(true)
 
 const AppStack = createStackNavigator({
   Homepage:{
@@ -34,14 +36,14 @@ const AppStack = createStackNavigator({
   }
 },
   {
-    initialRouteName: 'DanhSach',
+    initialRouteName: 'Homepage',
     headerMode: 'none',
   },
 );
 
-const TimKiemStack = createStackNavigator({
-  Search: Search
-})
+// const TimKiemStack = createStackNavigator({
+//   Search: Search
+// })
 
 const AppContainer = createAppContainer(AppStack);
 
@@ -50,7 +52,6 @@ export default class App extends Component {
     return <AppContainer />;
   }
 }
-
 
 
 

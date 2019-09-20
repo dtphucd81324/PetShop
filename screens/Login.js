@@ -7,7 +7,7 @@ import {
 import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import Homepage from './Homepage';
 import Register from './Register';
-import Search from './Search';
+import Search from './SearchScreen';
 import App from '../App';
 
 
