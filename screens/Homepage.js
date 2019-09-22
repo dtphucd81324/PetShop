@@ -46,10 +46,10 @@ class Homepage extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })}>
                     <Card>
                         <CardItem>
-                            <Image style={{ width: 300, height: 300 }} source={{ uri: item.hinh }} />
+                            <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{item.ten}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.ten}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -86,15 +86,15 @@ class Homepage extends Component {
                         <Carousel
                             data={this.state.dataSource}
                             renderItem={this.renderItem}
-                            sliderWidth={450}
-                            itemWidth={250}
+                            sliderWidth={400}
+                            itemWidth={380}
                         />
                     </SafeAreaView>
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Alaska</Text>
                     </View>
                     <View style={{ height: 130, marginTop: 20 }}>
-                        <ScrollView horizontal={true} scrollEventThrottle={16} pagingEnabled>
+                        <ScrollView horizontal={true}>
                             <View style={styles.image}>
                                 <View style={{ flex: 2 }}>
                                     <Image source={require('./src/images/alaska1.jpg')}

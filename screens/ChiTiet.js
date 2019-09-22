@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import { Header, Left, Right, Container,Body, Icon } from 'native-base';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import React, { Component } from 'react';
+import { Header, Left, Right, Container, Body, Icon, CardItem, Card } from 'native-base';
+import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
 
 
 export default class ThongTinScreen extends Component {
@@ -9,25 +9,33 @@ export default class ThongTinScreen extends Component {
     };
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            refreshing: false
+        };
     }
 
-    render(){
+    _onRefresh() {
+
+    }
+
+    render() {
+        const Data = this.props.navigation.state.params;
+        const { navigate } = this.props.navigation;
+        console.log(Data);
         const { goBack } = this.props.navigation;
-        return(
+        return (
             <Container>
                 <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
-                        <TouchableOpacity onPress={ () => goBack() }>
+                        <TouchableOpacity onPress={() => goBack()}>
                             <View style={styles.viewContent}>
-                                <Icon name="left" type="AntDesign" style={{ color: 'white' }}/>   
-                                
-                            </View>                                
+                                <Icon name="left" type="AntDesign" style={{ color: 'white' }} />
+                            </View>
                         </TouchableOpacity>
                     </Left>
                     <Body>
                         <Text style={styles.textCont}>Chi tiết sản phẩm</Text>
-                    </Body> 
+                    </Body>
                     <Right>
                         <TouchableOpacity>
                             <View style={styles.viewContent}>
@@ -37,6 +45,13 @@ export default class ThongTinScreen extends Component {
                     </Right>
                 </Header>
                 <View style={styles.container}>
+                    <SafeAreaView>
+                        <Card>
+                            <CardItem>
+                                <Image style={{ height: 250, width: '100%'}} source={{ uri: Data.hinh }} />
+                            </CardItem>
+                        </Card>
+                    </SafeAreaView>
                 </View>
             </Container>
         )
@@ -49,14 +64,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    textCont:{
+    textCont: {
         fontSize: 18,
         color: 'white',
         //fontWeight: '500',
         marginLeft: 2,
-        fontWeight: 'bold'  
+        fontWeight: 'bold'
     },
-    viewContent:{
+    viewContent: {
         flexDirection: 'row',
         margin: 5,
         justifyContent: 'center',
