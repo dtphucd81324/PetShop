@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Left, Right, Container,Body, ActionSheet, Icon, Item, Input } from 'native-base';
+import { Header, Left, Right, Container, Body, ActionSheet, Icon, Item, Input } from 'native-base';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -7,15 +7,15 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 var Touchable = [
     { text: "Mới", iconColor: "blue" },
     { text: "Mua nhiều", iconColor: "blue" },
-    { text: "Giá thấp nhất",  iconColor: "blue" },
-    { text: "Giá cao nhất",  iconColor: "blue" },
+    { text: "Giá thấp nhất", iconColor: "blue" },
+    { text: "Giá cao nhất", iconColor: "blue" },
     { text: "Hủy", iconColor: "red" }
-  ];
+];
 var DESTRUCTIVE_INDEX = 3;
 var CANCEL_INDEX = 4;
 
 export default class SearchScreen extends Component {
-    static navigationOptions ={
+    static navigationOptions = {
         title: 'Tìm kiếm'
     }
 
@@ -23,39 +23,38 @@ export default class SearchScreen extends Component {
         super(props);
         this.state = {};
     }
-    render(){
+    render() {
         const { goBack } = this.props.navigation;
-        return(
-            <Container>
+        return (
+            <View style={{ flex: 1 }}>
                 <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
-                        <TouchableOpacity onPress={ () => goBack() }>
+                        <TouchableOpacity onPress={() => goBack()}>
                             <View style={styles.viewContent}>
-                                <Icon name="left" type="AntDesign" style={{ color: 'white' }}/>   
-                                
-                            </View>                                
+                                <Icon name="left" type="AntDesign" style={{ color: 'white' }} />
+                            </View>
                         </TouchableOpacity>
                     </Left>
                     <Body>
                         <Text style={styles.textCont}>Tìm Kiếm</Text>
-                    </Body> 
+                    </Body>
                     <Right>
-                    <TouchableOpacity
-                        onPress={() =>
-                        ActionSheet.show(
-                        {
-                            options: Touchable,
-                            cancelButtonIndex: CANCEL_INDEX,
-                            destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                            title: "Lọc"
-                        },
-                        buttonIndex => {
-                            this.setState({ clicked: Touchable[buttonIndex] });
-                        }
-                        )}
-                    >
+                        <TouchableOpacity
+                            onPress={() =>
+                                ActionSheet.show(
+                                    {
+                                        options: Touchable,
+                                        cancelButtonIndex: CANCEL_INDEX,
+                                        destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                                        title: "Lọc"
+                                    },
+                                    buttonIndex => {
+                                        this.setState({ clicked: Touchable[buttonIndex] });
+                                    }
+                                )}
+                        >
                             <View style={styles.viewContent}>
-                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }}/>
+                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
                             </View>
                         </TouchableOpacity>
                     </Right>
@@ -63,37 +62,37 @@ export default class SearchScreen extends Component {
                 <View style={styles.container}>
                     <Item>
                         <Icon name="search" />
-                        <Input  
+                        <Input
                             placeholder="Nhập vào sản phẩm muốn tìm"
                         />
                     </Item>
                 </View>
-            </Container>
+            </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         flex: 1,
         marginTop: 10,
         marginLeft: 10,
         marginRight: 10
     },
-    viewContent:{
+    viewContent: {
         flexDirection: 'row',
         margin: 5,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    textCont:{
+    textCont: {
         fontSize: 20,
         color: 'white',
         //fontWeight: '500',
         marginLeft: 2,
-        fontWeight: 'bold' 
+        fontWeight: 'bold'
     },
-    containerStyle:{
+    containerStyle: {
         borderBottomWidth: 2,
         borderColor: 'green',
         paddingHorizontal: 10,

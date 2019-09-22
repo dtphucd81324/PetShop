@@ -12,14 +12,11 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Login from './screens/Login';
 import Homepage from './screens/Homepage';
 import Register from './screens/Register';
-import SearchScreen from './screens/SearchScreen';
-import GioHangScreen from './screens/GioHangScreen';
-import ThongTinScreen from './screens/ThongTinScreen';
 import DanhSach from './screens/DanhSach';
-import { Feather } from 'react-native-vector-icons';
+import ChiTiet from './screens/ChiTiet';
 //import HinhAnh from './screens/HinhAnh';
 
-StatusBar.setHidden(true)
+StatusBar.setHidden(true);
 
 const AppStack = createStackNavigator({
   Homepage:{
@@ -33,6 +30,9 @@ const AppStack = createStackNavigator({
   },
   DanhSach:{
     screen: DanhSach
+  },
+  ChiTiet:{
+    screen: ChiTiet
   }
 },
   {
