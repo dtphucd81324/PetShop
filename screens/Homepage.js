@@ -13,13 +13,13 @@ const { height } = Dimensions.get('window');
 const HINH = [
     {
         ten: 'Chó Cảnh',
-        hinh: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG8RpxYDSJZiKXXHRQnQCEal6VYbhqkK4QrJY7YSaIRWjzEtkN',
+        hinh: require('./src/images/husky.jpg'),
     }, {
         ten: 'Chó Cảnh',
-        hinh: 'https://dogily.vn/wp-content/uploads/2019/03/hinh-anh-cho-corgi-thuan-chung-1.jpg',
+        hinh: require('./src/images/pull4.jpg'),
     }, {
         ten: 'Chó Cảnh',
-        hinh: 'http://huanluyencanhkhuyen24h.com/wp-content/uploads/2017/11/huan-luyen-cho-corgi.jpg',
+        hinh: require('./src/images/alaska1.jpg'),
     },
 
 ]
@@ -46,7 +46,7 @@ class Homepage extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })}>
                     <Card>
                         <CardItem>
-                            <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
+                            <Image style={{ width: 350, height: 300 }} source={ item.hinh }/>
                         </CardItem>
                         <CardItem>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.ten}</Text>

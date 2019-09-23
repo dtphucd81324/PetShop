@@ -48,7 +48,7 @@ export default class ThongTinScreen extends Component {
                     <SafeAreaView>
                         <Card>
                             <CardItem>
-                                <Image style={{ height: 250, width: '100%'}} source={{ uri: Data.hinh }} />
+                                <Image style={{ height: 250, width: '100%'}} source={ Data.hinh } />
                             </CardItem>
                         </Card>
                     </SafeAreaView>
