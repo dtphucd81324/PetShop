@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Header, Left, Right, Body, Card, CardItem } from 'native-base';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
 import SearchScreen from './SearchScreen';
@@ -12,15 +12,27 @@ const { height } = Dimensions.get('window');
 
 const HINH = [
     {
-        ten: 'Chó Cảnh',
-        hinh: require('./src/images/husky.jpg'),
+        id: '1',
+        ten: 'Chó Corgi',
+        hinh: 'https://petlife.vn/wp-content/uploads/2019/08/corgi-1-e1564971550251.jpg',
+        gia: '500.000'
     }, {
+        id: '2',
         ten: 'Chó Cảnh',
-        hinh: require('./src/images/pull4.jpg'),
+        hinh: 'https://znews-photo.zadn.vn/w1024/Uploaded/ofh_btgazstm/2019_05_01/corgi1.jpg',
+        gia: '2.000.000'
     }, {
+        id: '3',
         ten: 'Chó Cảnh',
-        hinh: require('./src/images/alaska1.jpg'),
+        hinh: 'https://www.xahara.vn/wp-content/uploads/%E1%BA%A2nh-ch%C3%B3-husky-m%E1%BA%B7t-ng%C3%A1o-%C4%91%E1%BA%B9p.jpg',
+        gia: '600.000'
     },
+    {
+        id: '4',
+        ten: 'Chó Cảnh',
+        hinh: 'https://chobaove.com/wp-content/uploads/2018/07/husky-1.jpg',
+        gia: '800.000'
+    }
 
 ]
 
@@ -46,10 +58,13 @@ class Homepage extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })}>
                     <Card>
                         <CardItem>
-                            <Image style={{ width: 350, height: 300 }} source={ item.hinh }/>
+                            <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
                         </CardItem>
                         <CardItem>
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.ten}</Text>
+                        </CardItem>
+                        <CardItem>
+                            <Text style={{ fontSize: 16, color: 'red' }}>{item.gia}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -60,27 +75,25 @@ class Homepage extends Component {
     render() {
         return (
             <ScrollView>
-                <View style={{ height: height / 10 }}>
-                    <Header transparent style={{ backgroundColor: '#e91e63', justifyContent: 'space-between' }}>
-                        <Left>
-                            <TouchableOpacity>
-                                <View style={styles.viewContent}>
-                                    <Icon name="grid" type="Feather" style={{ color: 'white' }} />
-                                </View>
-                            </TouchableOpacity>
-                        </Left>
-                        <Body>
-                            <Text style={styles.textCont}>Trang chủ</Text>
-                        </Body>
-                        <Right>
-                            <TouchableOpacity>
-                                <View style={styles.viewContent}>
-                                    <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
-                                </View>
-                            </TouchableOpacity>
-                        </Right>
-                    </Header>
-                </View>
+                <Header transparent style={{ backgroundColor: '#e91e63', justifyContent: 'space-between' }}>
+                    <Left>
+                        <TouchableOpacity>
+                            <View style={styles.viewContent}>
+                                <Icon name="grid" type="Feather" style={{ color: 'white' }} />
+                            </View>
+                        </TouchableOpacity>
+                    </Left>
+                    <Body>
+                        <Text style={styles.textCont}>Trang chủ</Text>
+                    </Body>
+                    <Right>
+                        <TouchableOpacity>
+                            <View style={styles.viewContent}>
+                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
+                            </View>
+                        </TouchableOpacity>
+                    </Right>
+                </Header>
                 <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                     <SafeAreaView>
                         <Carousel
@@ -90,74 +103,36 @@ class Homepage extends Component {
                             itemWidth={380}
                         />
                     </SafeAreaView>
+                </View>
+                <View>
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
-                        <Text style={styles.textContent}>Chó Alaska</Text>
+                        <ImageBackground source={require('./src/images/dog.jpg')} style={{ width: '100%'}}>
+                            <Text style={styles.textContent}>Chó Alaska</Text>
+                        </ImageBackground>
                     </View>
-                    <View style={{ height: 130, marginTop: 20 }}>
-                        <ScrollView horizontal={true}>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/alaska1.jpg')}
-                                        style={{
-                                            flex: 1, width: null, height: null,
-                                            resizeMode: 'cover'
-                                        }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/alaska2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/alaska3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/alaska4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                        </ScrollView>
-                    </View>
+                    <SafeAreaView>
+                        <Carousel
+                            data={this.state.dataSource}
+                            renderItem={this.renderItem}
+                            sliderWidth={400}
+                            itemWidth={250}
+                            layoutCardOffset={`15`}
+                        />
+                    </SafeAreaView>
+                </View>
+                <View>
                     <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
                         <Text style={styles.textContent}>Chó Husky</Text>
                     </View>
-                    <View style={{ height: 130, marginTop: 20 }}>
-                        <ScrollView horizontal={true} scrollEventThrottle={10}>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/husky1.jpg')}
-                                        style={{
-                                            flex: 1, width: null, height: null,
-                                            resizeMode: 'cover'
-                                        }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/husky2.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/husky3.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                            <View style={styles.image}>
-                                <View style={{ flex: 2 }}>
-                                    <Image source={require('./src/images/husky4.jpg')}
-                                        style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }} />
-                                </View>
-                            </View>
-                        </ScrollView>
-                    </View>
+                    <SafeAreaView>
+                        <Carousel
+                            data={this.state.dataSource}
+                            renderItem={this.renderItem}
+                            sliderWidth={400}
+                            itemWidth={250}
+                            layoutCardOffset={`15`}
+                        />
+                    </SafeAreaView>
                 </View>
             </ScrollView>
         );

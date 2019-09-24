@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Left, Right, Container, Body, Icon, CardItem, Card } from 'native-base';
+import { Header, Left, Right, Body, Icon, CardItem, Card } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
 
 
@@ -7,24 +7,22 @@ export default class ThongTinScreen extends Component {
     static navigationOptions = {
         title: 'Chi tiết',
     };
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
-            refreshing: false
-        };
+            item: this.props.navigation.state.params
+        }
     }
-
     _onRefresh() {
 
-    }
+    };
 
     render() {
-        const Data = this.props.navigation.state.params;
-        const { navigate } = this.props.navigation;
-        console.log(Data);
+        // const Data = this.props.navigation.state.params;
+        //console.log(this.state.item.data);
         const { goBack } = this.props.navigation;
         return (
-            <Container>
+            <View style={{ flex: 1 }}>
                 <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
                         <TouchableOpacity onPress={() => goBack()}>
@@ -48,18 +46,23 @@ export default class ThongTinScreen extends Component {
                     <SafeAreaView>
                         <Card>
                             <CardItem>
-                                <Image style={{ height: 250, width: '100%'}} source={ Data.hinh } />
+                                <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.data.hinh }} />
+                            </CardItem>
+                            <CardItem>
+                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{ this.state.item.data.ten }</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Text style={{ fontSize: 24, color: 'red' }}>{ this.state.item.data.gia }</Text>
                             </CardItem>
                         </Card>
                     </SafeAreaView>
                 </View>
-            </Container>
+            </View>
         )
     }
 }
 const styles = StyleSheet.create({
     container: {
-        //backgroundColor: 'steelblue',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
@@ -67,7 +70,6 @@ const styles = StyleSheet.create({
     textCont: {
         fontSize: 18,
         color: 'white',
-        //fontWeight: '500',
         marginLeft: 2,
         fontWeight: 'bold'
     },

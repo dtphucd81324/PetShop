@@ -15,14 +15,18 @@ export default class GioHangScreen extends Component {
         super(props);
         this.state = {};
     }
+    goBack(){
+        const { navigator } = this.props;
+        navigator.pop();
+    }
 
     render(){
-        const { goBack } = this.props.navigation;
+        //const { goBack } = this.props.navigation;
         return(
             <Container>
                 <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
-                        <TouchableOpacity onPress={ () => goBack() }>
+                        <TouchableOpacity onPress={this.goBack.bind(this)}>
                             <View style={styles.viewContent}>
                                 <Icon name="left" type="AntDesign" style={{ color: 'white' }}/>   
                                 
@@ -56,7 +60,6 @@ const styles = StyleSheet.create({
     textCont:{
         fontSize: 20,
         color: 'white',
-        //fontWeight: '500',
         marginLeft: 2,
         fontWeight: 'bold'  
     },
@@ -67,16 +70,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center'
     },
-    // textBody:{
-    //     fontSize: 18,
-    //     fontWeight: 'bold',
-    //     color: 'white'
-    // },
-    // viewBody:{
-    //     flex: 1,
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     flexDirection: 'row',
-    //     padding: 60
-    // }
+
 });

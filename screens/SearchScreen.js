@@ -23,6 +23,11 @@ export default class SearchScreen extends Component {
         super(props);
         this.state = {};
     }
+    // goBack(){
+    //     const { navigation } = this.props;
+    //     navigation.pop();
+    // }
+
     render() {
         const { goBack } = this.props.navigation;
         return (
@@ -88,7 +93,6 @@ const styles = StyleSheet.create({
     textCont: {
         fontSize: 20,
         color: 'white',
-        //fontWeight: '500',
         marginLeft: 2,
         fontWeight: 'bold'
     },

@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, ToastAndroid, SearchBar, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, Image, 
+    StyleSheet, TouchableOpacity, ToastAndroid, 
+    SearchBar, Platform, ActivityIndicator, Button 
+    } from 'react-native';
 
-var flatListData = [
+
+const flatListData = [
     {
         "key": "1",
         "ten": "Chó Alaska",
@@ -61,6 +65,7 @@ export default class DanhSach extends Component {
         super(props);
         this.state = {
             refreshing: false,
+            dataSource: []
             //loading: false
         }
     }
@@ -96,6 +101,9 @@ export default class DanhSach extends Component {
     //         </View>
     //     );
     // }
+    componentDidMount() {
+        this.setState({ dataSource: flatListData });
+    }
 
     refresh() {
 
@@ -107,14 +115,9 @@ export default class DanhSach extends Component {
                 <FlatList
                     refreshing={false}
                     onRefresh={() => { this.refresh() }}
-                    data={flatListData}
+                    data={this.state.dataSource}
                     renderItem={({ item }) =>
-                        //     console.log(`Item = ${item.imageUrl}`)
-                        // }
-                        <View style={{
-                            flex: 1,
-                            flexDirection: 'column'
-                        }}>
+                        <View style={{ flex: 1, flexDirection: 'column' }}>
                             <View style={{
                                 flex: 1,
                                 flexDirection: 'row',
@@ -124,37 +127,22 @@ export default class DanhSach extends Component {
                             }}>
                                 <Image
                                     source={item.imageUrl}
-                                    style={{
-                                        width: 150,
-                                        height: 150,
-                                        margin: 5,
-                                        borderRadius: 7
-                                    }}
+                                    style={{ width: 150, height: 150, margin: 5, borderRadius: 7 }}
                                 />
 
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: 'column'
-                                }}>
+                                {/* <View style={{ flex: 1, flexDirection: 'column' }}> */}
                                     <Text style={styles.textItemTen}>{item.ten}</Text>
                                     <Text style={styles.textItem}>{item.mota}</Text>
-                                </View>
-
+                                    
+                                {/* </View> */}
+                                
                             </View>
-                            <View style={{
-                                height: 1,
-                                backgroundColor: 'white'
-                            }}>
+                            <View style={{ height: 1, backgroundColor: 'white' }}>
 
                             </View>
                         </View>
 
                     }
-                    
-                    //ListHeaderComponent={this.renderHeader}
-                    // ListFooterComponent={this.renderFooter}
-                    //ItemSeparatorComponent={this.renderSeparator}
-                    
                 />
             </View>
         );

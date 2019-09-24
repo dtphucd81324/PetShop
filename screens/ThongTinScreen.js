@@ -16,13 +16,16 @@ export default class ThongTinScreen extends Component {
         this.state = {};
     }
 
+    goBack(){
+        const { navigator } = this.props;
+        navigator.pop();
+    }
     render(){
-        const { goBack } = this.props.navigation;
         return(
             <Container>
                 <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
-                        <TouchableOpacity onPress={ () => goBack() }>
+                        <TouchableOpacity onPress={this.goBack.bind(this)}>
                             <View style={styles.viewContent}>
                                 <Icon name="left" type="AntDesign" style={{ color: 'white' }}/>   
                                 
@@ -56,7 +59,6 @@ const styles = StyleSheet.create({
     textCont:{
         fontSize: 18,
         color: 'white',
-        //fontWeight: '500',
         marginLeft: 2,
         fontWeight: 'bold'  
     },

@@ -14,7 +14,7 @@ import Homepage from './screens/Homepage';
 import Register from './screens/Register';
 import DanhSach from './screens/DanhSach';
 import ChiTiet from './screens/ChiTiet';
-//import HinhAnh from './screens/HinhAnh';
+
 
 StatusBar.setHidden(true);
 
@@ -33,7 +33,7 @@ const AppStack = createStackNavigator({
   },
   ChiTiet:{
     screen: ChiTiet
-  }
+  },
 },
   {
     initialRouteName: 'Homepage',
