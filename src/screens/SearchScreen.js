@@ -32,38 +32,6 @@ export default class SearchScreen extends Component {
         const { goBack } = this.props.navigation;
         return (
             <View style={{ flex: 1 }}>
-                <Header style={{ backgroundColor: '#e91e63' }}>
-                    <Left>
-                        <TouchableOpacity onPress={() => goBack()}>
-                            <View style={styles.viewContent}>
-                                <Icon name="left" type="AntDesign" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Left>
-                    <Body>
-                        <Text style={styles.textCont}>Tìm Kiếm</Text>
-                    </Body>
-                    <Right>
-                        <TouchableOpacity
-                            onPress={() =>
-                                ActionSheet.show(
-                                    {
-                                        options: Touchable,
-                                        cancelButtonIndex: CANCEL_INDEX,
-                                        destructiveButtonIndex: DESTRUCTIVE_INDEX,
-                                        title: "Lọc"
-                                    },
-                                    buttonIndex => {
-                                        this.setState({ clicked: Touchable[buttonIndex] });
-                                    }
-                                )}
-                        >
-                            <View style={styles.viewContent}>
-                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Right>
-                </Header>
                 <View style={styles.container}>
                     <Item>
                         <Icon name="search" />
@@ -82,7 +50,8 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 10,
         marginLeft: 10,
-        marginRight: 10
+        marginRight: 10,
+        marginHorizontal: 10
     },
     viewContent: {
         flexDirection: 'row',

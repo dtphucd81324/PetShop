@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity } from 'react-native';
 import t from 'tcomb-form-native';
 import Login from './Login';
-import App from '../App';
+//import App from '../App';
 
 const Form = t.form.Form;
 // const Age = t.refinement(t.Number, function (n) { return n >= 18; });

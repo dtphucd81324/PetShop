@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Icon, Header, Left, Right, Body, Card, CardItem } from 'native-base';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+//import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
-import SearchScreen from './SearchScreen';
-import GioHangScreen from './GioHangScreen';
-import ThongTinScreen from './ThongTinScreen';
+// import SearchScreen from './SearchScreen';
+// import GioHangScreen from './GioHangScreen';
+// import ThongTinScreen from './ThongTinScreen';
 import ChiTiet from './ChiTiet';
 
 const { height } = Dimensions.get('window');
@@ -61,10 +61,10 @@ class Homepage extends Component {
                             <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.ten}</Text>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.ten}</Text>
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 16, color: 'red' }}>{item.gia}</Text>
+                            <Text style={{ fontSize: 18, color: 'red' }}>{item.gia}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -75,25 +75,6 @@ class Homepage extends Component {
     render() {
         return (
             <ScrollView>
-                <Header transparent style={{ backgroundColor: '#e91e63', justifyContent: 'space-between' }}>
-                    <Left>
-                        <TouchableOpacity>
-                            <View style={styles.viewContent}>
-                                <Icon name="grid" type="Feather" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Left>
-                    <Body>
-                        <Text style={styles.textCont}>Trang chủ</Text>
-                    </Body>
-                    <Right>
-                        <TouchableOpacity>
-                            <View style={styles.viewContent}>
-                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Right>
-                </Header>
                 <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                     <SafeAreaView>
                         <Carousel
@@ -105,8 +86,8 @@ class Homepage extends Component {
                     </SafeAreaView>
                 </View>
                 <View>
-                    <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
-                        <ImageBackground source={require('./src/images/dog.jpg')} style={{ width: '100%'}}>
+                    <View style={styles.carousel}>
+                        <ImageBackground source={require('../images/images.jpg')} style={styles.background}>
                             <Text style={styles.textContent}>Chó Alaska</Text>
                         </ImageBackground>
                     </View>
@@ -115,8 +96,8 @@ class Homepage extends Component {
                             data={this.state.dataSource}
                             renderItem={this.renderItem}
                             sliderWidth={400}
-                            itemWidth={250}
-                            layoutCardOffset={`15`}
+                            itemWidth={300}
+                            layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
@@ -130,7 +111,7 @@ class Homepage extends Component {
                             renderItem={this.renderItem}
                             sliderWidth={400}
                             itemWidth={250}
-                            layoutCardOffset={`15`}
+                            layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
@@ -140,55 +121,6 @@ class Homepage extends Component {
 }
 
 
-export default createAppContainer(createBottomTabNavigator(
-    {
-        Homepage: {
-            screen: Homepage,
-            navigationOptions: {
-                title: 'Trang chủ',
-                fontWeight: 'bold',
-                tabBarIcon: ({ tintColor }) => {
-                    return <Icon name="md-home" style={{ color: tintColor ? '#e91e63' : 'slategray' }} />
-                },
-                headerStyle: {
-                    backgroundColor: '#f4511e',
-                },
-                headerTitleStyle: {
-                    fontWeight: 'bold',
-                },
-            },
-        },
-        SearchScreen: {
-            screen: SearchScreen,
-            header: {
-                headerMode: 'none',
-            },
-            navigationOptions: {
-                title: 'Tìm kiếm',
-                fontWeight: 'bold',
-                tabBarIcon: ({ tintColor }) => {
-                    return <Icon name="search" style={{ color: tintColor ? '#e91e63' : 'slategray' }} />
-                }
-            }
-
-        },
-        GioHangScreen: {
-            screen: GioHangScreen,
-
-        },
-        ThongTinScreen: {
-            screen: ThongTinScreen
-        },
-    }, {
-    initialRouteName: 'Homepage',
-    animationEnabled: true,
-    swipeEnabled: true,
-    tabBarOptions: {
-        showIcon: true,
-        showLabel: true,
-    }
-}
-));
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -203,18 +135,22 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
 
     },
+    background: {
+        width: '100%',
+    },
+    carousel: {
+        flex: 1,
+        paddingTop: 10,
+        height: '100%',
+        width: '100%',
+        paddingLeft: 15
+    },
+
     textContent: {
         fontSize: 20,
         color: 'black',
         fontWeight: 'bold'
     },
-    image: {
-        height: 130,
-        width: 130,
-        marginLeft: 10,
-        borderWidth: 0.5,
-        borderColor: '#dddddd',
-        borderRadius: 7
-    }
 });
 
+export default Homepage;

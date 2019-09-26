@@ -4,11 +4,11 @@ import {
     StyleSheet, Text, View, Button,
     TouchableOpacity, Image, TextInput, StatusBar, AsyncStorage, ActivityIndicator
 } from 'react-native';
-import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
+//import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import Homepage from './Homepage';
 import Register from './Register';
-import Search from './SearchScreen';
-import App from '../App';
+// import Search from './SearchScreen';
+// import App from '../App';
 
 
 const userInfo = { email: 'Admin', password: '123456' }
@@ -27,7 +27,7 @@ export default class Login extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.logoContainer}> 
-                    <Image style={styles.logo} source={require('./src/images/logo.jpg')} ></Image>
+                    <Image style={styles.logo} source={require('../images/logo.jpg')} ></Image>
                     <Text style={styles.title}>Account Infomation</Text>
                 </View> 
                 <View style={styles.container}>

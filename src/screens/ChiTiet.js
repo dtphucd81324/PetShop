@@ -3,10 +3,10 @@ import { Header, Left, Right, Body, Icon, CardItem, Card } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
 
 
-export default class ThongTinScreen extends Component {
-    static navigationOptions = {
-        title: 'Chi tiết',
-    };
+export default class ChiTiet extends Component {
+    // static navigationOptions = {
+    //     title: 'Chi tiêt',
+    // };
     constructor(props){
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ export default class ThongTinScreen extends Component {
         const { goBack } = this.props.navigation;
         return (
             <View style={{ flex: 1 }}>
-                <Header style={{ backgroundColor: '#e91e63' }}>
+                {/* <Header style={{ backgroundColor: '#e91e63' }}>
                     <Left>
                         <TouchableOpacity onPress={() => goBack()}>
                             <View style={styles.viewContent}>
@@ -41,7 +41,7 @@ export default class ThongTinScreen extends Component {
                             </View>
                         </TouchableOpacity>
                     </Right>
-                </Header>
+                </Header> */}
                 <View style={styles.container}>
                     <SafeAreaView>
                         <Card>

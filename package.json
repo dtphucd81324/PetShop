@@ -20,6 +20,7 @@
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^3.12.1",
     "react-navigation-stack": "^1.5.1",
+    "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "tcomb-form-native": "^0.6.20"
   },
