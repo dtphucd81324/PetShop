@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Left, Right, Container, Body, ActionSheet, Icon, Item, Input } from 'native-base';
+import { Icon, Item, Input } from 'native-base';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
@@ -16,7 +16,10 @@ var CANCEL_INDEX = 4;
 
 export default class SearchScreen extends Component {
     static navigationOptions = {
-        title: 'Tìm kiếm'
+        title: 'Tìm kiếm',
+        tabBarIcon: ({ tintColor }) => {
+            return <Icon name="search" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
+        }
     }
 
     constructor(props) {

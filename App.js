@@ -62,18 +62,18 @@ const AuthNavigator = createStackNavigator(
 
 const AppStack = createStackNavigator(
   {
-    Homepage:{
-      screen: Homepage,
-    },
+    // Homepage:{
+    //   screen: Homepage,
+    // },
     Register:{
       screen: Register
     },
     DanhSach:{
       screen: DanhSach
     },
-    ChiTiet:{
-      screen: ChiTiet
-    },
+    // ChiTiet:{
+    //   screen: ChiTiet
+    // },
   },
   {
     //initialRouteName: 'Homepage',
@@ -87,7 +87,21 @@ const AppStack = createStackNavigator(
         backgroundColor: '#e91e63',
       },
       headerTitleStyle:{
-        color: '#e91e63',
+        color: 'white',
+      },
+    },
+  },
+);
+
+const HomeStack = createStackNavigator(
+  {
+    Homepage:{
+      screen: Homepage,
+    },
+    ChiTiet:{
+      screen: ChiTiet,
+      navigationOptions: {
+        header: null,
       },
     },
   },
@@ -96,8 +110,8 @@ const AppStack = createStackNavigator(
 
 const TabNavigator = createBottomTabNavigator(
   {
-    Homepage:{
-      screen: Homepage
+    Homepage: {
+      screen: Homepage,
     },
     SearchScreen:{
       screen: SearchScreen,
@@ -123,8 +137,9 @@ const TabNavigator = createBottomTabNavigator(
         },
         headerTitleStyle:{
           fontWeight: 'bold',
-          color: 'white'
-        }       
+          color: 'white',
+        },
+        headerTintColor: '#e91e63'    
       };
     },
     defaultNavigationOptions: ({ navigation }) => ({
@@ -140,13 +155,13 @@ const TabNavigator = createBottomTabNavigator(
         marginTop: 0
       },
     },
-  },
-);
-
+  }
+)
 const MainNavigator = createStackNavigator(
   {
     Tab: TabNavigator,
     App: AppStack,
+    Home: HomeStack,
   },
   {
     mode: 'modal',

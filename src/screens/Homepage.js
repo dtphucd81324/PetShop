@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Header, Left, Right, Body, Card, CardItem } from 'native-base';
+import { Icon, Card, CardItem } from 'native-base';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
 //import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
@@ -38,7 +38,10 @@ const HINH = [
 
 class Homepage extends Component {
     static navigationOptions = {
-        title: 'Trang chủ'
+        title: 'Trang chủ',
+        tabBarIcon: ({ tintColor }) => {
+            return <Icon name="md-home" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
+        }
     }
     constructor(props) {
         super(props);
@@ -74,8 +77,8 @@ class Homepage extends Component {
 
     render() {
         return (
-            <ScrollView>
-                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
+            <ScrollView showsHorizontalScrollIndicator={false}>
+                <View style={styles.viewCarousel}>
                     <SafeAreaView>
                         <Carousel
                             data={this.state.dataSource}
@@ -85,24 +88,24 @@ class Homepage extends Component {
                         />
                     </SafeAreaView>
                 </View>
-                <View>
+                <View style={styles.viewCarousel}>
                     <View style={styles.carousel}>
-                        <ImageBackground source={require('../images/images.jpg')} style={styles.background}>
+                        {/* <ImageBackground source={require('../images/images.jpg')} style={styles.background}> */}
                             <Text style={styles.textContent}>Chó Alaska</Text>
-                        </ImageBackground>
+                        {/* </ImageBackground> */}
                     </View>
                     <SafeAreaView>
                         <Carousel
                             data={this.state.dataSource}
                             renderItem={this.renderItem}
                             sliderWidth={400}
-                            itemWidth={300}
-                            layoutCardOffset={'15'}
+                            itemWidth={350}
+                            //layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
-                <View>
-                    <View style={{ backgroundColor: 'white', paddingTop: 15 }}>
+                <View style={styles.viewCarousel}>
+                    <View style={styles.carousel}>
                         <Text style={styles.textContent}>Chó Husky</Text>
                     </View>
                     <SafeAreaView>
@@ -110,8 +113,8 @@ class Homepage extends Component {
                             data={this.state.dataSource}
                             renderItem={this.renderItem}
                             sliderWidth={400}
-                            itemWidth={250}
-                            layoutCardOffset={'15'}
+                            itemWidth={350}
+                            //layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
@@ -126,6 +129,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
 
+    },
+    viewCarousel:{
+        backgroundColor: 'lightskyblue',
     },
     textCont: {
         fontSize: 20,
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
 
     textContent: {
         fontSize: 20,
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold'
     },
 });

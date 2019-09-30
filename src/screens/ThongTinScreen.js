@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-//import { Header, Left, Right, Container, Body, Icon } from 'native-base';
+import { Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, ImageBackground } from 'react-native';
 
 
 export default class ThongTinScreen extends Component {
     static navigationOptions = {
         title: 'Thông tin',
+        tabBarIcon: ({ tintColor }) => {
+            return <Icon name="person" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
+        }
     };
 
     constructor(props) {

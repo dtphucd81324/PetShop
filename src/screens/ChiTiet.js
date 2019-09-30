@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Header, Left, Right, Body, Icon, CardItem, Card } from 'native-base';
+import { CardItem, Card } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
 
 
 export default class ChiTiet extends Component {
-    // static navigationOptions = {
-    //     title: 'Chi tiêt',
-    // };
-    constructor(props){
+    static navigationOptions = {
+        title: 'Chi tiết'
+        //header: null,
+    };
+    constructor(props) {
         super(props);
         this.state = {
             item: this.props.navigation.state.params
@@ -18,45 +19,22 @@ export default class ChiTiet extends Component {
     };
 
     render() {
-        // const Data = this.props.navigation.state.params;
-        //console.log(this.state.item.data);
         const { goBack } = this.props.navigation;
         return (
-            <View style={{ flex: 1 }}>
-                {/* <Header style={{ backgroundColor: '#e91e63' }}>
-                    <Left>
-                        <TouchableOpacity onPress={() => goBack()}>
-                            <View style={styles.viewContent}>
-                                <Icon name="left" type="AntDesign" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Left>
-                    <Body>
-                        <Text style={styles.textCont}>Chi tiết sản phẩm</Text>
-                    </Body>
-                    <Right>
-                        <TouchableOpacity>
-                            <View style={styles.viewContent}>
-                                <Icon name="menu-unfold" type="AntDesign" style={{ color: 'white' }} />
-                            </View>
-                        </TouchableOpacity>
-                    </Right>
-                </Header> */}
-                <View style={styles.container}>
-                    <SafeAreaView>
-                        <Card>
-                            <CardItem>
-                                <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.data.hinh }} />
-                            </CardItem>
-                            <CardItem>
-                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{ this.state.item.data.ten }</Text>
-                            </CardItem>
-                            <CardItem>
-                                <Text style={{ fontSize: 24, color: 'red' }}>{ this.state.item.data.gia }</Text>
-                            </CardItem>
-                        </Card>
-                    </SafeAreaView>
-                </View>
+            <View style={styles.container}>
+                <SafeAreaView>
+                    <Card>
+                        <CardItem>
+                            <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.data.hinh }} />
+                        </CardItem>
+                        <CardItem>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.data.ten}</Text>
+                        </CardItem>
+                        <CardItem>
+                            <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.data.gia}</Text>
+                        </CardItem>
+                    </Card>
+                </SafeAreaView>
             </View>
         )
     }
