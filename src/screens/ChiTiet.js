@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CardItem, Card } from 'native-base';
+import { CardItem, Card, Icon, Content, Button } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
 
 
@@ -32,6 +32,12 @@ export default class ChiTiet extends Component {
                         </CardItem>
                         <CardItem>
                             <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.data.gia}</Text>
+                            <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 50 }}>
+                                <Button iconLeft>
+                                    <Icon name='cart' size={25} />
+                                    <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
+                                </Button>
+                            </View>
                         </CardItem>
                     </Card>
                 </SafeAreaView>
@@ -49,7 +55,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
         marginLeft: 2,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 5
     },
     viewContent: {
         flexDirection: 'row',

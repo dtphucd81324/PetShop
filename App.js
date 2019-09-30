@@ -21,8 +21,12 @@ import ChiTiet from './src/screens/ChiTiet';
 import SearchScreen from './src/screens/SearchScreen';
 import GioHangScreen from './src/screens/GioHangScreen';
 import ThongTinScreen from './src/screens/ThongTinScreen';
-import { Feather } from 'react-native-vector-icons';
+//import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
+import GioHangIcon from './src/containers/GioHangIcon';
+import { Provider } from 'react-redux';
+import store from './src/stores';
+
 
 StatusBar.setHidden(true);
 
@@ -132,6 +136,7 @@ const TabNavigator = createBottomTabNavigator(
       else if (routeName === "ThongTinScreen") routeName = 'Thông tin';
       return {
         headerTitle: routeName,
+        headerRight:( <GioHangIcon />),
         headerStyle:{
           backgroundColor: '#e91e63',
         },
@@ -187,7 +192,11 @@ const AppContainer = createAppContainer(
 
 export default class App extends Component {
   render() {
-    return <AppContainer />;
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    ) 
   }
 }
 

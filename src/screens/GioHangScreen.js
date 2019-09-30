@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Icon } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, ImageBackground } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 
 export default class GioHangScreen extends Component {
@@ -14,18 +15,18 @@ export default class GioHangScreen extends Component {
         super(props);
         this.state = {};
     }
-    goBack() {
-        const { navigation } = this.props;
-        navigation.pop();
-    }
+    
 
     render() {
-        //const { goBack } = this.props.navigation;
+        const { goBack } = this.props.navigation;
         return (
             <View style={{ flex: 1, textAlign: 'center', justifyContent: 'center', alignContent: 'center' }}>
-                <ImageBackground source={require('../images/shoppingcart.png')} style={styles.background}>
+                {/* <ImageBackground source={require('../images/shoppingcart.png')} style={styles.background}>
                     <Text style={styles.viewContent}>Chưa có sản phẩm trong giỏ hàng</Text>
-                </ImageBackground>
+                </ImageBackground> */}
+                <FlatList>
+
+                </FlatList>
             </View>
         )
     }
