@@ -13,19 +13,19 @@ export default class GioHangScreen extends Component {
     };
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            
+        };
     }
-    
+
 
     render() {
+        
         const { goBack } = this.props.navigation;
         return (
             <View style={{ flex: 1, textAlign: 'center', justifyContent: 'center', alignContent: 'center' }}>
-                {/* <ImageBackground source={require('../images/shoppingcart.png')} style={styles.background}>
-                    <Text style={styles.viewContent}>Chưa có sản phẩm trong giỏ hàng</Text>
-                </ImageBackground> */}
                 <FlatList>
-
+                    
                 </FlatList>
             </View>
         )

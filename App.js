@@ -8,11 +8,13 @@
 
 import React, { Component } from 'react';
 import { StatusBar } from 'react-native';
-import { createStackNavigator, 
-  createAppContainer, 
+import {
+  createStackNavigator,
+  createAppContainer,
   createSwitchNavigator,
-  createBottomTabNavigator, } from 'react-navigation';
-import { NavigationService } from './src/api/NavigationService'; 
+  createBottomTabNavigator,
+} from 'react-navigation';
+import { NavigationService } from './src/api/NavigationService';
 import Login from './src/screens/Login';
 import Homepage from './src/screens/Homepage';
 import Register from './src/screens/Register';
@@ -23,41 +25,69 @@ import GioHangScreen from './src/screens/GioHangScreen';
 import ThongTinScreen from './src/screens/ThongTinScreen';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
-import GioHangIcon from './src/containers/GioHangIcon';
 import { Provider } from 'react-redux';
-import store from './src/stores';
-
+import { createStore } from 'redux'
 
 StatusBar.setHidden(true);
 
 
+const defaultState = 
+  {
+    cart: [],
+    total: 0
+  }
+
+const cartItems = (state = defaultState, action) => {
+  switch (action.type) {
+    case 'ADD_TO_CART':
+      return (
+        {
+          cart: [...state.cart, action.payload],
+          total: state.total + action.payload.gia
+        }
+      )
+        
+      
+    case 'REMOVE_FROM_CART':
+      return (
+        {
+          cart: state.filter(cart => cart.id !== action.payload.id),
+          total: state.total - action.payload.gia
+        }
+      )
+       
+    default:
+      return state;
+  }
+};
+
+const store = createStore(cartItems);
+
 const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state;
-  //let IconType = Feather;
   let iconName;
-  if (routeName === 'Homepage'){
+  if (routeName === 'Homepage') {
     iconName = 'md-home';
-    //IconType = Feather;
-  } else if(routeName === 'SearchScreen'){
+  } else if (routeName === 'SearchScreen') {
     iconName = 'search';
-  } else if(routeName === 'GioHangScreen'){
+  } else if (routeName === 'GioHangScreen') {
     iconName = 'cart';
-  } else if(routeName === 'ThongTinScreen'){
+  } else if (routeName === 'ThongTinScreen') {
     iconName = 'person';
   }
-  return <Icon name={iconName} size={24} color={tintColor ? '#e91e63' : 'slategray'}  />
+  return <Icon name={iconName} size={24} color={tintColor ? '#e91e63' : 'slategray'} />
 };
 
 
 
 const AuthNavigator = createStackNavigator(
   {
-    Login:{
+    Login: {
       screen: Login,
     }
-},
-{
-    navigationOptions:{
+  },
+  {
+    navigationOptions: {
       header: null,
     },
   },
@@ -66,31 +96,25 @@ const AuthNavigator = createStackNavigator(
 
 const AppStack = createStackNavigator(
   {
-    // Homepage:{
-    //   screen: Homepage,
-    // },
-    Register:{
+    Register: {
       screen: Register
     },
-    DanhSach:{
+    DanhSach: {
       screen: DanhSach
     },
-    // ChiTiet:{
-    //   screen: ChiTiet
-    // },
+
   },
   {
-    //initialRouteName: 'Homepage',
     headerMode: 'none',
   },
   {
-    navigationOptions:{
+    navigationOptions: {
       headerBackTitle: null,
       headerTintColor: '#e91e63',
-      headerStyle:{
+      headerStyle: {
         backgroundColor: '#e91e63',
       },
-      headerTitleStyle:{
+      headerTitleStyle: {
         color: 'white',
       },
     },
@@ -99,10 +123,10 @@ const AppStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    Homepage:{
+    Homepage: {
       screen: Homepage,
     },
-    ChiTiet:{
+    ChiTiet: {
       screen: ChiTiet,
       navigationOptions: {
         header: null,
@@ -117,13 +141,13 @@ const TabNavigator = createBottomTabNavigator(
     Homepage: {
       screen: Homepage,
     },
-    SearchScreen:{
+    SearchScreen: {
       screen: SearchScreen,
     },
-    GioHangScreen:{
+    GioHangScreen: {
       screen: GioHangScreen,
     },
-    ThongTinScreen:{
+    ThongTinScreen: {
       screen: ThongTinScreen,
     },
   },
@@ -136,27 +160,26 @@ const TabNavigator = createBottomTabNavigator(
       else if (routeName === "ThongTinScreen") routeName = 'Thông tin';
       return {
         headerTitle: routeName,
-        headerRight:( <GioHangIcon />),
-        headerStyle:{
+        headerStyle: {
           backgroundColor: '#e91e63',
         },
-        headerTitleStyle:{
+        headerTitleStyle: {
           fontWeight: 'bold',
           color: 'white',
         },
-        headerTintColor: '#e91e63'    
+        headerTintColor: '#e91e63'
       };
     },
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) =>
         getTabBarIcon(navigation, focused, tintColor),
     }),
-    tabBarOptions:{
+    tabBarOptions: {
       activeTintColor: '#e91e63',
       inactiveTintColor: 'slategray',
       showIcon: true,
       showLabel: true,
-      labelStyle:{
+      labelStyle: {
         marginTop: 0
       },
     },
@@ -196,7 +219,7 @@ export default class App extends Component {
       <Provider store={store}>
         <AppContainer />
       </Provider>
-    ) 
+    )
   }
 }
 

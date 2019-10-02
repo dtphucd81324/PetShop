@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { CardItem, Card, Icon, Content, Button } from 'native-base';
+import { CardItem, Card, Icon, Button } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, SafeAreaView } from 'react-native';
+import { connect } from 'react-redux';
 
 
-export default class ChiTiet extends Component {
+class ChiTiet extends Component {
     static navigationOptions = {
         title: 'Chi tiết'
         //header: null,
@@ -11,30 +12,31 @@ export default class ChiTiet extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            item: this.props.navigation.state.params
+            item: this.props.navigation.state.params.data,
         }
     }
-    _onRefresh() {
-
-    };
+    buy = () => {
+         this.props.dispatch({type:'ADD_TO_CART', payload: this.state.item});
+         alert('Thêm thành công')
+        //console.log(this.props.cart);
+    }
 
     render() {
-        const { goBack } = this.props.navigation;
+        //const { goBack } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <SafeAreaView>
                     <Card>
                         <CardItem>
-                            <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.data.hinh }} />
+                            <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.hinh }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.data.ten}</Text>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text>
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.data.gia}</Text>
-                            <View style={{ flexDirection: 'row', flex: 1, paddingLeft: 50 }}>
-                                <Button iconLeft>
-                                    <Icon name='cart' size={25} />
+                            <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.gia}</Text>
+                            <View style={styles.viewButton}>
+                                <Button iconLeft onPress={this.buy} >
                                     <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
                                 </Button>
                             </View>
@@ -45,6 +47,15 @@ export default class ChiTiet extends Component {
         )
     }
 }
+
+const mapStatetoProps = (state) => {
+    return {
+        cart: state.cart
+    }
+}
+
+export default connect(mapStatetoProps)(ChiTiet);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -56,7 +67,8 @@ const styles = StyleSheet.create({
         color: 'white',
         marginLeft: 2,
         fontWeight: 'bold',
-        paddingLeft: 5
+        paddingLeft: 5,
+        paddingRight: 10,
     },
     viewContent: {
         flexDirection: 'row',
@@ -65,4 +77,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         textAlign: 'center'
     },
+    viewButton: {
+        flex: 1,
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    }
 });
