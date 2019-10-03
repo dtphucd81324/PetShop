@@ -125,23 +125,6 @@ class AuthLoadingScreen extends Component {
     }
 }
 
-// const HomeStack = createStackNavigator({ Home: HomeScreen});
-// const SearchStack = createStackNavigator({ Search: Search});
-// const LoginStack = createStackNavigator({ Login: Login });
-// const RegisterStack = createStackNavigator({ Register: Register })
-// export default createAppContainer(
-//     createSwitchNavigator(
-//         {
-//             AuthLoading: AuthLoadingScreen,
-//             App: HomeStack,
-//             Auth: LoginStack,
-//             Register: RegisterStack,
-//             Search: SearchStack
-//         }, {
-//         initialRouteName: 'AuthLoading'
-//         }
-//     )
-// )
 
 const styles = StyleSheet.create({
     container: {

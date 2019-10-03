@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Card, CardItem } from 'native-base';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView, ImageBackground } from 'react-native';
+import { Icon, Card, CardItem, Header, Left, Body, Right, Title } from 'native-base';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView } from 'react-native';
 //import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
 // import SearchScreen from './SearchScreen';
@@ -13,12 +13,12 @@ const { height } = Dimensions.get('window');
 
 
 class Homepage extends Component {
-    static navigationOptions = {
-        title: 'Trang chủ',
-        tabBarIcon: ({ tintColor }) => {
-            return <Icon name="md-home" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
-        }
-    }
+    // static navigationOptions = {
+    //     title: 'Trang chủ',
+    //     tabBarIcon: ({ tintColor }) => {
+    //         return <Icon name="md-home" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
+    //     }
+    // }
     constructor(props) {
         super(props);
         this.state = {
@@ -43,7 +43,7 @@ class Homepage extends Component {
                             <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.ten}</Text>
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 18, color: 'red' }}>{item.gia}</Text>
+                            <Text style={{ fontSize: 18, color: 'red' }}>{item.gia} {item.currency}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -54,6 +54,13 @@ class Homepage extends Component {
     render() {
         return (
             <ScrollView showsHorizontalScrollIndicator={false}>
+                <Header transparent style={{ backgroundColor: 'lightskyblue' }}>
+                    <Left />
+                    <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                        <Title style={{ fontSize: 24, fontWeight: 'bold' }}>TRANG CHỦ</Title>
+                    </Body>
+                    <Right />
+                </Header>
                 <View style={styles.viewCarousel}>
                     <SafeAreaView>
                         <Carousel
@@ -107,7 +114,7 @@ const styles = StyleSheet.create({
 
     },
     viewCarousel:{
-        backgroundColor: 'lightskyblue',
+        backgroundColor: 'white',
     },
     textCont: {
         fontSize: 20,

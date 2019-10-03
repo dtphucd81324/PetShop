@@ -4,22 +4,11 @@ import { StyleSheet, View, TouchableOpacity, Text, ImageBackground } from 'react
 
 
 export default class ThongTinScreen extends Component {
-    static navigationOptions = {
-        title: 'Thông tin',
-        tabBarIcon: ({ tintColor }) => {
-            return <Icon name="person" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
-        }
-    };
-
+    
     constructor(props) {
         super(props);
-        this.state = {};
     }
 
-    goBack() {
-        const { navigator } = this.props;
-        navigator.pop();
-    }
     render() {
         return (
             <View style={styles.container}>

@@ -13,6 +13,7 @@ import {
   createAppContainer,
   createSwitchNavigator,
   createBottomTabNavigator,
+  StackActions,
 } from 'react-navigation';
 import { NavigationService } from './src/api/NavigationService';
 import Login from './src/screens/Login';
@@ -28,14 +29,14 @@ import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
 
-StatusBar.setHidden(true);
+//StatusBar.setHidden(true);
 
 
-const defaultState = 
-  {
-    cart: [],
-    total: 0
-  }
+const defaultState =
+{
+  cart: [],
+  total: 0
+}
 
 const cartItems = (state = defaultState, action) => {
   switch (action.type) {
@@ -46,38 +47,30 @@ const cartItems = (state = defaultState, action) => {
           total: state.total + action.payload.gia
         }
       )
-        
-      
+
+
     case 'REMOVE_FROM_CART':
       return (
         {
-          cart: state.filter(cart => cart.id !== action.payload.id),
+          cart: state.cart.filter(cart => cart.id !== action.payload.id),
           total: state.total - action.payload.gia
         }
       )
-       
+    case 'THANH_TOAN':
+      return (
+        {
+          ...state,
+          cart: [],
+          total: 0
+        }
+      )
+
     default:
       return state;
   }
 };
 
 const store = createStore(cartItems);
-
-const getTabBarIcon = (navigation, focused, tintColor) => {
-  const { routeName } = navigation.state;
-  let iconName;
-  if (routeName === 'Homepage') {
-    iconName = 'md-home';
-  } else if (routeName === 'SearchScreen') {
-    iconName = 'search';
-  } else if (routeName === 'GioHangScreen') {
-    iconName = 'cart';
-  } else if (routeName === 'ThongTinScreen') {
-    iconName = 'person';
-  }
-  return <Icon name={iconName} size={24} color={tintColor ? '#e91e63' : 'slategray'} />
-};
-
 
 
 const AuthNavigator = createStackNavigator(
@@ -110,7 +103,7 @@ const AppStack = createStackNavigator(
   {
     navigationOptions: {
       headerBackTitle: null,
-      headerTintColor: '#e91e63',
+      headerTintColor: 'lightskyblue',
       headerStyle: {
         backgroundColor: '#e91e63',
       },
@@ -123,94 +116,123 @@ const AppStack = createStackNavigator(
 
 const HomeStack = createStackNavigator(
   {
-    Homepage: {
-      screen: Homepage,
-    },
-    ChiTiet: {
-      screen: ChiTiet,
-      navigationOptions: {
-        header: null,
-      },
+    Homepage: Homepage,
+    ChiTiet: ChiTiet
+  }, {
+  initialRouteName: 'Homepage',
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+    title: 'Trang chủ',
+    tabBarIcon: ({ focused }) => {
+      return <Icon name='md-home' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
     },
   },
+},
 );
 
+const SearchStack = createStackNavigator(
+  {
+    SearchScreen: SearchScreen,
+    ChiTiet: ChiTiet
+  }, {
+  initialRouteName: 'SearchScreen',
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+    title: 'Tìm kiếm',
+    tabBarIcon: ({ focused }) => {
+      return <Icon name='search' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+    },
+  },
+},
+);
+
+const GioHangStack = createStackNavigator(
+  {
+    GioHangScreen: GioHangScreen,
+
+  }, {
+  initialRouteName: 'GioHangScreen',
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+    title: 'Giỏ hàng',
+    tabBarIcon: ({ focused }) => {
+      return <Icon name='cart' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+    },
+  },
+},
+);
+
+const ThongTinStack = createStackNavigator(
+  {
+    ThongTinScreen: ThongTinScreen
+  }, {
+  initialRouteName: 'ThongTinScreen',
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+    title: 'Thông tin',
+    tabBarIcon: ({ focused }) => {
+      return <Icon name='person' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+    },
+  },
+}
+)
 
 const TabNavigator = createBottomTabNavigator(
   {
     Homepage: {
-      screen: Homepage,
+      screen: HomeStack,
+      navigationOptions: {
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          navigation.dispatch(StackActions.popToTop());
+          defaultHandler();
+        }
+      }
     },
     SearchScreen: {
-      screen: SearchScreen,
+      screen: SearchStack,
+      navigationOptions: {
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          navigation.dispatch(StackActions.popToTop());
+          defaultHandler();
+        }
+      }
     },
     GioHangScreen: {
-      screen: GioHangScreen,
+      screen: GioHangStack,
+      navigationOptions: {
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          navigation.dispatch(StackActions.popToTop());
+          defaultHandler();
+        }
+      }
     },
     ThongTinScreen: {
-      screen: ThongTinScreen,
+      screen: ThongTinStack,
+      navigationOptions: {
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          navigation.dispatch(StackActions.popToTop());
+          defaultHandler();
+        }
+      }
     },
-  },
-  {
-    navigationOptions: ({ navigation }) => {
-      let { routeName } = navigation.state.routes[navigation.state.index];
-      if (routeName === "Homepage") routeName = 'Trang chủ';
-      else if (routeName === "SearchScreen") routeName = 'Tìm kiếm';
-      else if (routeName === "GioHangScreen") routeName = 'Giỏ hàng';
-      else if (routeName === "ThongTinScreen") routeName = 'Thông tin';
-      return {
-        headerTitle: routeName,
-        headerStyle: {
-          backgroundColor: '#e91e63',
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: 'white',
-        },
-        headerTintColor: '#e91e63'
-      };
-    },
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, tintColor }) =>
-        getTabBarIcon(navigation, focused, tintColor),
-    }),
-    tabBarOptions: {
-      activeTintColor: '#e91e63',
-      inactiveTintColor: 'slategray',
-      showIcon: true,
-      showLabel: true,
-      labelStyle: {
-        marginTop: 0
-      },
-    },
+  }, {
+  tabBarOptions: {
+    activeTintColor: 'lightskyblue',
+    labelStyle:{
+      fontSize: 15,
+      fontWeight: 'bold'
+    }
   }
-)
-const MainNavigator = createStackNavigator(
-  {
-    Tab: TabNavigator,
-    App: AppStack,
-    Home: HomeStack,
-  },
-  {
-    mode: 'modal',
-    navigationOptions: {
-      header: null,
-    },
-  },
-);
+}
 
-const AppSwitchNavigator = createSwitchNavigator(
-  {
-    Auth: AuthNavigator,
-    Main: MainNavigator,
-  },
-  {
-    initialRouteName: 'Main',
-  },
-);
+)
 
 const AppContainer = createAppContainer(
-  AppSwitchNavigator
+  TabNavigator
 );
 
 export default class App extends Component {
