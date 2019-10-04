@@ -7,17 +7,22 @@ import {
 //import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import Homepage from './Homepage';
 import Register from './Register';
-// import Search from './SearchScreen';
-// import App from '../App';
 
 
-const userInfo = { email: 'Admin', password: '123456' }
+
+const userInfo = { 
+    email: 'admin', 
+    password: '123456' 
+}
 
 export default class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { email: '', password: '' }
+        this.state = { 
+            email: '', 
+            password: '' 
+        }
     };
 
     static navigationOptions = {
@@ -79,9 +84,6 @@ export default class Login extends Component {
         }
     }
 
-    // _register = async () => {
-    //     this.props.navigation.navigate('Register');
-    // }
 }
 
 class HomeScreen extends Component {

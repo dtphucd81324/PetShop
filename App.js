@@ -73,20 +73,6 @@ const cartItems = (state = defaultState, action) => {
 const store = createStore(cartItems);
 
 
-const AuthNavigator = createStackNavigator(
-  {
-    Login: {
-      screen: Login,
-    }
-  },
-  {
-    navigationOptions: {
-      header: null,
-    },
-  },
-);
-
-
 const AppStack = createStackNavigator(
   {
     Register: {

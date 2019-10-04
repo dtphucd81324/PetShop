@@ -13,12 +13,6 @@ const { height } = Dimensions.get('window');
 
 
 class Homepage extends Component {
-    // static navigationOptions = {
-    //     title: 'Trang chủ',
-    //     tabBarIcon: ({ tintColor }) => {
-    //         return <Icon name="md-home" style={{ color: tintColor ? '#e91e63' : 'slategray' }}/>
-    //     }
-    // }
     constructor(props) {
         super(props);
         this.state = {
@@ -40,10 +34,10 @@ class Homepage extends Component {
                             <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.ten}</Text>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.ten}</Text>
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 18, color: 'red' }}>{item.gia} {item.currency}</Text>
+                            <Text style={{ fontSize: 24, color: 'red' }}>{item.gia} {item.currency}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -56,7 +50,7 @@ class Homepage extends Component {
             <ScrollView showsHorizontalScrollIndicator={false}>
                 <Header transparent style={{ backgroundColor: 'lightskyblue' }}>
                     <Left />
-                    <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>
+                    <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
                         <Title style={{ fontSize: 24, fontWeight: 'bold' }}>TRANG CHỦ</Title>
                     </Body>
                     <Right />
@@ -73,9 +67,7 @@ class Homepage extends Component {
                 </View>
                 <View style={styles.viewCarousel}>
                     <View style={styles.carousel}>
-                        {/* <ImageBackground source={require('../images/images.jpg')} style={styles.background}> */}
-                            <Text style={styles.textContent}>Chó Alaska</Text>
-                        {/* </ImageBackground> */}
+                        <Text style={styles.textContent}>Chó Alaska</Text>
                     </View>
                     <SafeAreaView>
                         <Carousel
@@ -83,7 +75,7 @@ class Homepage extends Component {
                             renderItem={this.renderItem}
                             sliderWidth={400}
                             itemWidth={350}
-                            //layoutCardOffset={'15'}
+                        //layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
@@ -97,7 +89,7 @@ class Homepage extends Component {
                             renderItem={this.renderItem}
                             sliderWidth={400}
                             itemWidth={350}
-                            //layoutCardOffset={'15'}
+                        //layoutCardOffset={'15'}
                         />
                     </SafeAreaView>
                 </View>
@@ -113,7 +105,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
     },
-    viewCarousel:{
+    viewCarousel: {
         backgroundColor: 'white',
     },
     textCont: {
