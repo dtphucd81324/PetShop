@@ -14,7 +14,7 @@ export default class ThongTinScreen extends Component {
     };
 
     render() {
-        const uri = "https://facebook.github.io/react-native/docs/assets/favicon.png";
+        const uri = "https://png.pngtree.com/png-clipart/20190603/original/pngtree-user-group-png-image_307404.jpg";
         return (
             <View style={styles.container}>
                 <View style={styles.viewImage}>
@@ -87,9 +87,6 @@ export default class ThongTinScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //alignItems: 'center',
-        //justifyContent: 'center',
-
     },
     viewImage: {
         flex: 1,

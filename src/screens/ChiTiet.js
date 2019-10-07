@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import { CardItem, Card, Icon, Button, Header, Left, Right } from 'native-base';
 import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-
+import Video from 'react-native-video';
+//import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 
 class ChiTiet extends Component {
+    //videoPlayer;
+
     static navigationOptions = {
         title: 'Chi tiết'
-        //header: null,
     };
+
     constructor(props) {
         super(props);
         this.state = {
             item: this.props.navigation.state.params.data,
-        }
+        };
     }
+
     buy = () => {
         let check = false;
         if (this.props.cart.length === 0) {
@@ -40,6 +44,7 @@ class ChiTiet extends Component {
 
     }
 
+
     render() {
         return (
             <ScrollView>
@@ -59,6 +64,12 @@ class ChiTiet extends Component {
                             </CardItem>
                             <CardItem>
                                 <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text>
+                                <View style={styles.viewButton}>
+                                    <Button iconLeft onPress={ () => { this.props.navigation.navigate('VideoScreen')}  }>
+                                        <Icon name="eye" type="FontAwesome" />
+                                        <Text style={styles.textCont}>Xem video</Text>
+                                    </Button>
+                                </View>
                             </CardItem>
                             <CardItem>
                                 <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.gia} {this.state.item.currency}</Text>
@@ -111,5 +122,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center'
-    }
+    },
+    mediaPlayer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        alignItems: 'stretch',
+    },
 });

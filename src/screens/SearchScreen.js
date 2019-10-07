@@ -84,14 +84,14 @@ export default class SearchScreen extends Component {
                     <Item>
                         <Icon name="search" />
                         <Input
+                            style={styles.input}
                             placeholder="Tìm kiếm sản phẩm"
                             onChangeText={text => this.SearchFilter(text)}
                             value={this.state.text}
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="people" />
                     </Item>
-                    <Button transparent>
+                    <Button>
                         <Text>Search</Text>
                     </Button>
                 </Header>
@@ -118,6 +118,10 @@ const styles = StyleSheet.create({
     //     marginRight: 10,
     //     marginHorizontal: 10
     // },
+    input:{
+        width: 200
+    },
+
     viewCard: {
         height: 280,
         width: 210,
