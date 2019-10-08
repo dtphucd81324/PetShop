@@ -31,7 +31,7 @@ class Homepage extends Component {
                             <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 24, fontWeight: 'bold', color:'blue' }}>{item.ten}</Text>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.ten}</Text>
                         </CardItem>
                         <CardItem>
                             <Text style={{ fontSize: 24, color: 'red' }}>{item.gia} {item.currency}</Text>
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        color: 'blue',
+        color: 'white',
         justifyContent: 'space-between',
 
     },
@@ -125,8 +125,8 @@ const styles = StyleSheet.create({
     },
 
     textContent: {
-        fontSize: 24,
-        color: 'black',
+        fontSize: 20,
+        color: 'white',
         fontWeight: 'bold'
     },
 });
