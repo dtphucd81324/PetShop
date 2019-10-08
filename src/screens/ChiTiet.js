@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { CardItem, Card, Icon, Button, Header, Left, Right } from 'native-base';
 import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
-import Video from 'react-native-video';
-//import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
+
+
 
 class ChiTiet extends Component {
     //videoPlayer;
@@ -84,7 +84,6 @@ class ChiTiet extends Component {
                     </SafeAreaView>
                 </View>
             </ScrollView>
-
         )
     }
 }

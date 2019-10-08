@@ -3,9 +3,6 @@ import { Icon, Card, CardItem, Header, Left, Body, Right, Title } from 'native-b
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView } from 'react-native';
 //import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
-// import SearchScreen from './SearchScreen';
-// import GioHangScreen from './GioHangScreen';
-// import ThongTinScreen from './ThongTinScreen';
 import ChiTiet from './ChiTiet';
 import { HINH } from './Data';
 const { height } = Dimensions.get('window');

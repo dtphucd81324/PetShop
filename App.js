@@ -24,7 +24,7 @@ import ChiTiet from './src/screens/ChiTiet';
 import SearchScreen from './src/screens/SearchScreen';
 import GioHangScreen from './src/screens/GioHangScreen';
 import ThongTinScreen from './src/screens/ThongTinScreen';
-import VideoScreen from './src/screens/VideoScreen'
+//import VideoScreen from './src/screens/VideoScreen'
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
@@ -105,7 +105,7 @@ const HomeStack = createStackNavigator(
   {
     Homepage: Homepage,
     ChiTiet: ChiTiet,
-    VideoScreen: VideoScreen,
+    //VideoScreen: VideoScreen,
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',
