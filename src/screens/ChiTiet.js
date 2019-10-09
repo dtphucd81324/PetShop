@@ -4,7 +4,6 @@ import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView } from 'react-n
 import { connect } from 'react-redux';
 
 
-
 class ChiTiet extends Component {
     static navigationOptions = {
         title: 'Chi tiết'
