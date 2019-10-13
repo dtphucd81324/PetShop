@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { CardItem, Card, Icon, Button, Header, Left, Right } from 'native-base';
-import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
+import { CardItem, Card, Icon, Button, Header, Left, Right, Content, Textarea, Form } from 'native-base';
+import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView} from 'react-native';
 import { connect } from 'react-redux';
 
 
@@ -20,7 +20,10 @@ class ChiTiet extends Component {
         if (this.props.cart.length === 0) {
             this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
             alert('Thêm thành công');
-            this.props.navigation.navigate('GioHangScreen');
+            setTimeout(() => {
+                this.props.navigation.navigate('GioHangScreen');
+            }, 2000);
+            
         }
         else {
             this.props.cart.map(e => {
@@ -34,7 +37,10 @@ class ChiTiet extends Component {
             else {
                 this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
                 alert('Thêm thành công');
-                this.props.navigation.navigate('GioHangScreen');
+                setTimeout(() => {
+                    this.props.navigation.navigate('GioHangScreen');
+                }, 3000);
+                
             }
         }
 
@@ -49,7 +55,11 @@ class ChiTiet extends Component {
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
-                    <Right />
+                    <Right>
+                        <Button onPress={() => this.props.navigation.navigate('BinhLuan')}>
+                            <Icon name="message1" type="AntDesign" />
+                        </Button>
+                    </Right>
                 </Header>
                 <View style={styles.container}>
                     <SafeAreaView>
@@ -59,15 +69,31 @@ class ChiTiet extends Component {
                             </CardItem>
                             <CardItem>
                                 <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text>
+                                <View style={styles.viewButton}>
+                                    <Button iconLeft onPress={() => this.props.navigation.navigate('VideoScreen')}>
+                                        <Icon name="eye" type="Feather" />
+                                        <Text style={styles.textCont}>Xem Video</Text>
+                                    </Button>
+                                </View>
                             </CardItem>
                             <CardItem>
-                                <Text style={{ fontSize: 24, color: 'red' }}>{this.state.item.gia} {this.state.item.currency}</Text>
+                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.gia} {this.state.item.currency}</Text>
                                 <View style={styles.viewButton}>
                                     <Button iconLeft onPress={this.buy} >
                                         <Icon name="shopping-cart" type="Feather" />
                                         <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
                                     </Button>
                                 </View>
+                            </CardItem>
+                            <CardItem>
+                                <Content>
+                                    <Form>
+                                        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Mô tả:</Text>
+                                        <Textarea rowSpan={10} bordered style={{ fontSize: 18 }}>
+                                            {this.state.item.description}
+                                        </Textarea>
+                                    </Form>
+                                </Content>
                             </CardItem>
                         </Card>
                     </SafeAreaView>
@@ -89,7 +115,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'space-between'
     },
     textCont: {
         fontSize: 18,
@@ -108,7 +134,7 @@ const styles = StyleSheet.create({
     },
     viewButton: {
         flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: 200
     }
 });

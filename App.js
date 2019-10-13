@@ -24,11 +24,13 @@ import ChiTiet from './src/screens/ChiTiet';
 import SearchScreen from './src/screens/SearchScreen';
 import GioHangScreen from './src/screens/GioHangScreen';
 import ThongTinScreen from './src/screens/ThongTinScreen';
-
+import VideoScreen from './src/screens/VideoScreen';
+import BinhLuan from './src/screens/BinhLuan';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
+
 
 //StatusBar.setHidden(true);
 
@@ -79,10 +81,7 @@ const AppStack = createStackNavigator(
     Register: {
       screen: Register
     },
-    DanhSach: {
-      screen: DanhSach
-    },
-
+  
   },
   {
     headerMode: 'none',
@@ -105,7 +104,8 @@ const HomeStack = createStackNavigator(
   {
     Homepage: Homepage,
     ChiTiet: ChiTiet,
-    //VideoScreen: VideoScreen,
+    VideoScreen: VideoScreen,
+    BinhLuan: BinhLuan
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',

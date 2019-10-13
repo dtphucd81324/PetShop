@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Icon, Item, Input, Header, Button, Card, CardItem } from 'native-base';
-import { View, StyleSheet, Text, FlatList, ActivityIndicator, SafeAreaView, ScrollView, Image } from 'react-native';
+import { Icon, Item, Input, Header, Button } from 'native-base';
+import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image } from 'react-native';
 import { HINH } from './Data';
 
 export default class SearchScreen extends Component {
@@ -80,16 +80,17 @@ export default class SearchScreen extends Component {
         }
         return (
             <ScrollView showsHorizontalScrollIndicator={false}>
-                <Header searchBar rounded >
-                    <Item>
+                <Header transparent searchBar rounded 
+                >
+                    <Item style={styles.Item}>
                         <Icon name="search" />
                         <Input
+                            style={styles.input}
                             placeholder="Tìm kiếm sản phẩm"
                             onChangeText={text => this.SearchFilter(text)}
                             value={this.state.text}
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="people" />
                     </Item>
                     <Button transparent>
                         <Text>Search</Text>
@@ -111,13 +112,12 @@ export default class SearchScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    // container: {
-    //     flex: 1,
-    //     marginTop: 10,
-    //     marginLeft: 10,
-    //     marginRight: 10,
-    //     marginHorizontal: 10
-    // },
+    Item:{
+        borderWidth: 1,
+        backgroundColor: 'lightskyblue',
+        //borderColor: 'lightskyblue'
+    },
+
     viewCard: {
         height: 280,
         width: 210,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         borderRadius: 7
     },
     viewSearch: {
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
