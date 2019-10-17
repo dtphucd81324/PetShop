@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
 import { Icon, Item, Input, Header, Button } from 'native-base';
-import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { HINH } from './Data';
 
+const filter = [
+    {
+        id: 1,
+        ten: 'Mới'
+    },{
+        id: 2,
+        ten: 'Mua nhiều'
+    },{
+        id: 3,
+        ten: 'Giá thấp nhất'
+    },{
+        id: 4,
+        ten: 'Giảm giá'
+    },
+]
 export default class SearchScreen extends Component {
-
+    
     constructor(props) {
         super(props);
         this.state = {
             isLoading: true,
             text: '',
-            //dataSource: []
+            category: [],
+            chonLoai: 0,
         };
         this.arrayholder = [];
 
-    }
+    };
+    
 
     componentDidMount() {
         this.setState({
             isLoading: false,
-            dataSource: HINH
+            dataSource: HINH,
+            category: filter,
         },
             function () {
                 this.arrayholder = HINH;
@@ -53,6 +71,24 @@ export default class SearchScreen extends Component {
         );
     };
 
+    async Filter(idCategory){
+        await this.setState({ arrayholder: HINH });
+        const filterCategory = this.state.arrayholder.filter(x => x.idCategory === idCategory);
+        this.setState({ dataSource: filterCategory, arrayholder: filterCategory });
+    }
+
+    renderFilter = ({ item }) => {
+        return(
+            <View style={{ margin: 10 }}>
+                <TouchableOpacity onPress={() => this.Filter(item.id)} style={styles.filter}>
+                    <Text style={styles.TextCurren}>
+                        {item.ten}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     renderItem = ({ item }) => {
         return (
             <View style={styles.viewCard}>
@@ -62,10 +98,10 @@ export default class SearchScreen extends Component {
                     <Text style={styles.TextCurren}>{item.gia} {item.currency}</Text>
                 </View>
                 <View style={styles.viewButton}>
-                    <Button iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })} >
+                    <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })} >
                         <Icon name="eye" type="FontAwesome" />
                         <Text style={styles.textCont}>Xem chi tiết</Text>
-                    </Button>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -96,6 +132,22 @@ export default class SearchScreen extends Component {
                         <Text>Search</Text>
                     </Button>
                 </Header>
+                <View>
+                    <FlatList 
+                        data={this.state.category}
+                        renderItem={this.renderFilter}
+                        numColumns={2}
+                        //style={{ marginLeft: 12, marginRight: 12 }}
+                        keyExtractor={item => item.id}
+                    />
+                    <View style={{ margin: 10 }}>
+                        <TouchableOpacity style={styles.filter} onPress={() => {this.setState({dataSource: HINH, arrayholder: HINH })}}>
+                            <Text style={styles.textAll}>
+                                Tất cả
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <FlatList
                         data={this.state.dataSource}
@@ -115,7 +167,6 @@ const styles = StyleSheet.create({
     Item:{
         borderWidth: 1,
         backgroundColor: 'lightskyblue',
-        //borderColor: 'lightskyblue'
     },
 
     viewCard: {
@@ -134,14 +185,11 @@ const styles = StyleSheet.create({
         borderRadius: 7
     },
     viewSearch: {
-        //backgroundColor: 'white',
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        //flex : 1
     },
     viewButton: {
-        //flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
         width: 210,
@@ -174,5 +222,27 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         color: 'red'
+    },
+    textAll:{
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'red'
+    },
+    filter:{
+        width: 150,
+        height: 40,
+        backgroundColor: 'lightskyblue',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        borderRadius: 25
+    },
+    viewDetail:{
+        width: 180,
+        height: 50,
+        backgroundColor: 'lightskyblue',
+        alignItems: 'center',
+        borderRadius: 25,
+        flexDirection: 'row',
+        justifyContent: 'center',
     }
 })

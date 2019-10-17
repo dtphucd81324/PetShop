@@ -2,34 +2,65 @@ import React, { Component } from 'react';
 import { Icon, Thumbnail, List, ListItem, Left, Right } from 'native-base';
 import { StyleSheet, View, SafeAreaView, ScrollView, Image, ImageBackground, Text } from 'react-native';
 
+import ImagePicker from 'react-native-image-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
+const options = {
+    title: 'Select Avatar',
+    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
 
 export default class ThongTinScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            avatarSource: null,
+        }
     }
 
     list = () => {
 
     };
 
-    render() {
-        return (
-            // <SafeAreaView style={styles.container}>
-            //     <ScrollView showsHorizontalScrollIndicator={false}>
-            //         <View style={styles.titleBar}>
-            //             <Icon name="arrow-back" type="Ionicons" size={24} color="#52575D"></Icon>
-            //             <Icon name="md-more" type="Ionicons" size={24} color="#52575D"></Icon>
-            //         </View>
+    showImage = () => {
+        ImagePicker.showImagePicker(options, (response) => {
 
-            //         <View style={{ alignSelf: 'center' }}>
-            //             <View style={styles.profileImage}>
-            //                 <Thumbnail large style={styles.image} source={require('../images/images.jpg')} resizeMode="center" />
-            //             </View>
-            //         </View>
-            //     </ScrollView>
-            // </SafeAreaView>
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+                this.setState({
+                    avatarSource: source,
+                });
+            }
+        });
+    }
+
+    render() {
+        let img = this.state.avatarSource == null ?
+            <Thumbnail large 
+                source={require('../images/images.jpg')}
+                style={styles.thumbnail}
+            />
+            :
+            <Thumbnail large
+                source={this.state.avatarSource}
+                style={styles.thumbnail}
+            />
+        return (
             <View style={styles.container}>
                 <View style={styles.titleBar}>
                     <Icon name="arrow-back" type="Ionicons" size={24} color="#52575D"></Icon>
@@ -37,14 +68,16 @@ export default class ThongTinScreen extends Component {
                 </View>
                 <View style={{ alignSelf: "center" }}>
                     <View style={styles.profileImage}>
-                        <Thumbnail large style={styles.thumbnail} source={require('../images/images.jpg')} />
+                        {img}
                     </View>
                     <View style={styles.dm}>
                         <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
                     </View>
                     <View style={styles.active}></View>
                     <View style={styles.add}>
-                        <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                        <TouchableOpacity onPress={this.showImage}>
+                            <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.infoContainer}>
@@ -188,7 +221,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    infoContainer:{
+    infoContainer: {
         alignSelf: "center",
         alignItems: "center",
         marginTop: 16

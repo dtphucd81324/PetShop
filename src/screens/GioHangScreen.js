@@ -87,7 +87,7 @@ class GioHangScreen extends Component {
                         }
                     }}
                 >
-                    <Text style={styles.txtCard}>Thanh toán Paypal</Text>
+                    <Text style={styles.txtCard}>Thanh toán</Text>
                 </Button>
             </View>
         )
