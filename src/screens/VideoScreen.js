@@ -5,9 +5,11 @@ import Video from 'react-native-video';
 
 export default class VideoScreen extends Component {
     render() {
+        const {params} = this.props.navigation.state;
+        //const {video} = params.item;
         return (
             <View style={styles.container}>
-                <Video source={{ uri: 'https://rawgit.com/uit2712/Mp3Container/master/tom_and_jerry_31.mp4' }}   // Can be a URL or a localfile.
+                <Video source={{ uri: params.item.video }}   // Can be a URL or a localfile.
                     ref={(ref) => {
                         this.player = ref
                     }}                                      // Store reference
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         alignItems: 'center',
-        paddingTop: 50
+        paddingTop: 50,
     },
     backgroundVideo: {
         position: 'absolute',

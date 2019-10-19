@@ -25,7 +25,7 @@ class Homepage extends Component {
     renderItem = ({ item }) => {
         return (
             <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })}>
                     <Card>
                         <CardItem>
                             <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />

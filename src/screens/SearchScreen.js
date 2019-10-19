@@ -6,16 +6,16 @@ import { HINH } from './Data';
 const filter = [
     {
         id: 1,
-        ten: 'Mới'
+        ten: 'Chó Corgi'
     },{
         id: 2,
-        ten: 'Mua nhiều'
+        ten: 'Chó Husky'
     },{
         id: 3,
-        ten: 'Giá thấp nhất'
+        ten: 'Chó Alaska'
     },{
         id: 4,
-        ten: 'Giảm giá'
+        ten: 'Chó Poodle'
     },
 ]
 export default class SearchScreen extends Component {
@@ -74,12 +74,13 @@ export default class SearchScreen extends Component {
     async Filter(idCategory){
         await this.setState({ arrayholder: HINH });
         const filterCategory = this.state.arrayholder.filter(x => x.idCategory === idCategory);
-        this.setState({ dataSource: filterCategory, arrayholder: filterCategory });
+        this.setState({ dataSource: filterCategory, arrayholder: filterCategory, chonLoai: idCategory });
+        console.log(idCategory);
     }
 
     renderFilter = ({ item }) => {
         return(
-            <View style={{ margin: 10 }}>
+            <View style={{ margin: 14 }}>
                 <TouchableOpacity onPress={() => this.Filter(item.id)} style={styles.filter}>
                     <Text style={styles.TextCurren}>
                         {item.ten}
@@ -193,7 +194,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         width: 210,
-        paddingTop: 5
+        paddingTop: 5,
+        paddingBottom: 16
     },
     textCont: {
         fontSize: 18,

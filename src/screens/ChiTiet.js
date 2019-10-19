@@ -7,18 +7,20 @@ import { connect } from 'react-redux';
 class ChiTiet extends Component {
     static navigationOptions = {
         title: 'Chi tiết'
-        //header: null,
     };
     constructor(props) {
         super(props);
         this.state = {
-            item: this.props.navigation.state.params.data,
+            //item: this.props.navigation.state.params.data,
+            //item: this.props.navigation.state.params.item,
         }
     }
     buy = () => {
+        const {params} = this.props.navigation.state;
         let check = false;
         if (this.props.cart.length === 0) {
-            this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
+            // this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
+            this.props.dispatch({ type: 'ADD_TO_CART', payload: params.item });
             alert('Thêm thành công');
             setTimeout(() => {
                 this.props.navigation.navigate('GioHangScreen');
@@ -27,7 +29,8 @@ class ChiTiet extends Component {
         }
         else {
             this.props.cart.map(e => {
-                if (e.id === this.state.item.id) {
+                // if (e.id === this.state.item.id) {
+                if (e.id === params.item.id) {
                     check = true;
                 }
             })
@@ -35,7 +38,8 @@ class ChiTiet extends Component {
                 alert('Sản phẩm đã tồn tại trong giỏ hàng');
             }
             else {
-                this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
+                // this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
+                this.props.dispatch({ type: 'ADD_TO_CART', payload: params.item });
                 alert('Thêm thành công');
                 setTimeout(() => {
                     this.props.navigation.navigate('GioHangScreen');
@@ -47,6 +51,7 @@ class ChiTiet extends Component {
     }
 
     render() {
+        const {params} = this.props.navigation.state
         return (
             <ScrollView>
                 <Header transparent>
@@ -65,19 +70,22 @@ class ChiTiet extends Component {
                     <SafeAreaView>
                         <Card>
                             <CardItem>
-                                <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.hinh }} />
+                                {/* <Image style={{ height: 250, width: '100%' }} source={{ uri: this.state.item.hinh }} /> */}
+                                <Image style={{ height: 250, width: '100%' }} source={{ uri: params.item.hinh }} />
                             </CardItem>
                             <CardItem>
-                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text>
+                                {/* <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text> */}
+                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{params.item.ten}</Text>
                                 <View style={styles.viewButton}>
-                                    <Button iconLeft onPress={() => this.props.navigation.navigate('VideoScreen')}>
+                                    <Button iconLeft onPress={() => this.props.navigation.navigate('VideoScreen', {item: params.item})}>
                                         <Icon name="eye" type="Feather" />
                                         <Text style={styles.textCont}>Xem Video</Text>
                                     </Button>
                                 </View>
                             </CardItem>
                             <CardItem>
-                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.gia} {this.state.item.currency}</Text>
+                                {/* <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.gia} {this.state.item.currency}</Text> */}
+                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{params.item.gia} {params.item.currency}</Text>
                                 <View style={styles.viewButton}>
                                     <Button iconLeft onPress={this.buy} >
                                         <Icon name="shopping-cart" type="Feather" />
@@ -89,8 +97,11 @@ class ChiTiet extends Component {
                                 <Content>
                                     <Form>
                                         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Mô tả:</Text>
-                                        <Textarea rowSpan={10} bordered style={{ fontSize: 18 }}>
+                                        {/* <Textarea rowSpan={10} bordered style={{ fontSize: 18 }}>
                                             {this.state.item.description}
+                                        </Textarea> */}
+                                        <Textarea rowSpan={10} bordered style={{ fontSize: 18 }}>
+                                            {params.item.description}
                                         </Textarea>
                                     </Form>
                                 </Content>
