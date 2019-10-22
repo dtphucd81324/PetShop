@@ -56,12 +56,12 @@ class ChiTiet extends Component {
             <ScrollView>
                 <Header transparent>
                     <Left>
-                        <Button onPress={() => this.props.navigation.goBack()}>
+                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff'}}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
                     <Right>
-                        <Button onPress={() => this.props.navigation.navigate('BinhLuan')}>
+                        <Button onPress={() => this.props.navigation.navigate('BinhLuan')} style={{ backgroundColor: '#ff00ff'}}>
                             <Icon name="message1" type="AntDesign" />
                         </Button>
                     </Right>
@@ -77,7 +77,7 @@ class ChiTiet extends Component {
                                 {/* <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.ten}</Text> */}
                                 <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{params.item.ten}</Text>
                                 <View style={styles.viewButton}>
-                                    <Button iconLeft onPress={() => this.props.navigation.navigate('VideoScreen', {item: params.item})}>
+                                    <Button iconLeft style={{ backgroundColor: '#ff00ff'}} onPress={() => this.props.navigation.navigate('VideoScreen', {item: params.item})}>
                                         <Icon name="eye" type="Feather" />
                                         <Text style={styles.textCont}>Xem Video</Text>
                                     </Button>
@@ -87,7 +87,7 @@ class ChiTiet extends Component {
                                 {/* <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{this.state.item.gia} {this.state.item.currency}</Text> */}
                                 <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{params.item.gia} {params.item.currency}</Text>
                                 <View style={styles.viewButton}>
-                                    <Button iconLeft onPress={this.buy} >
+                                    <Button iconLeft onPress={this.buy} style={{ backgroundColor: '#ff00ff'}} >
                                         <Icon name="shopping-cart" type="Feather" />
                                         <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
                                     </Button>

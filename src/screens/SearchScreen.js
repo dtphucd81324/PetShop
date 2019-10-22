@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import { Icon, Item, Input, Header, Button } from 'native-base';
+import { Icon, Item, Input, Header, Button, Left, Right, Body, ActionSheet } from 'native-base';
 import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { HINH } from './Data';
+//import { Root } from "native-base";
+
+//var BUTTONS = ["Mới", "Mua nhiều nhất", "Giá thấp nhất", "Khuyến mãi", "Cancel"];
+// var DESTRUCTIVE_INDEX = 3;
+// var CANCEL_INDEX = 4;
 
 const filter = [
     {
         id: 1,
         ten: 'Chó Corgi'
-    },{
+    }, {
         id: 2,
         ten: 'Chó Husky'
-    },{
+    }, {
         id: 3,
         ten: 'Chó Alaska'
-    },{
+    }, {
         id: 4,
         ten: 'Chó Poodle'
     },
 ]
 export default class SearchScreen extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -31,7 +36,7 @@ export default class SearchScreen extends Component {
         this.arrayholder = [];
 
     };
-    
+
 
     componentDidMount() {
         this.setState({
@@ -71,24 +76,44 @@ export default class SearchScreen extends Component {
         );
     };
 
-    async Filter(idCategory){
+    sortFilter(value) {
+        if (value === 0) {
+            const sortData = this.state.dataSource.sort(function (a, b) {
+                return a.gia - b.gia;
+            }
+            );
+            this.setState({ dataSource: sortData });
+            console.log(sortData); 
+            
+        }
+        if (value === 1) {
+            const sortData = this.state.dataSource.sort(function (a, b) {
+                return b.gia - a.gia
+            });
+            this.setState({ dataSource: sortData });
+            console.log(sortData); 
+        }
+        
+    }
+
+    async Filter(idCategory) {
         await this.setState({ arrayholder: HINH });
         const filterCategory = this.state.arrayholder.filter(x => x.idCategory === idCategory);
         this.setState({ dataSource: filterCategory, arrayholder: filterCategory, chonLoai: idCategory });
         console.log(idCategory);
     }
 
-    renderFilter = ({ item }) => {
-        return(
-            <View style={{ margin: 14 }}>
-                <TouchableOpacity onPress={() => this.Filter(item.id)} style={styles.filter}>
-                    <Text style={styles.TextCurren}>
-                        {item.ten}
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
+    // renderFilter = ({ item }) => {
+    //     return (
+    //         <View style={{ margin: 14 }}>
+    //             <TouchableOpacity onPress={() => this.Filter(item.id)} style={styles.filter}>
+    //                 <Text style={styles.TextCurren}>
+    //                     {item.ten}
+    //                 </Text>
+    //             </TouchableOpacity>
+    //         </View>
+    //     )
+    // }
 
     renderItem = ({ item }) => {
         return (
@@ -99,7 +124,7 @@ export default class SearchScreen extends Component {
                     <Text style={styles.TextCurren}>{item.gia} {item.currency}</Text>
                 </View>
                 <View style={styles.viewButton}>
-                    <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { data: item })} >
+                    <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })} >
                         <Icon name="eye" type="FontAwesome" />
                         <Text style={styles.textCont}>Xem chi tiết</Text>
                     </TouchableOpacity>
@@ -108,7 +133,7 @@ export default class SearchScreen extends Component {
         )
     }
     render() {
-        if(this.state.isLoading){
+        if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, paddingTop: 20 }}>
                     <ActivityIndicator />
@@ -117,45 +142,81 @@ export default class SearchScreen extends Component {
         }
         return (
             <ScrollView showsHorizontalScrollIndicator={false}>
-                <Header transparent searchBar rounded 
-                >
-                    <Item style={styles.Item}>
-                        <Icon name="search" />
-                        <Input
-                            style={styles.input}
-                            placeholder="Tìm kiếm sản phẩm"
-                            onChangeText={text => this.SearchFilter(text)}
-                            value={this.state.text}
-                            underlineColorAndroid="transparent"
-                        />
-                    </Item>
-                    <Button transparent>
-                        <Text>Search</Text>
-                    </Button>
+                <Header transparent searchBar rounded>
+                    <Left />
+                    <Body>
+                        <Item style={styles.Item}>
+                            <Icon name="search" style={{ marginLeft: 5 }} />
+                            <Input
+                                style={styles.input}
+                                placeholder="Search"
+                                onChangeText={text => this.SearchFilter(text)}
+                                value={this.state.text}
+                                underlineColorAndroid="transparent"
+                            />
+                        </Item>
+                    </Body>
+                    <Right>
+                        <Button
+                            style={{ backgroundColor: '#ff00ff'}}
+                            onPress={() =>
+                                ActionSheet.show(
+                                    {
+                                        options: [
+                                            {text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4"},
+                                            {text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced"},
+                                            {text: "Hủy", icon: "close", iconColor: "#25de5b"}
+                                             ],
+                                        cancelButtonIndex: 2,
+                                        //destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                                        title: "Lọc"
+                                    },
+                                    buttonIndex => {
+                                        this.sortFilter(buttonIndex);
+                                    }
+                                )}
+                        >
+                            <Icon name="filter" type="Feather" />
+                        </Button>
+                    </Right>
                 </Header>
-                <View>
-                    <FlatList 
-                        data={this.state.category}
-                        renderItem={this.renderFilter}
-                        numColumns={2}
-                        //style={{ marginLeft: 12, marginRight: 12 }}
-                        keyExtractor={item => item.id}
-                    />
-                    <View style={{ margin: 10 }}>
-                        <TouchableOpacity style={styles.filter} onPress={() => {this.setState({dataSource: HINH, arrayholder: HINH })}}>
-                            <Text style={styles.textAll}>
+                <ScrollView horizontal={true} style={{ flexDirection: 'row', margin: 5 }}>
+                    <View>
+                        {/* <FlatList
+                            data={this.state.category}
+                            renderItem={this.renderFilter}
+                            numColumns={2}
+                            keyExtractor={item => item.id}
+                        /> */}
+
+                        <TouchableOpacity style={styles.filter} onPress={() => { this.setState({ dataSource: HINH, arrayholder: HINH, chonLoai: 0 }) }}>
+                            <Text style={{ fontWeight: 'bold'}}>
                                 Tất cả
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        {
+                            this.state.category.map(e => {
+                                return(
+                                    <TouchableOpacity style={styles.filter} key={e.id} onPress={() => this.Filter(e.id)} >
+                                        <Text style={{ fontWeight: 'bold'}}>
+                                            {e.ten}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </View>
+                </ScrollView>
+
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <FlatList
                         data={this.state.dataSource}
                         ItemSeparatorComponent={this.FlatViewItemSeparator}
                         renderItem={this.renderItem}
-                        enableEmptySections={true}
-                        keyExtractor={(item, index) => index.toString()}
+                        //enableEmptySections={true}
+                        keyExtractor={item => item.id}
                         numColumns={2}
                     />
                 </View>
@@ -165,11 +226,18 @@ export default class SearchScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    Item:{
+    Item: {
         borderWidth: 1,
-        backgroundColor: 'lightskyblue',
+        backgroundColor: '#ff00ff',
+        borderRadius: 50,
+        margin: 5,
+        width: 250
     },
-
+    btnRight: {
+        width: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     viewCard: {
         height: 280,
         width: 210,
@@ -205,46 +273,49 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 10
     },
-    Image:{
+    Image: {
         width: 185,
         height: 155,
         resizeMode: 'stretch',
         borderRadius: 7
     },
-    Text:{
+    Text: {
         fontSize: 18,
         fontWeight: 'bold',
         justifyContent: 'center',
         textAlign: 'center',
         paddingTop: 7
     },
-    TextCurren:{
+    TextCurren: {
         fontSize: 18,
         fontWeight: 'bold',
         justifyContent: 'center',
         textAlign: 'center',
         color: 'red'
     },
-    textAll:{
+    textAll: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'red'
     },
-    filter:{
-        width: 150,
-        height: 40,
-        backgroundColor: 'lightskyblue',
+    filter: {
+        // width: 150,
+        // height: 40,
+        borderWidth: 1,
+        backgroundColor: '#ff00ff',
         justifyContent: 'space-around',
         alignItems: 'center',
-        borderRadius: 25
+        borderRadius: 25,
+        marginHorizontal: 6,
+        padding: 6
     },
-    viewDetail:{
+    viewDetail: {
         width: 180,
         height: 50,
-        backgroundColor: 'lightskyblue',
+        backgroundColor: '#ff00ff',
         alignItems: 'center',
         borderRadius: 25,
         flexDirection: 'row',
         justifyContent: 'center',
-    }
+    },
 })

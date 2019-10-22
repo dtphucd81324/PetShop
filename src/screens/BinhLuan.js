@@ -22,7 +22,7 @@ export default class BinhLuan extends Component {
             <ScrollView>
                 <Header transparent>
                     <Left>
-                        <Button onPress={() => this.props.navigation.goBack()}>
+                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff'}}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>

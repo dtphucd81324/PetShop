@@ -45,7 +45,7 @@ class Homepage extends Component {
     render() {
         return (
             <ScrollView showsHorizontalScrollIndicator={false}>
-                <Header transparent style={{ backgroundColor: 'lightskyblue' }}>
+                <Header transparent style={{ backgroundColor: '#ff00ff' }}>
                     <Left />
                     <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
                         <Title style={{ fontSize: 24, fontWeight: 'bold' }}>TRANG CHỦ</Title>

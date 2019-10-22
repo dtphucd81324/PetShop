@@ -66,7 +66,16 @@ class GioHangScreen extends Component {
                         <Text style={styles.txtCard}>{this.props.total} USD</Text>
                     </View>
                 </TouchableOpacity>
-                <Button style={styles.btnPaypal}
+                {
+                    this.props.total > 0 &&
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ThanhToan', {})}>
+                        <View style={styles.viewTotal}>
+                            <Text style={styles.txtCard}>Thanh toán</Text>
+                        </View>
+                    </TouchableOpacity>
+                }
+
+                {/* <Button style={styles.btnPaypal}
                     onPress={async () => {
                         try {
                             await RNPaypal.config({
@@ -88,7 +97,7 @@ class GioHangScreen extends Component {
                     }}
                 >
                     <Text style={styles.txtCard}>Thanh toán</Text>
-                </Button>
+                </Button> */}
             </View>
         )
     }
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
     },
     txtCard: {
         fontWeight: 'bold',
-        color: 'blue',
+        color: 'black',
         fontSize: 18,
         marginHorizontal: 5
     },
@@ -147,7 +156,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#ff00ff',
         paddingVertical: 10,
         marginHorizontal: 16,
         borderRadius: 25,
@@ -160,7 +169,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     btnPaypal: {
-        
         paddingVertical: 10,
         marginHorizontal: 16,
         borderRadius: 25,
@@ -168,9 +176,9 @@ const styles = StyleSheet.create({
         height: 50,
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#ff00ff',
     },
-    cardCart:{
+    cardCart: {
         //borderBottomWidth: 1,
         borderTopWidth: 1,
         paddingHorizontal: 10,

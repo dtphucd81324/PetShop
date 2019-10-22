@@ -26,11 +26,12 @@ import GioHangScreen from './src/screens/GioHangScreen';
 import ThongTinScreen from './src/screens/ThongTinScreen';
 import VideoScreen from './src/screens/VideoScreen';
 import BinhLuan from './src/screens/BinhLuan';
+import ThanhToan from './src/screens/ThanhToan';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux'
-
+import { Root } from "native-base";
 
 //StatusBar.setHidden(true);
 
@@ -81,7 +82,9 @@ const AppStack = createStackNavigator(
     Register: {
       screen: Register
     },
-  
+    Login: {
+      screen: Login
+    }
   },
   {
     headerMode: 'none',
@@ -89,7 +92,7 @@ const AppStack = createStackNavigator(
   {
     navigationOptions: {
       headerBackTitle: null,
-      headerTintColor: 'lightskyblue',
+      headerTintColor: '#ff00ff',
       headerStyle: {
         backgroundColor: '#e91e63',
       },
@@ -105,7 +108,9 @@ const HomeStack = createStackNavigator(
     Homepage: Homepage,
     ChiTiet: ChiTiet,
     VideoScreen: VideoScreen,
-    BinhLuan: BinhLuan
+    BinhLuan: BinhLuan, 
+    Login: Login,
+    Register: Register
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',
@@ -113,7 +118,7 @@ const HomeStack = createStackNavigator(
     headerVisible: false,
     title: 'Trang chủ',
     tabBarIcon: ({ focused }) => {
-      return <Icon name='md-home' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+      return <Icon name='md-home' style={{ color: focused ? '#ff00ff' : 'blue' }} />
     },
   },
 },
@@ -130,7 +135,7 @@ const SearchStack = createStackNavigator(
     headerVisible: false,
     title: 'Tìm kiếm',
     tabBarIcon: ({ focused }) => {
-      return <Icon name='search' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+      return <Icon name='search' style={{ color: focused ? '#ff00ff' : 'blue' }} />
     },
   },
 },
@@ -139,7 +144,7 @@ const SearchStack = createStackNavigator(
 const GioHangStack = createStackNavigator(
   {
     GioHangScreen: GioHangScreen,
-
+    ThanhToan: ThanhToan,
   }, {
   initialRouteName: 'GioHangScreen',
   headerMode: 'none',
@@ -147,7 +152,7 @@ const GioHangStack = createStackNavigator(
     headerVisible: false,
     title: 'Giỏ hàng',
     tabBarIcon: ({ focused }) => {
-      return <Icon name='cart' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+      return <Icon name='cart' style={{ color: focused ? '#ff00ff' : 'blue' }} />
     },
   },
 },
@@ -163,7 +168,7 @@ const ThongTinStack = createStackNavigator(
     headerVisible: false,
     title: 'Thông tin',
     tabBarIcon: ({ focused }) => {
-      return <Icon name='person' style={{ color: focused ? 'lightskyblue' : 'blue' }} />
+      return <Icon name='person' style={{ color: focused ? '#ff00ff' : 'blue' }} />
     },
   },
 }
@@ -209,8 +214,8 @@ const TabNavigator = createBottomTabNavigator(
     },
   }, {
   tabBarOptions: {
-    activeTintColor: 'lightskyblue',
-    labelStyle:{
+    activeTintColor: '#ff00ff',
+    labelStyle: {
       fontSize: 15,
       fontWeight: 'bold'
     }
@@ -227,7 +232,9 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <Root>
+          <AppContainer />
+        </Root>
       </Provider>
     )
   }
