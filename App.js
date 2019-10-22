@@ -27,6 +27,7 @@ import ThongTinScreen from './src/screens/ThongTinScreen';
 import VideoScreen from './src/screens/VideoScreen';
 import BinhLuan from './src/screens/BinhLuan';
 import ThanhToan from './src/screens/ThanhToan';
+import ChangeThongTin from './src/screens/ChangeThongTin'
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
@@ -160,7 +161,8 @@ const GioHangStack = createStackNavigator(
 
 const ThongTinStack = createStackNavigator(
   {
-    ThongTinScreen: ThongTinScreen
+    ThongTinScreen: ThongTinScreen,
+    ChangeThongTin: ChangeThongTin,
   }, {
   initialRouteName: 'ThongTinScreen',
   headerMode: 'none',

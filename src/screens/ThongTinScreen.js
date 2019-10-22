@@ -51,7 +51,7 @@ export default class ThongTinScreen extends Component {
 
     render() {
         let img = this.state.avatarSource == null ?
-            <Thumbnail large 
+            <Thumbnail large
                 source={require('../images/images.jpg')}
                 style={styles.thumbnail}
             />
@@ -62,16 +62,19 @@ export default class ThongTinScreen extends Component {
             />
         return (
             <View style={styles.container}>
-                <View style={styles.titleBar}>
+                {/* <View style={styles.titleBar}>
                     <Icon name="arrow-back" type="Ionicons" size={24} color="#52575D"></Icon>
                     <Icon name="md-more" type="Ionicons" size={24} color="#52575D"></Icon>
-                </View>
-                <View style={{ alignSelf: "center" }}>
+                </View> */}
+                <View style={{ marginTop: 28, marginHorizontal: 16 }} />
+                <View style={{ alignSelf: "center",  }}>
                     <View style={styles.profileImage}>
                         {img}
                     </View>
                     <View style={styles.dm}>
-                        <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
+                        <TouchableOpacity>
+                            <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.active}></View>
                     <View style={styles.add}>
@@ -85,55 +88,30 @@ export default class ThongTinScreen extends Component {
                     <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Information technology</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <List>
-                        <ListItem>
-                            <Left>
-                                <Icon name="commenting" type="FontAwesome" />
-                                <Text style={styles.textList}>Hỗ trợ</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
-                        <ListItem >
-                            <Left>
-                                <Icon name="bell" type="FontAwesome" />
-                                <Text style={styles.textList}>Thông báo</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
-                        <ListItem >
-                            <Left>
-                                <Icon name="history" type="FontAwesome" />
-                                <Text style={styles.textList}>Lịch sử giao dịch</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem>
-                            <Left>
-                                <Icon name="refresh" type="FontAwesome" />
-                                <Text style={styles.textList}>Thay đổi mật khẩu</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
-                        <ListItem >
-                            <Left>
-                                <Icon name="user-circle-o" type="FontAwesome" />
-                                <Text style={styles.textList}>Đăng nhập</Text>
-                            </Left>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
-                        </ListItem>
-                    </List>
+                    <TouchableOpacity>
+                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                            <Icon name="commenting" type="FontAwesome" style={{ color: '#2ABB9C'}} />
+                            <Text style={styles.textList}>Hỗ trợ</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                            <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C'}} />
+                            <Text style={styles.textList}>Lịch sử giao dịch</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeThongTin')}>
+                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                            <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C'}} />
+                            <Text style={styles.textList}>Thay đổi mật khẩu</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                            <Icon name="user-circle-o" type="FontAwesome" style={{ color: '#2ABB9C'}} />
+                            <Text style={styles.textList}>Đăng nhập</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
             </View >
         );
@@ -173,9 +151,10 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     textList: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 'bold',
-        paddingLeft: 10,
+        paddingLeft: 16,
+        color: 'silver'
 
     },
     titleBar: {
@@ -191,7 +170,7 @@ const styles = StyleSheet.create({
         overflow: "hidden"
     },
     dm: {
-        backgroundColor: "#41444B",
+        backgroundColor: "#ff00ff",
         position: "absolute",
         top: 20,
         width: 40,
@@ -211,7 +190,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     add: {
-        backgroundColor: "#41444B",
+        backgroundColor: "#ff00ff",
         position: "absolute",
         bottom: 0,
         right: 0,

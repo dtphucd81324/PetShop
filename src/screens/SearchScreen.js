@@ -4,10 +4,6 @@ import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image,
 import { HINH } from './Data';
 //import { Root } from "native-base";
 
-//var BUTTONS = ["Mới", "Mua nhiều nhất", "Giá thấp nhất", "Khuyến mãi", "Cancel"];
-// var DESTRUCTIVE_INDEX = 3;
-// var CANCEL_INDEX = 4;
-
 const filter = [
     {
         id: 1,
@@ -32,6 +28,7 @@ export default class SearchScreen extends Component {
             text: '',
             category: [],
             chonLoai: 0,
+            dataSource: [],
         };
         this.arrayholder = [];
 
@@ -43,12 +40,9 @@ export default class SearchScreen extends Component {
             isLoading: false,
             dataSource: HINH,
             category: filter,
-        },
-            function () {
-                this.arrayholder = HINH;
-            }
-        )
-        console.log(this.arrayholder);
+            arrayholder:HINH
+        });
+        //console.log(dataSource);
     }
 
     SearchFilter(text) {
@@ -103,18 +97,7 @@ export default class SearchScreen extends Component {
         console.log(idCategory);
     }
 
-    // renderFilter = ({ item }) => {
-    //     return (
-    //         <View style={{ margin: 14 }}>
-    //             <TouchableOpacity onPress={() => this.Filter(item.id)} style={styles.filter}>
-    //                 <Text style={styles.TextCurren}>
-    //                     {item.ten}
-    //                 </Text>
-    //             </TouchableOpacity>
-    //         </View>
-    //     )
-    // }
-
+    
     renderItem = ({ item }) => {
         return (
             <View style={styles.viewCard}>
@@ -182,13 +165,6 @@ export default class SearchScreen extends Component {
                 </Header>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row', margin: 5 }}>
                     <View>
-                        {/* <FlatList
-                            data={this.state.category}
-                            renderItem={this.renderFilter}
-                            numColumns={2}
-                            keyExtractor={item => item.id}
-                        /> */}
-
                         <TouchableOpacity style={styles.filter} onPress={() => { this.setState({ dataSource: HINH, arrayholder: HINH, chonLoai: 0 }) }}>
                             <Text style={{ fontWeight: 'bold'}}>
                                 Tất cả
