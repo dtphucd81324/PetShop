@@ -27,7 +27,9 @@ import ThongTinScreen from './src/screens/ThongTinScreen';
 import VideoScreen from './src/screens/VideoScreen';
 import BinhLuan from './src/screens/BinhLuan';
 import ThanhToan from './src/screens/ThanhToan';
-import ChangeThongTin from './src/screens/ChangeThongTin'
+import ChangeThongTin from './src/screens/ChangeThongTin';
+import LichSuGiaoDich from './src/screens/LichSuGiaoDich';
+import LienHe from './src/screens/LienHe';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
@@ -163,6 +165,9 @@ const ThongTinStack = createStackNavigator(
   {
     ThongTinScreen: ThongTinScreen,
     ChangeThongTin: ChangeThongTin,
+    LichSuGiaoDich: LichSuGiaoDich,
+    LienHe: LienHe,
+    AppStack: AppStack,
   }, {
   initialRouteName: 'ThongTinScreen',
   headerMode: 'none',
@@ -206,7 +211,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     ThongTinScreen: {
-      screen: ThongTinStack,
+      screen: ThongTinStack, 
       navigationOptions: {
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           navigation.dispatch(StackActions.popToTop());

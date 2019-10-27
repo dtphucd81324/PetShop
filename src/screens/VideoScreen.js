@@ -5,19 +5,43 @@ import Video from 'react-native-video';
 
 export default class VideoScreen extends Component {
     render() {
-        const {params} = this.props.navigation.state;
+        const { params } = this.props.navigation.state;
         //const {video} = params.item;
         return (
-            <View style={styles.container}>
-                <Video source={{ uri: params.item.video }}   // Can be a URL or a localfile.
-                    ref={(ref) => {
-                        this.player = ref
-                    }}                                      // Store reference
-                    onBuffer={this.onBuffer}                // Callback when remote video is buffering
-                    onEnd={this.onEnd}                      // Callback when playback finishes
-                    onError={this.videoError}               // Callback when video cannot be loaded
-                    style={styles.backgroundVideo} />
-            </View>
+            <ScrollView>
+                <Header transparent>
+                    <Left>
+                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff' }}>
+                            <Icon name="undo" type="Ionicons" />
+                        </Button>
+                    </Left>
+                    <Right />
+                </Header>
+                <View style={styles.container}>
+                    <SafeAreaView>
+                        <Card>
+                            <CardItem>
+                                <View style={styles.video}>
+                                    <Video source={{ uri: 'http://res.cloudinary.com/petshop/video/upload/15_1_videomeotaicup.mp4.mp4' }}   // Can be a URL or a localfile.
+                                        ref={(ref) => {
+                                            this.player = ref
+                                        }}                                      // Store reference
+                                        onBuffer={this.onBuffer}                // Callback when remote video is buffering
+                                        onEnd={this.onEnd}                      // Callback when playback finishes
+                                        onError={this.videoError}               // Callback when video cannot be loaded
+                                        style={styles.backgroundVideo} />
+                                </View>
+
+                            </CardItem>
+                        </Card>
+                    </SafeAreaView>
+                </View>
+
+                {/* <View style={styles.container}>
+
+                </View> */}
+            </ScrollView>
+
         )
     }
 }
@@ -29,13 +53,16 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         paddingTop: 50,
+        marginTop: 20,
     },
     backgroundVideo: {
         position: 'absolute',
-        top: 0,
-        left: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 10,
+        left: 10,
         bottom: 0,
-        right: 0,
+        right: 10,
     },
     card: {
         height: 280,
@@ -43,5 +70,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 15,
-    }
+    },
+    video: {
+        width: 200,
+        height: 170,
+    },
 })

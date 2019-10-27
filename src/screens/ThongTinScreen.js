@@ -88,13 +88,13 @@ export default class ThongTinScreen extends Component {
                     <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Information technology</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LienHe')}>
                         <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
                             <Icon name="commenting" type="FontAwesome" style={{ color: '#2ABB9C'}} />
-                            <Text style={styles.textList}>Hỗ trợ</Text>
+                            <Text style={styles.textList}>About us</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
                         <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
                             <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C'}} />
                             <Text style={styles.textList}>Lịch sử giao dịch</Text>
@@ -106,7 +106,7 @@ export default class ThongTinScreen extends Component {
                             <Text style={styles.textList}>Thay đổi mật khẩu</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
                         <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
                             <Icon name="user-circle-o" type="FontAwesome" style={{ color: '#2ABB9C'}} />
                             <Text style={styles.textList}>Đăng nhập</Text>

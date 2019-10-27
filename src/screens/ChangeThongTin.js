@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
-import { CardItem, Card, Icon, Button, Header, Left, Right } from 'native-base';
+import { Icon, Button, Header, Left, Right } from 'native-base';
 
 export default class ChangeThongTin extends Component {
 
@@ -8,19 +8,43 @@ export default class ChangeThongTin extends Component {
         super(props);
         //const { name, address, phone } = props.user;
         this.state = {
-            txtName: '',
-            txtAddress: '',
-            txtPhone: ''
+            matkhaucu: '',
+            matkhaumoi: '',
+            nhaplaimatkhau: ''
         }
     }
 
-    goBackToMain() {
-        const { navigator } = this.props;
-        navigator.pop();
+    onbtnSavePress() {
+        if (this.state.matkhaucu.trim().length == 0) {
+            alert('Vui lòng nhập mật khẩu cũ');
+            console.log("Vui lòng nhập mật khẩu cũ");
+        } else if (this.state.matkhaumoi.trim().length == 0) {
+            alert('Vui lòng nhập mật khẩu mới');
+            console.log("Vui lòng nhập mật khẩu mới");
+        } else if (this.state.matkhaumoi != this.state.nhaplaimatkhau) {
+            alert('Vui lòng kiểm tra lại mật khẩu vừa nhập')
+            console.log("Vui lòng kiểm tra lại mật khẩu vừa nhập");
+        } else if (this.state.matkhaumoi === this.state.matkhaucu){
+            alert('Mật khẩu này đã được sử dụng. Vui lòng nhập lại mật khẩu khác !!!');
+            console.log("Error");
+        }
+         else {
+            Keyboard.dismiss();
+            this.changePassword();
+        }
     }
 
+    changePassword = () => {
+        if(this.state.nhaplaimatkhau === this.state.matkhaumoi && this.state.matkhaumoi != this.state.matkhaucu){
+            this.setState({ matkhaucu: matkhaumoi })
+        } else{
+            alert("Vùi lòng kiểm tra lại mật khẩu !!!")
+        }
+    }
+
+    
     render() {
-        const { txtName, txtAddress, txtPhone } = this.state;
+        const { matkhaucu, matkhaumoi, nhaplaimatkhau } = this.state;
         return (
             <ScrollView>
                 <Header transparent>
@@ -33,38 +57,38 @@ export default class ChangeThongTin extends Component {
                 </Header>
                 <View style={{ flex: 1, marginTop: 20, justifyContent: 'center' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginBottom: 20 }}>
-                        <Text style={styles.headerTitle}>Thay đổi thông tin</Text>
-                        {/* <View style={styles.edit}>
-                            <Icon name="edit" type="AntDesign" size={48} color="#ff00ff" style={{ marginTop: 6, marginLeft: 2 }} />
-                        </View> */}
+                        <Text style={styles.headerTitle}>Thay đổi mật khẩu</Text>
                     </View>
                     <View style={styles.body}>
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Enter your name"
+                            placeholder="Mật khẩu cũ"
                             autoCapitalize="none"
-                            value={txtName}
-                            onChangeText={text => this.setState({ ...this.state, txtName: text })}
+                            value={matkhaucu}
+                            onChangeText={text => this.setState({ ...this.state, matkhaucu: text })}
                             underlineColorAndroid="transparent"
                         />
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Enter your address"
+                            placeholder="Mật khẩu mới"
                             autoCapitalize="none"
-                            value={txtAddress}
-                            onChangeText={text => this.setState({ ...this.state, txtAddress: text })}
+                            value={matkhaumoi}
+                            onChangeText={text => this.setState({ ...this.state, matkhaumoi: text })}
                             underlineColorAndroid="transparent"
                         />
                         <TextInput
                             style={styles.textInput}
-                            placeholder="Enter your phone number"
+                            placeholder="Nhập lại mật khẩu mới"
                             autoCapitalize="none"
-                            value={txtPhone}
-                            onChangeText={text => this.setState({ ...this.state, txtPhone: text })}
+                            value={nhaplaimatkhau}
+                            onChangeText={text => this.setState({ ...this.state, nhaplaimatkhau: text })}
                             underlineColorAndroid="transparent"
                         />
-                        <TouchableOpacity style={styles.signInContainer}>
+                        <TouchableOpacity style={styles.signInContainer} onPress={this.onbtnSavePress}>
                             <Text style={styles.signInTextStyle}>Thay đổi</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.signInContainer}>
+                            <Text style={styles.signInTextStyle}>Hủy</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -86,7 +110,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontFamily: 'Avenir',
         color: 'black',
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold'
     },
     edit: {
@@ -117,7 +141,11 @@ const styles = StyleSheet.create({
         borderWidth: 1
     },
     signInTextStyle: {
-        color: '#FFF', fontFamily: 'Avenir', fontWeight: '600', paddingHorizontal: 20
+        color: '#FFF', 
+        fontFamily: 'Avenir',
+        fontSize: 20, 
+        fontWeight: 'bold', 
+        paddingHorizontal: 20
     },
     signInContainer: {
         marginHorizontal: 20,
@@ -126,7 +154,8 @@ const styles = StyleSheet.create({
         height: 45,
         alignItems: 'center',
         justifyContent: 'center',
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
+        marginBottom: 10
     },
     signInStyle: {
         flex: 3,

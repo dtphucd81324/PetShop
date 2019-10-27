@@ -14,13 +14,27 @@ class Homepage extends Component {
         super(props);
         this.state = {
             dataSource: [],
-            itemSelected: [],
+            isLoading: true
+            //itemSelected: [],
         };
     };
 
+    // componentDidMount() {
+    //     this.setState({ dataSource: HINH });
+    // }
+
     componentDidMount() {
-        this.setState({ dataSource: HINH });
+        fetch("http://petshopct.herokuapp.com/public/admin/list_thucung")
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    dataSource: responseJson,
+                    isLoading: false
+                });
+            })
+            .catch((e) => { console.log(e) });
     }
+
 
     renderItem = ({ item }) => {
         return (
@@ -28,13 +42,13 @@ class Homepage extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })}>
                     <Card>
                         <CardItem>
-                            <Image style={{ width: 350, height: 300 }} source={{ uri: item.hinh }} />
+                            <Image style={{ width: 350, height: 300 }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/15_0_meo-tai-cup-3-.jpg.png' }} />
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.ten}</Text>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.tc_ten}</Text>
                         </CardItem>
                         <CardItem>
-                            <Text style={{ fontSize: 24, color: 'red' }}>{item.gia} {item.currency}</Text>
+                            <Text style={{ fontSize: 24, color: 'red' }}>{item.tc_giaBan}</Text>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>

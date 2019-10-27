@@ -25,25 +25,33 @@ class GioHangScreen extends Component {
                     <CardItem>
                         <Left>
                             <CardItem>
-                                <Image style={styles.imageCard} source={{ uri: item.hinh }} />
+                                <Image style={styles.imageCard} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/15_0_meo-tai-cup-3-.jpg.png' }} />
                             </CardItem>
                         </Left>
                         <Body style={{ flexDirection: 'column' }}>
                             <CardItem>
-                                <Text style={styles.txtCard}>{item.ten}</Text>
+                                <Text style={styles.txtCard}>{item.tc_ten}</Text>
                             </CardItem>
                             <CardItem>
-                                <Text style={styles.txtCard}>{item.gia} {item.currency}</Text>
+                                <Text style={styles.txtCard}>{item.tc_giaBan}</Text>
+                                {/* <Text style={styles.txtCard}>VNĐ</Text> */}
                             </CardItem>
-                        </Body>
-                        <Right style={{ justifyContent: 'center', alignItems: 'center' }}>
                             <View style={styles.viewButton}>
                                 <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
                                     <Icon name="highlight-off" type="MaterialIcons" />
                                     <Text style={styles.txtButton}>Hủy</Text>
                                 </Button>
                             </View>
-                        </Right>
+                        </Body>
+                        {/* <Right /> */}
+                        {/* <Right style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={styles.viewButton}>
+                                <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
+                                    <Icon name="highlight-off" type="MaterialIcons" />
+                                    <Text style={styles.txtButton}>Hủy</Text>
+                                </Button>
+                            </View>
+                        </Right> */}
                     </CardItem>
                 </Card>
             </View>
@@ -74,30 +82,6 @@ class GioHangScreen extends Component {
                         </View>
                     </TouchableOpacity>
                 }
-
-                {/* <Button style={styles.btnPaypal}
-                    onPress={async () => {
-                        try {
-                            await RNPaypal.config({
-                                clientId: client.sandbox,
-                                environment: RNPaypal.constants.env.SANDBOX
-                            })
-                            const pay = await RNPaypal.buy({
-                                value: this.props.total,
-                                productName: 'Buy products',
-                                currency: 'USD',
-                                mode: RNPaypal.constants.mode.PAYMENT_INTENT_SALE
-                            });
-                            console.log(pay);// SUCESSS
-                            this.props.dispatch({ type: 'THANH_TOAN'});
-                            alert('Bạn đã thanh toán thành công');
-                        } catch (e) {
-                            console.log(e);// NO MONEY :()
-                        }
-                    }}
-                >
-                    <Text style={styles.txtCard}>Thanh toán</Text>
-                </Button> */}
             </View>
         )
     }
@@ -136,13 +120,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'black',
         fontSize: 18,
-        marginHorizontal: 5
+        marginHorizontal: 5,
+        flexDirection: 'row'
     },
     viewButton: {
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        marginLeft: 10,
+        justifyContent: 'center', 
+        alignItems: 'center',
     },
     txtButton: {
         fontSize: 16,

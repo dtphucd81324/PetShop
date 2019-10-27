@@ -128,7 +128,7 @@ export default class DanhSach extends Component {
                                 justifyContent: 'center'
                             }}>
                                 <Image
-                                    source={item.imageUrl}
+                                    source={{ uri : 'http://res.cloudinary.com/petshop/image/upload/15_0_meo-tai-cup-3-.jpg.png?fbclid=IwAR2xnXCmxOZg_cvksGS-Fe1T6CluGFU2zQvA3LXtlXS5yhy2XkEqCJUOr4c'}}
                                     style={{ width: 150, height: 150, margin: 5, borderRadius: 7 }}
                                 />
 
