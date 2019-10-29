@@ -8,7 +8,6 @@ import {name as appName} from './app.json';
 //import ModalExample from './src/screens/ModalExample';
 //import ThanhToan from './src/screens/ThanhToan';
 import Login from './src/screens/Login'
-import ActionSheetExample from './src/screens/ActionSheetExample';
 import DanhSach from './src/screens/DanhSach'
 
 AppRegistry.registerComponent(appName, () => App);

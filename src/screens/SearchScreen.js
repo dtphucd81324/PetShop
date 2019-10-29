@@ -31,23 +31,59 @@ export default class SearchScreen extends Component {
             dataSource: [],
         };
         this.arrayholder = [];
-
+        this.data = []
     };
 
 
-    componentDidMount() {
-        this.setState({
-            isLoading: false,
-            dataSource: HINH,
-            category: filter,
-            arrayholder:HINH
-        });
-        //console.log(dataSource);
+    async componentDidMount() {
+        await this.getThuCung();
+        await this.getGiongThuCung();
+        this.setState({ isLoading: false });
+    }
+
+    async getThuCung() {
+        try {
+            await fetch("http://petshopct.herokuapp.com/public/admin/list_thucung")
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        dataSource: responseJson,
+                        arrayholder: responseJson,
+                        data: responseJson,
+                        isLoading: false,
+                    });
+                })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async getGiongThuCung() {
+        try {
+            await fetch("http://petshopct.herokuapp.com/public/admin/list_giong")
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        category: responseJson,
+                    });
+                })
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    StringtoInt(num) {
+        return parseInt(num);
+    }
+
+    currencyFormat(num) {
+        num = parseInt(num)
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
     }
 
     SearchFilter(text) {
         const newData = this.arrayholder.filter(function (item) {
-            const itemData = item.ten ? item.ten.toUpperCase() : ''.toUpperCase();
+            const itemData = item.tc_ten ? item.tc_ten.toUpperCase() : ''.toUpperCase();
             const textData = text.toUpperCase();
             return itemData.indexOf(textData) > -1;
         });
@@ -73,7 +109,7 @@ export default class SearchScreen extends Component {
     sortFilter(value) {
         if (value === 0) {
             const sortData = this.state.dataSource.sort(function (a, b) {
-                return a.gia - b.gia;
+                return a.tc_giaBan - b.tc_giaBan;
             }
             );
             this.setState({ dataSource: sortData });
@@ -82,7 +118,7 @@ export default class SearchScreen extends Component {
         }
         if (value === 1) {
             const sortData = this.state.dataSource.sort(function (a, b) {
-                return b.gia - a.gia
+                return b.tc_giaBan - a.tc_giaBan
             });
             this.setState({ dataSource: sortData });
             console.log(sortData); 
@@ -91,8 +127,8 @@ export default class SearchScreen extends Component {
     }
 
     async Filter(idCategory) {
-        await this.setState({ arrayholder: HINH });
-        const filterCategory = this.state.arrayholder.filter(x => x.idCategory === idCategory);
+        await this.setState({ arrayholder: this.state.data });
+        const filterCategory = this.state.arrayholder.filter(x => x.g_id === idCategory);
         this.setState({ dataSource: filterCategory, arrayholder: filterCategory, chonLoai: idCategory });
         console.log(idCategory);
     }
@@ -102,9 +138,9 @@ export default class SearchScreen extends Component {
         return (
             <View style={styles.viewCard}>
                 <View style={styles.Card}>
-                    <Image style={styles.Image} source={{ uri: item.hinh }} />
-                    <Text style={styles.Text}>{item.ten}</Text>
-                    <Text style={styles.TextCurren}>{item.gia} {item.currency}</Text>
+                    <Image style={styles.Image} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
+                    <Text style={styles.Text}>{item.tc_ten}</Text>
+                    <Text style={styles.TextCurren}>{this.currencyFormat(item.tc_giaBan)}</Text>
                 </View>
                 <View style={styles.viewButton}>
                     <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })} >
@@ -118,8 +154,8 @@ export default class SearchScreen extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-                <View style={{ flex: 1, paddingTop: 20 }}>
-                    <ActivityIndicator />
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" />
                 </View>
             )
         }
@@ -165,7 +201,7 @@ export default class SearchScreen extends Component {
                 </Header>
                 <ScrollView horizontal={true} style={{ flexDirection: 'row', margin: 5 }}>
                     <View>
-                        <TouchableOpacity style={styles.filter} onPress={() => { this.setState({ dataSource: HINH, arrayholder: HINH, chonLoai: 0 }) }}>
+                        <TouchableOpacity style={styles.filter} onPress={() => { this.setState({ dataSource: this.state.data, arrayholder: this.state.data, chonLoai: 0 }) }}>
                             <Text style={{ fontWeight: 'bold'}}>
                                 Tất cả
                             </Text>
@@ -175,9 +211,9 @@ export default class SearchScreen extends Component {
                         {
                             this.state.category.map(e => {
                                 return(
-                                    <TouchableOpacity style={styles.filter} key={e.id} onPress={() => this.Filter(e.id)} >
+                                    <TouchableOpacity style={styles.filter} key={e.g_id} onPress={() => this.Filter(e.g_id)} >
                                         <Text style={{ fontWeight: 'bold'}}>
-                                            {e.ten}
+                                            {e.g_ten}
                                         </Text>
                                     </TouchableOpacity>
                                 )
@@ -185,14 +221,13 @@ export default class SearchScreen extends Component {
                         }
                     </View>
                 </ScrollView>
-
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <FlatList
                         data={this.state.dataSource}
                         ItemSeparatorComponent={this.FlatViewItemSeparator}
                         renderItem={this.renderItem}
                         //enableEmptySections={true}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item.tc_id}
                         numColumns={2}
                     />
                 </View>

@@ -51,7 +51,7 @@ const cartItems = (state = defaultState, action) => {
       return (
         {
           cart: [...state.cart, action.payload],
-          total: state.total + action.payload.gia
+          total: state.total + action.payload.tc_giaBan
         }
       )
 
@@ -59,8 +59,8 @@ const cartItems = (state = defaultState, action) => {
     case 'REMOVE_FROM_CART':
       return (
         {
-          cart: state.cart.filter(cart => cart.id !== action.payload.id),
-          total: state.total - action.payload.gia
+          cart: state.cart.filter(cart => cart.tc_id !== action.payload.tc_id),
+          total: state.total - action.payload.tc_giaBan
         }
       )
     case 'THANH_TOAN':

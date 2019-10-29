@@ -16,6 +16,16 @@ class GioHangScreen extends Component {
 
     componentDidMount() {
         console.log(this.props.cart);
+        console.log(this.props.total);
+    }
+
+    StringtoInt(num){
+        return parseInt(num);
+    }
+
+    currencyFormat(num) {
+        num = parseInt(num)
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
     }
 
     renderItem = ({ item }) => {
@@ -25,7 +35,7 @@ class GioHangScreen extends Component {
                     <CardItem>
                         <Left>
                             <CardItem>
-                                <Image style={styles.imageCard} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/15_0_meo-tai-cup-3-.jpg.png' }} />
+                                <Image style={styles.imageCard} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
                             </CardItem>
                         </Left>
                         <Body style={{ flexDirection: 'column' }}>
@@ -33,8 +43,7 @@ class GioHangScreen extends Component {
                                 <Text style={styles.txtCard}>{item.tc_ten}</Text>
                             </CardItem>
                             <CardItem>
-                                <Text style={styles.txtCard}>{item.tc_giaBan}</Text>
-                                {/* <Text style={styles.txtCard}>VNĐ</Text> */}
+                                <Text style={styles.txtCard}>{this.currencyFormat(item.tc_giaBan)}</Text>
                             </CardItem>
                             <View style={styles.viewButton}>
                                 <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
@@ -43,15 +52,6 @@ class GioHangScreen extends Component {
                                 </Button>
                             </View>
                         </Body>
-                        {/* <Right /> */}
-                        {/* <Right style={{ justifyContent: 'center', alignItems: 'center' }}>
-                            <View style={styles.viewButton}>
-                                <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
-                                    <Icon name="highlight-off" type="MaterialIcons" />
-                                    <Text style={styles.txtButton}>Hủy</Text>
-                                </Button>
-                            </View>
-                        </Right> */}
                     </CardItem>
                 </Card>
             </View>
@@ -66,17 +66,17 @@ class GioHangScreen extends Component {
                     data={this.props.cart}
                     renderItem={this.renderItem}
                     numColumn={1}
-                    keyExtractor={item => item.id}
+                    keyExtractor={item => item.ha_id}
                 />
                 <TouchableOpacity>
                     <View style={styles.viewTotal}>
                         <Text style={styles.txtCard}>Tổng tiền</Text>
-                        <Text style={styles.txtCard}>{this.props.total} USD</Text>
+                        <Text style={styles.txtCard}>{this.currencyFormat(this.props.total)}</Text>
                     </View>
                 </TouchableOpacity>
                 {
                     this.props.total > 0 &&
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ThanhToan', {})}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ThanhToan')}>
                         <View style={styles.viewTotal}>
                             <Text style={styles.txtCard}>Thanh toán</Text>
                         </View>

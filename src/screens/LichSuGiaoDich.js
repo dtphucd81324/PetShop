@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    View, TouchableOpacity, Text, Image, StyleSheet, ScrollView, Dimensions
+    View, TouchableOpacity, Text, Image, StyleSheet, ScrollView, Dimensions, ActivityIndicator
 } from 'react-native';
 import { Icon, Button, Header, Left, Right } from 'native-base';
 import { HINH } from './Data';
@@ -10,15 +10,39 @@ export default class LichSuGiaoDich extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            arrOrder: [],
+            //arrOrder: [],
+            dataSource: [],
+            isLoading: true
         }
     }
 
-    componentDidMount() {
-        this.setState({ arrOrder: HINH });
+    async componentDidMount() {
+        await this.getDonHang();
+        this.setState({ isLoading: false });
+    }
+
+    async getDonHang() {
+        try {
+            await fetch("http://petshopct.herokuapp.com/public/admin/list_donhang")
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        dataSource: responseJson,
+                    });
+                })
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" />
+                </View>
+            )
+        }
         return (
             <ScrollView>
                 <Header transparent>
@@ -29,38 +53,54 @@ export default class LichSuGiaoDich extends Component {
                     </Left>
                     <Right />
                 </Header>
-                <View style={{ flex: 1, marginTop: 20, justifyContent: 'center' }}>
-                    <View style={styles.header}>
-                        <Text style={styles.headerTitle}>Lịch sử giao dịch</Text>
-                    </View>
-                    <View style={styles.body}>
-                        {
-                            this.state.arrOrder.map(e => (
-                                <View style={styles.orderRow} key={e.id}>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                                        <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Order id:</Text>
-                                        <Text style={{ color: '#2ABB9C' }}>ORD {e.id}</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                                        <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>OrderImage:</Text>
-                                        <Image style={{ width: 50, height: 50 }} source={{ uri: e.hinh }} />
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                                        <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Tên:</Text>
-                                        <Text style={{ color: '#2ABB9C' }}>{e.ten}</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                                        <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Giá:</Text>
-                                        <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.gia} {e.currency}</Text>
-                                    </View>
-                                    <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
-                                        <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Mô tả:</Text>
-                                        <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.description}</Text>
+                {
+                    this.state.dataSource.map(e => {
+                        return (
+                            <View style={{ flex: 1, marginTop: 20, justifyContent: 'center' }} key={e.dh_id}>
+                                <View style={styles.header}>
+                                    <Text style={styles.headerTitle}>Lịch sử giao dịch</Text>
+                                </View>
+                                <View style={styles.body}>
+                                    <View style={styles.orderRow}>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Đơn hàng id:</Text>
+                                            <Text style={{ color: '#C21C70' }}>{e.dh_id}</Text>
+                                        </View>
+                                        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Image:</Text>
+                                            <Image style={{ width: 50, height: 50 }} source={{ uri: e.hinh }} />
+                                        </View> */}
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Người nhận:</Text>
+                                            <Text style={{ color: '#C21C70' }}>{e.dh_nguoiNhan}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Địa chỉ:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.dh_diaChi}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Điện thoại KH:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.dh_dienThoai}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Ngày tạo ĐH:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.dh_ngayTao}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Tổng giá tiền:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.dh_tongGia}</Text>
+                                        </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Hình thức thanh toán:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.httt_ten}</Text>
+                                        </View>
                                     </View>
                                 </View>
-                            ))}
-                    </View>
-                </View>
+                            </View>
+                        )
+                    })
+                }
+
             </ScrollView>
         )
     }

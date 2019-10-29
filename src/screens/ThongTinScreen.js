@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Thumbnail, List, ListItem, Left, Right } from 'native-base';
-import { StyleSheet, View, SafeAreaView, ScrollView, Image, ImageBackground, Text } from 'react-native';
+import { StyleSheet, View, SafeAreaView, ScrollView, Image, ImageBackground, Text, ActivityIndicator } from 'react-native';
 
 import ImagePicker from 'react-native-image-picker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -20,12 +20,29 @@ export default class ThongTinScreen extends Component {
         super(props);
         this.state = {
             avatarSource: null,
+            dataSource: [],
+            isLoading: true
         }
     }
 
-    list = () => {
+    async componentDidMount() {
+        await this.getKhachHang();
+        this.setState({ isLoading: false })
+    }
 
-    };
+    async getKhachHang() {
+        try {
+            await fetch("http://petshopct.herokuapp.com/public/admin/list_khachhang")
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    this.setState({
+                        dataSource: responseJson,
+                    });
+                })
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     showImage = () => {
         ImagePicker.showImagePicker(options, (response) => {
@@ -50,6 +67,13 @@ export default class ThongTinScreen extends Component {
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" />
+                </View>
+            )
+        }
         let img = this.state.avatarSource == null ?
             <Thumbnail large
                 source={require('../images/images.jpg')}
@@ -61,59 +85,63 @@ export default class ThongTinScreen extends Component {
                 style={styles.thumbnail}
             />
         return (
-            <View style={styles.container}>
-                {/* <View style={styles.titleBar}>
-                    <Icon name="arrow-back" type="Ionicons" size={24} color="#52575D"></Icon>
-                    <Icon name="md-more" type="Ionicons" size={24} color="#52575D"></Icon>
-                </View> */}
-                <View style={{ marginTop: 28, marginHorizontal: 16 }} />
-                <View style={{ alignSelf: "center",  }}>
-                    <View style={styles.profileImage}>
-                        {img}
-                    </View>
-                    <View style={styles.dm}>
-                        <TouchableOpacity>
-                            <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.active}></View>
-                    <View style={styles.add}>
-                        <TouchableOpacity onPress={this.showImage}>
-                            <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.infoContainer}>
-                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Phúc</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Information technology</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LienHe')}>
-                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                            <Icon name="commenting" type="FontAwesome" style={{ color: '#2ABB9C'}} />
-                            <Text style={styles.textList}>About us</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
-                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                            <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C'}} />
-                            <Text style={styles.textList}>Lịch sử giao dịch</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeThongTin')}>
-                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                            <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C'}} />
-                            <Text style={styles.textList}>Thay đổi mật khẩu</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                            <Icon name="user-circle-o" type="FontAwesome" style={{ color: '#2ABB9C'}} />
-                            <Text style={styles.textList}>Đăng nhập</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View >
+            <ScrollView>
+                {
+                    this.state.dataSource.map(e => {
+                        return (
+                            <View style={styles.container}>
+                                <View style={{ marginTop: 28, marginHorizontal: 16 }} />
+                                <View style={{ alignSelf: "center", }}>
+                                    <View style={styles.profileImage}>
+                                        {img}
+                                    </View>
+                                    <View style={styles.dm}>
+                                        <TouchableOpacity>
+                                            <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.active}></View>
+                                    <View style={styles.add}>
+                                        <TouchableOpacity onPress={this.showImage}>
+                                            <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{e.kh_hoTen}</Text>
+                                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{e.kh_email}</Text>
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LienHe')}>
+                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                            <Icon name="commenting" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                            <Text style={styles.textList}>About us</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
+                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                            <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                            <Text style={styles.textList}>Lịch sử giao dịch</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeThongTin')}>
+                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                            <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                            <Text style={styles.textList}>Thay đổi mật khẩu</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                            <Icon name="user-circle-o" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                            <Text style={styles.textList}>Đăng nhập</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </View >
+                        )
+                    })
+                }
+            </ScrollView>
         );
     }
 }

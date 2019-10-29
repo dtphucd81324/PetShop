@@ -3,6 +3,7 @@ import { CardItem, Card, Icon, Button, Header, Left, Right, Content, Textarea, F
 import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Video from 'react-native-video';
+import { parse } from '@babel/parser';
 
 class ChiTiet extends Component {
     static navigationOptions = {
@@ -12,15 +13,28 @@ class ChiTiet extends Component {
         super(props);
         this.state = {
             //item: this.props.navigation.state.params.data,
-            //item: this.props.navigation.state.params.item,
+            item: this.props.navigation.state.params.item,
         }
+
+    }
+
+    StringtoInt(num){
+        return parseInt(num);
+    }
+
+    currencyFormat(num) {
+        num = parseInt(num)
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
+    }
+    componentDidMount(){
+        this.setState({ item:{...this.state.item, tc_giaBan: this.StringtoInt(this.state.item.tc_giaBan)} })
     }
     buy = () => {
-        const { params } = this.props.navigation.state;
+        //const { params } = this.props.navigation.state;
         let check = false;
         if (this.props.cart.length === 0) {
             // this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
-            this.props.dispatch({ type: 'ADD_TO_CART', payload: params.item });
+            this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
             //alert('Thêm thành công');
             Toast.show({
                 text: "Thêm thành công",
@@ -33,12 +47,11 @@ class ChiTiet extends Component {
             setTimeout(() => {
                 this.props.navigation.navigate('GioHangScreen');
             }, 2000);
-
         }
         else {
             this.props.cart.map(e => {
                 // if (e.id === this.state.item.id) {
-                if (e.id === params.item.id) {
+                if (e.tc_id === this.state.item.tc_id) {
                     check = true;
                 }
             })
@@ -55,7 +68,7 @@ class ChiTiet extends Component {
             }
             else {
                 // this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
-                this.props.dispatch({ type: 'ADD_TO_CART', payload: params.item });
+                this.props.dispatch({ type: 'ADD_TO_CART', payload: this.state.item });
                 //alert('Thêm thành công');
                 Toast.show({
                     text: "Thêm thành công",
@@ -68,7 +81,7 @@ class ChiTiet extends Component {
                 setTimeout(() => {
                     this.props.navigation.navigate('GioHangScreen');
                 }, 3000);
-
+                
             }
         }
 
@@ -94,43 +107,50 @@ class ChiTiet extends Component {
                     <SafeAreaView>
                         <Card>
                             <CardItem>
-                                <Image style={{ height: 250, width: '100%' }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/15_0_meo-tai-cup-3-.jpg.png' }} />
+                                <Image style={{ height: 250, width: '100%' }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + this.state.item.ha_ten + '.png' }} />
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Tên: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_ten}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_ten}</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Giá: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_giaBan} </Text>
-                                {/* <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'red' }}>VNĐ</Text> */}
+                                <Text style={styles.txtChitiet}>{this.currencyFormat(this.state.item.tc_giaBan)} VNĐ</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Tuổi: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_tuoi}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_tuoi}</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Ngày sinh: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_ngaySinh}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_ngaySinh}</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Cân nặng: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_canNang}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_canNang}</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Màu sắc: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_mauSac}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_mauSac}</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Text style={styles.textDetail}>Nguồn gốc: </Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.ng_ten}</Text>
+                            </CardItem>
+                            <CardItem>
+                                <Text style={styles.textDetail}>Nhà cung cấp: </Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.ncc_ten}</Text>
                             </CardItem>
                             <CardItem>
                                 <Text style={styles.textDetail}>Trạng thái tiêm chủng: </Text>
-                                <Text style={styles.txtChitiet}>{params.item.tc_trangThaiTiemChung}</Text>
+                                <Text style={styles.txtChitiet}>{this.state.item.tc_trangThaiTiemChung}</Text>
                             </CardItem>
                             <CardItem>
                                 <Content>
                                     <Form>
                                         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Mô tả:</Text>
                                         <Textarea rowSpan={10} bordered style={{ fontSize: 18 }}>
-                                            {params.item.tc_moTa}
+                                            {this.state.item.tc_moTa}
                                         </Textarea>
                                     </Form>
                                 </Content>
