@@ -9,5 +9,6 @@ import {name as appName} from './app.json';
 //import ThanhToan from './src/screens/ThanhToan';
 import Login from './src/screens/Login'
 import DanhSach from './src/screens/DanhSach'
+import DangKy from './src/screens/DangKy'
 
 AppRegistry.registerComponent(appName, () => App);

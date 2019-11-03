@@ -187,7 +187,6 @@ export default class SearchScreen extends Component {
                                             {text: "Hủy", icon: "close", iconColor: "#25de5b"}
                                              ],
                                         cancelButtonIndex: 2,
-                                        //destructiveButtonIndex: DESTRUCTIVE_INDEX,
                                         title: "Lọc"
                                     },
                                     buttonIndex => {

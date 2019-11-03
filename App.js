@@ -30,6 +30,7 @@ import ThanhToan from './src/screens/ThanhToan';
 import ChangeThongTin from './src/screens/ChangeThongTin';
 import LichSuGiaoDich from './src/screens/LichSuGiaoDich';
 import LienHe from './src/screens/LienHe';
+import DangKy from './src/screens/DangKy';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
 import { Provider } from 'react-redux';
@@ -80,31 +81,27 @@ const cartItems = (state = defaultState, action) => {
 const store = createStore(cartItems);
 
 
-const AppStack = createStackNavigator(
-  {
-    Register: {
-      screen: Register
-    },
-    Login: {
-      screen: Login
-    }
-  },
-  {
-    headerMode: 'none',
-  },
-  {
-    navigationOptions: {
-      headerBackTitle: null,
-      headerTintColor: '#ff00ff',
-      headerStyle: {
-        backgroundColor: '#e91e63',
-      },
-      headerTitleStyle: {
-        color: 'white',
-      },
-    },
-  },
-);
+// const AppStack = createStackNavigator(
+//   {
+//     DangKy: DangKy,
+//     Login: Login
+//   },
+//   {
+//     headerMode: 'none',
+//   },
+//   // {
+//   //   navigationOptions: {
+//   //     headerBackTitle: null,
+//   //     headerTintColor: '#ff00ff',
+//   //     headerStyle: {
+//   //       backgroundColor: '#e91e63',
+//   //     },
+//   //     headerTitleStyle: {
+//   //       color: 'white',
+//   //     },
+//   //   },
+//   // },
+// );
 
 const HomeStack = createStackNavigator(
   {
@@ -112,8 +109,6 @@ const HomeStack = createStackNavigator(
     ChiTiet: ChiTiet,
     VideoScreen: VideoScreen,
     BinhLuan: BinhLuan, 
-    Login: Login,
-    Register: Register
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',
@@ -167,7 +162,8 @@ const ThongTinStack = createStackNavigator(
     ChangeThongTin: ChangeThongTin,
     LichSuGiaoDich: LichSuGiaoDich,
     LienHe: LienHe,
-    AppStack: AppStack,
+    //Login: Login
+    //AppStack: AppStack,
   }, {
   initialRouteName: 'ThongTinScreen',
   headerMode: 'none',
@@ -231,8 +227,26 @@ const TabNavigator = createBottomTabNavigator(
 
 )
 
+const TabBottomStack = createStackNavigator(
+  {
+    TabNavigator: TabNavigator
+  },{
+    headerMode: 'none',
+  }
+)
+
+const AppSwitchNavigator = createSwitchNavigator(
+  {
+  TabScreen:{screen: TabBottomStack},
+  //AppStack: AppStack
+  DangKy: {screen: DangKy},
+  Login: {screen: Login},
+  },{
+    headerMode: 'none', 
+  }
+)
 const AppContainer = createAppContainer(
-  TabNavigator
+  AppSwitchNavigator
 );
 
 export default class App extends Component {

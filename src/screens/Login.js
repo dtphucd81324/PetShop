@@ -1,76 +1,88 @@
 
 import React, { Component } from 'react';
 import {
-    StyleSheet, Text, View, Button,
-    TouchableOpacity, Image, TextInput, StatusBar, AsyncStorage, ActivityIndicator
+    StyleSheet, Text, View,
+    TouchableOpacity, Image, TextInput, StatusBar,
+    AsyncStorage, ActivityIndicator, ScrollView
 } from 'react-native';
+import { Icon, Button, Header, Left, Right } from 'native-base';
 //import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import Homepage from './Homepage';
-import Register from './Register';
 
 
-
-const userInfo = { 
-    email: 'admin', 
-    password: '123456' 
+const userInfo = {
+    email: 'admin',
+    password: '123456'
 }
 
 export default class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            email: '', 
-            password: '' 
+        this.state = {
+            email: '',
+            password: ''
         }
+        //this._loadData();
     };
 
-    static navigationOptions = {
-        header: null
-    };
+    // _loadData = async () => {
+    //     const logged = await AsyncStorage.getItem('logged');
+    //     this.props.navigation.navigate(logged !== '1' ? 'Login' : 'Homepage');
+    // }
+
     render() {
         return (
-            <View style={styles.container}>
-                <View style={styles.logoContainer}> 
-                    <Image style={styles.logo} source={require('../images/logo.jpg')} ></Image>
-                    <Text style={styles.title}>Account Infomation</Text>
-                </View> 
+            <ScrollView>
+                <Header transparent>
+                    <Left>
+                        <Button onPress={() => this.props.navigation.navigate('ThongTinScreen')} style={{ backgroundColor: '#ff00ff' }}>
+                            <Icon name="undo" type="Ionicons" />
+                        </Button>
+                    </Left>
+                    <Right />
+                </Header>
                 <View style={styles.container}>
-                    <TextInput style={styles.inputBox}
-                        placeholder="Email"
-                        placeholderTextColor="#ffffff"
-                        keyboardType="email-address"
-                        returnKeyType='next'
-                        autoCorrect={false}
-                        onChangeText={(email) => this.setState({ email })}
-                        value={this.state.email}
-                        onSubmitEditing={() => this.refs.txtPassword.focus()}
-                    />
-                    <TextInput style={styles.inputBox}
-                        placeholder="Password"
-                        returnKeyType='go'
-                        secureTextEntry={true}
-                        placeholderTextColor="#ffffff"
-                        onChangeText={(password) => this.setState({ password })}
-                        value={this.state.password}
-                        autoCorrect={false}
-                        ref={"txtPassword"}
-                    />                        
-                    <TouchableOpacity style={styles.button} 
-                        onPress={this._login}>
-                        <Text style={styles.buttonText}>Đăng nhập</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.container}>
-                    <View style={styles.registerContent}>
-                        <Text style={styles.textRegister}>Chưa có tài khoản?</Text>
-                        <TouchableOpacity 
-                            onPress={ () => this.props.navigation.navigate('Register') }>
-                            <Text style={styles.textRegister}>Đăng ký</Text>
+                    <View style={styles.logoContainer}>
+                        <Image style={styles.logo} source={require('../images/petshopt.png')} ></Image>
+                    </View>
+                    <View style={styles.container}>
+                        <TextInput style={styles.inputBox}
+                            placeholder="Email"
+                            placeholderTextColor="#ffffff"
+                            keyboardType="email-address"
+                            returnKeyType='next'
+                            autoCorrect={false}
+                            onChangeText={(email) => this.setState({ email })}
+                            value={this.state.email}
+                            onSubmitEditing={() => this.refs.txtPassword.focus()}
+                        />
+                        <TextInput style={styles.inputBox}
+                            placeholder="Password"
+                            returnKeyType='go'
+                            secureTextEntry={true}
+                            placeholderTextColor="#ffffff"
+                            onChangeText={(password) => this.setState({ password })}
+                            value={this.state.password}
+                            autoCorrect={false}
+                            ref={"txtPassword"}
+                        />
+                        <TouchableOpacity style={styles.button}
+                            onPress={this._login}>
+                            <Text style={styles.buttonText}>Đăng nhập</Text>
                         </TouchableOpacity>
                     </View>
+                    <View style={styles.container}>
+                        <View style={styles.registerContent}>
+                            <Text style={{ fontSize: 18, marginRight: 5 }}>Chưa có tài khoản?</Text>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('DangKy')}>
+                                <Text style={styles.textRegister}>Đăng ký</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 
@@ -86,56 +98,38 @@ export default class Login extends Component {
 
 }
 
-class HomeScreen extends Component {
-    static navigationOptions = {
-        header: null,
-    };
-    render() {
-        return (
-            <View style={styles.viewContainer}>
-                <Homepage />
-                <Button onPress={this._logout} title="Logout" />
-            </View>
-        );
-    }
 
-    _logout = async () => {
-        await AsyncStorage.clear();
-        this.props.navigation.navigate('Login');
-    }
-}
+// class AuthLoadingScreen extends Component {
 
-class AuthLoadingScreen extends Component {
+//     constructor(props) {
+//         super(props);
 
-    constructor(props) {
-        super(props);
-        this._loadData();
-    }
+//     }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <ActivityIndicator />
-                <StatusBar barStyle="default" />
-            </View>
-        );
-    }
+//     render() {
+//         return (
+//             <View style={styles.container}>
+//                 <ActivityIndicator />
+//                 <StatusBar barStyle="default" />
+//             </View>
+//         );
+//     }
 
-    _loadData = async () => {
-        const logged = await AsyncStorage.getItem('logged');
-        this.props.navigation.navigate(logged !== '1' ? 'Login' : 'Homepage');
-    }
-}
+
+// }
 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#455a64',
-        flexGrow: 1,
+        //backgroundColor: '#455a64',
+        backgroundColor: 'white',
+        //flexGrow: 1,
+        flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: 40
     },
-    viewContainer:{
+    viewContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
@@ -150,12 +144,16 @@ const styles = StyleSheet.create({
 
     logoContainer: {
         justifyContent: 'flex-end',
+        //justifyContent: 'center',
         alignItems: 'center',
-        flexGrow: 1,
+        width: '100%',
+        height: 120,
+        //flexGrow: 1,
+        flex: 1,
     },
     logo: {
-        width: 120,
-        height: 120
+        width: '100%',
+        height: 120,
     },
 
     title: {
@@ -168,7 +166,8 @@ const styles = StyleSheet.create({
 
     inputBox: {
         width: 300,
-        backgroundColor: 'rgba(255,255,255,0.3)',
+        //backgroundColor: 'rgba(255,255,255,0.3)',
+        backgroundColor: '#1c313a',
         borderRadius: 25,
         paddingHorizontal: 16,
         color: '#ffffff',
@@ -188,15 +187,16 @@ const styles = StyleSheet.create({
         color: '#ffffff',
         textAlign: 'center'
     },
-    registerContent:{
+    registerContent: {
         alignItems: 'flex-end',
         justifyContent: 'center',
         paddingVertical: 16,
         flexDirection: 'row'
     },
-    textRegister:{
+    textRegister: {
         fontSize: 18,
-        color: 'white',
-        marginRight: 2
+        color: '#ff00ff',
+        marginRight: 2,
+        fontWeight: 'bold'
     }
 }); 

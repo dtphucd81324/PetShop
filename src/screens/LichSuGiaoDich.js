@@ -35,6 +35,15 @@ export default class LichSuGiaoDich extends Component {
         }
     }
 
+    StringtoInt(num) {
+        return parseInt(num);
+    }
+
+    currencyFormat(num) {
+        num = parseInt(num)
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
+    }
+
     render() {
         if (this.state.isLoading) {
             return (
@@ -88,7 +97,7 @@ export default class LichSuGiaoDich extends Component {
                                         </View>
                                         <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
                                             <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Tổng giá tiền:</Text>
-                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.dh_tongGia}</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{this.currencyFormat(e.dh_tongGia)}</Text>
                                         </View>
                                         <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
                                             <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Hình thức thanh toán:</Text>
