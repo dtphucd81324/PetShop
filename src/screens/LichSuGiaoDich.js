@@ -62,23 +62,23 @@ export default class LichSuGiaoDich extends Component {
                     </Left>
                     <Right />
                 </Header>
-                {
-                    this.state.dataSource.map(e => {
-                        return (
-                            <View style={{ flex: 1, marginTop: 20, justifyContent: 'center' }} key={e.dh_id}>
-                                <View style={styles.header}>
-                                    <Text style={styles.headerTitle}>Lịch sử giao dịch</Text>
-                                </View>
-                                <View style={styles.body}>
+                <View style={{ flex: 1, marginTop: 20, justifyContent: 'center' }} >
+                    <View style={styles.header}>
+                        <Text style={styles.headerTitle}>Lịch sử giao dịch</Text>
+                    </View>
+                    {
+                        this.state.dataSource.map(e => {
+                            return (
+                                <View style={styles.body} key={e.dh_id}>
                                     <View style={styles.orderRow}>
                                         <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
                                             <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Đơn hàng id:</Text>
                                             <Text style={{ color: '#C21C70' }}>{e.dh_id}</Text>
                                         </View>
-                                        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 }}>
-                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Image:</Text>
-                                            <Image style={{ width: 50, height: 50 }} source={{ uri: e.hinh }} />
-                                        </View> */}
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Tên khách hàng:</Text>
+                                            <Text style={{ color: '#C21C70' }}>{e.kh_hoTen}</Text>
+                                        </View>
                                         <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
                                             <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Người nhận:</Text>
                                             <Text style={{ color: '#C21C70' }}>{e.dh_nguoiNhan}</Text>
@@ -103,13 +103,17 @@ export default class LichSuGiaoDich extends Component {
                                             <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Hình thức thanh toán:</Text>
                                             <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.httt_ten}</Text>
                                         </View>
+                                        <View style={{ justifyContent: 'space-between', marginBottom: 5 }}>
+                                            <Text style={{ color: '#9A9A9A', fontWeight: 'bold' }}>Trạng thái đơn hàng:</Text>
+                                            <Text style={{ color: '#C21C70', fontWeight: 'bold' }}>{e.ttdh_ten}</Text>
+                                        </View>
                                     </View>
                                 </View>
-                            </View>
-                        )
-                    })
-                }
 
+                            )
+                        })
+                    }
+                </View>
             </ScrollView>
         )
     }

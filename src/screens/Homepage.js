@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions
 //import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import Carousel from 'react-native-snap-carousel';
 import ChiTiet from './ChiTiet';
-import { HINH } from './Data';
+//import { HINH } from './Data';
 const { height } = Dimensions.get('window');
 
 
@@ -43,20 +43,7 @@ class Homepage extends Component {
         }
     }
 
-    // async getLoaiThuCung() {
-    //     try {
-    //         await fetch("http://petshopct.herokuapp.com/public/admin/list_loaithucung")
-    //             .then((response) => response.json())
-    //             .then((responseJson) => {
-    //                 this.setState({
-    //                     loai: responseJson,
-    //                 });
-    //             })
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
-
+    
     async getGiongThuCung() {
         try {
             await fetch("http://petshopct.herokuapp.com/public/admin/list_giong")
@@ -117,7 +104,7 @@ class Homepage extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" />
+                    <ActivityIndicator size="large" color="#ff00ff" />
                 </View>
             )
         }

@@ -155,7 +155,7 @@ export default class SearchScreen extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" />
+                    <ActivityIndicator size="large" color="#ff00ff" />
                 </View>
             )
         }

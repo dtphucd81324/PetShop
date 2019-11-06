@@ -11,14 +11,38 @@ const client = {
 class ThanhToan extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      dataSource: [],
+    };
   }
+
+  async componentDidMount() {
+    await this.getHinhThuc();
+  }
+
+  async getHinhThuc() {
+    try {
+      await fetch("http://petshopct.herokuapp.com/public/admin/list_hinhthucthanhtoan")
+        .then((response) => response.json())
+        .then((responseJson) => {
+          this.setState({
+            dataSource: responseJson,
+            //isLoading: false,
+          });
+          console.log(responseJson);
+        })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   render() {
     const { params } = this.props.navigation.state;
     return (
       <ScrollView>
         <Header transparent>
           <Left>
-            <Button onPress={() => this.props.navigation.goBack()}>
+            <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff' }}>
               <Icon name="undo" type="Ionicons" />
             </Button>
           </Left>
@@ -27,39 +51,46 @@ class ThanhToan extends Component {
         <View style={{ margin: 20 }}>
           <Text style={styles.txtTT}>Khách hàng</Text>
           <Item disabled style={{ marginBottom: 10 }}>
-            <Input disabled />
+            <Input />
           </Item>
           <Text style={styles.txtTT}>Địa chỉ nhận hàng</Text>
           <Item disabled>
             <Input />
           </Item>
         </View>
-        <View>
-          <Button style={styles.btnPaypal}
-            onPress={async () => {
-              try {
-                await RNPaypal.config({
-                  clientId: client.sandbox,
-                  environment: RNPaypal.constants.env.SANDBOX
-                })
-                const pay = await RNPaypal.buy({
-                  value: this.props.total,
-                  productName: 'Buy products',
-                  currency: 'USD',
-                  mode: RNPaypal.constants.mode.PAYMENT_INTENT_SALE
-                });
-                console.log(pay);// SUCESSS
-                this.props.dispatch({ type: 'THANH_TOAN' });
-                alert('Bạn đã thanh toán thành công');
-              } catch (e) {
-                console.log(e);// NO MONEY :()
-              }
-            }}
-            
-          >
-            <Text>Thanh toán Paypal</Text>
-          </Button>
-        </View>
+        {
+          this.state.dataSource.map(e => {
+            return (
+              <View key={e.httt_id === 1}>
+                <Button style={styles.btnPaypal}
+                  onPress={async () => {
+                    try {
+                      await RNPaypal.config({
+                        clientId: client.sandbox,
+                        environment: RNPaypal.constants.env.SANDBOX
+                      })
+                      const pay = await RNPaypal.buy({
+                        value: this.props.total,
+                        productName: 'Buy products',
+                        currency: 'USD',
+                        mode: RNPaypal.constants.mode.PAYMENT_INTENT_SALE
+                      });
+                      console.log(pay);// SUCESSS
+                      this.props.dispatch({ type: 'THANH_TOAN' });
+                      alert('Bạn đã thanh toán thành công');
+                    } catch (e) {
+                      console.log(e);// NO MONEY :()
+                    }
+                  }}
+
+                >
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{e.httt_ten}</Text>
+                </Button>
+              </View>
+            )
+          })
+        }
+
       </ScrollView>
     );
   }
@@ -67,8 +98,8 @@ class ThanhToan extends Component {
 
 const mapStatetoProps = (state) => {
   return {
-      cart: state.cart,
-      total: state.total
+    cart: state.cart,
+    total: state.total
   }
 }
 export default connect(mapStatetoProps)(ThanhToan);
@@ -88,6 +119,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'space-around',
     alignContent: 'center',
-    backgroundColor: 'lightblue',
+    backgroundColor: '#ff00ff',
   },
 });
