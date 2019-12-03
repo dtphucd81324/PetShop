@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Icon, Card, CardItem, Header, Left, Body, Right, Title } from 'native-base';
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, SafeAreaView, ActivityIndicator } from 'react-native';
-//import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import {
+    StyleSheet, View, Text, TouchableOpacity,
+    ScrollView, Image, Dimensions, SafeAreaView,
+    ActivityIndicator, ImageBackground
+} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import ChiTiet from './ChiTiet';
-//import { HINH } from './Data';
-const { height } = Dimensions.get('window');
-
-
+import { connect } from 'react-redux';
+//const { height } = Dimensions.get('window');
 
 class Homepage extends Component {
     constructor(props) {
@@ -16,34 +16,42 @@ class Homepage extends Component {
             dataSource: [],
             isLoading: true,
             //loai: [],
+            //loaithucung: [],
             category: [],
         };
     };
 
     async componentDidMount() {
-        await this.getThuCung();
+        await this.getData();
         //this.getLoaiThuCung();
         await this.getGiongThuCung();
         this.setState({ isLoading: false });
     }
 
-    async getThuCung() {
-        try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_thucung")
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({
-                        dataSource: responseJson,
-                        //isLoading: false,
-                    });
-                    console.log(responseJson);
-                })
-        } catch (error) {
-            console.error(error);
-        }
+    async getData() {
+        return fetch('http://petshopct.herokuapp.com/public/thu-cung-api', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    dataSource: responseJson.danhsachthucung.data,
+                    //loaithucung: responseJson.loaithucung
+                });
+                //console.log(responseJson);
+                console.log(responseJson);
+                //console.log(this.state.loaithucung);
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     }
 
-    
+
     async getGiongThuCung() {
         try {
             await fetch("http://petshopct.herokuapp.com/public/admin/list_giong")
@@ -52,7 +60,7 @@ class Homepage extends Component {
                     this.setState({
                         category: responseJson,
                     });
-                    console.log(responseJson);
+                    //console.log(responseJson);
                 })
         } catch (error) {
             console.error(error);
@@ -60,7 +68,8 @@ class Homepage extends Component {
     }
 
     StringtoInt(num) {
-        return parseInt(num);
+        num = parseInt(num);
+        return num;
     }
 
     currencyFormat(num) {
@@ -81,18 +90,41 @@ class Homepage extends Component {
     };
 
     renderItem = ({ item }) => {
+        //const km = item.giatri;
+        const percent = parseInt(item.giatri);
         return (
             <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })}>
                     <Card>
                         <CardItem>
-                            <Image style={{ width: 200, height: 200 }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
+                            <View style={{ position: 'relative' }}>
+                                <Image style={{ width: 200, height: 200 }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
+                                {
+                                    item.giatri != null &&
+                                    <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                                        <Text style={{ color: 'white' }}>
+                                            -{item.giatri}%
+                                        </Text>
+                                    </View>
+                                }
+                            </View>
                         </CardItem>
-                        <CardItem>
-                            <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.tc_ten}</Text>
+                        <CardItem style={{ textAlign: 'center', justifyContent: 'center' }}>
+                            <View>
+                                <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{item.tc_ten}</Text>
+                            </View>
                         </CardItem>
-                        <CardItem>
-                            <Text style={{ fontSize: 24, color: 'red' }}>{this.currencyFormat(item.tc_giaBan)}</Text>
+                        <CardItem style={{ flexDirection: 'column', height: 50, paddingTop: -10, justifyContent: 'center' }}>
+                            <View>
+                                <Text style={item.giatri != null ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                                {
+                                    item.giatri != null &&
+                                    <Text style={styles.giaMoi}>
+                                        {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * (1 - (percent / 100)))}
+                                    </Text>
+
+                                }
+                            </View>
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
@@ -109,8 +141,8 @@ class Homepage extends Component {
             )
         }
         return (
-            <ScrollView showsHorizontalScrollIndicator={false}>
-                <Header transparent style={{ backgroundColor: '#7fffd4', marginBottom: 20 }}>
+            <ScrollView>
+                <Header transparent style={{ backgroundColor: '#dcdcdc', marginBottom: 20 }}>
                     <Left />
                     <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
                         <Image source={require('../images/petshopt.png')} style={{ width: '100%', height: '100%' }} />
@@ -123,17 +155,19 @@ class Homepage extends Component {
                             return (
                                 <View key={e.g_id}>
                                     <View style={styles.carousel}>
-                                        <Text style={styles.textContent}>{e.g_ten}</Text>
+                                        <ImageBackground source={require('../images/petshopt.png')} style={styles.background}>
+                                            <Text style={styles.textContent}>{e.g_ten}</Text>
+                                        </ImageBackground>
                                     </View>
                                     <SafeAreaView>
                                         <Carousel
                                             data={this.state.dataSource.filter(function (item, index) {
-                                                return item.g_id === e.g_id && index < 9
+                                                return item.g_id === e.g_id && index < 12
                                             })}
                                             renderItem={this.renderItem}
                                             sliderWidth={400}
                                             itemWidth={250}
-                                            layoutCardOffset={`18`}
+                                            //layoutCardOffset={`18`}
                                             key={item => item.tc_id}
                                         />
                                     </SafeAreaView>
@@ -155,32 +189,51 @@ const styles = StyleSheet.create({
 
     },
     textCont: {
-        fontSize: 20,
+        fontSize: 24,
         fontWeight: 'bold',
         textAlign: 'center',
         color: 'black',
         justifyContent: 'space-between',
-
     },
     background: {
         width: '100%',
+        height: '100%',
+        opacity: 0.5,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     carousel: {
         flex: 1,
         paddingTop: 10,
-        height: 50,
+        height: 70,
         width: '100%',
         paddingLeft: 15,
-        backgroundColor: '#ff00ff',
+        backgroundColor: '#dcdcdc',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
 
     textContent: {
-        fontSize: 20,
-        color: 'white',
+        fontSize: 24,
+        color: 'black',
         fontWeight: 'bold'
+    },
+    giaMoi: {
+        color: 'red',
+        fontSize: 24,
+    },
+    giaCu: {
+        color: 'black',
+        fontSize: 24,
+        textDecorationLine: 'line-through'
     },
 });
 
-export default Homepage;
+function mapStateToProps(state) {
+    return {
+        cart: state.cart,
+        //count: state.count
+    }
+}
+
+export default connect(mapStateToProps)(Homepage);

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Icon, Thumbnail, List, ListItem, Left, Right } from 'native-base';
-import { StyleSheet, View, SafeAreaView, ScrollView, Image, ImageBackground, Text, ActivityIndicator } from 'react-native';
-
+import { Icon, Thumbnail, Button } from 'native-base';
+import { StyleSheet, View, SafeAreaView, ScrollView, Text, ActivityIndicator, AsyncStorage, TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
 
 const options = {
     title: 'Select Avatar',
@@ -14,34 +13,26 @@ const options = {
     },
 };
 
-export default class ThongTinScreen extends Component {
+class ThongTinScreen extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             avatarSource: null,
-            dataSource: [],
-            isLoading: true
+            //dataSource: [],
+            isLoading: true,
+            //userToken: null
         }
     }
 
-    async componentDidMount() {
-        await this.getKhachHang();
+    _signOutAsync = async () => {
+        this.props.dispatch({ type: 'DANG_XUAT' })
+        this.props.navigation.navigate('ThongTinScreen')
+    }
+
+    componentDidMount() {
+        console.log(this.props.hoso);
         this.setState({ isLoading: false })
-    }
-
-    async getKhachHang() {
-        try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_khachhang")
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({
-                        dataSource: responseJson,
-                    });
-                })
-        } catch (error) {
-            console.error(error);
-        }
     }
 
     showImage = () => {
@@ -66,14 +57,15 @@ export default class ThongTinScreen extends Component {
         });
     }
 
+
     render() {
-        if (this.state.isLoading) {
-            return (
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" color="#ff00ff" />
-                </View>
-            )
-        }
+        // if (this.state.isLoading) {
+        //     return (
+        //         <View style={{ flex: 1, justifyContent: 'center' }}>
+        //             <ActivityIndicator size="large" color="#ff00ff" />
+        //         </View>
+        //     )
+        // }
         let img = this.state.avatarSource == null ?
             <Thumbnail large
                 source={require('../images/images.jpg')}
@@ -84,67 +76,68 @@ export default class ThongTinScreen extends Component {
                 source={this.state.avatarSource}
                 style={styles.thumbnail}
             />
-        return (
-            <ScrollView>
-                {
-                    this.state.dataSource.map(e => {
-                        return (
-                            <View style={styles.container}>
-                                <View style={{ marginTop: 28, marginHorizontal: 16 }} />
-                                <View style={{ alignSelf: "center", }}>
-                                    <View style={styles.profileImage}>
-                                        {img}
-                                    </View>
-                                    <View style={styles.dm}>
-                                        <TouchableOpacity>
-                                            <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View style={styles.active}></View>
-                                    <View style={styles.add}>
-                                        <TouchableOpacity onPress={this.showImage}>
-                                            <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
-                                        </TouchableOpacity>
-                                    </View>
+        if (this.props.hoso.length != 0) {
+            return (
+                <ScrollView>
+                    <View style={styles.container}>
+                        <View style={{ marginTop: 28, marginHorizontal: 16 }} />
+                        <View style={{ alignSelf: "center", }}>
+                            <View style={styles.profileImage}>
+                                {img}
+                            </View>
+                            <View style={styles.dm}>
+                                <TouchableOpacity>
+                                    <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.add}>
+                                <TouchableOpacity onPress={this.showImage}>
+                                    <Icon name="add" type="Ionicons" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Icon>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={styles.infoContainer}>
+                            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}></Text>
+                            <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}></Text>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                    <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                    <Text style={styles.textList}>Lịch sử giao dịch</Text>
                                 </View>
-                                <View style={styles.infoContainer}>
-                                    <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{e.kh_hoTen}</Text>
-                                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 20 }]}>{e.kh_email}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('CapNhatThongTin', {back: 'ThongTinScreen'})}>
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                    <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                    <Text style={styles.textList}>Cập nhật thông tin</Text>
                                 </View>
-                                <View style={{ flex: 1 }}>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LienHe')}>
-                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                            <Icon name="commenting" type="FontAwesome" style={{ color: '#2ABB9C' }} />
-                                            <Text style={styles.textList}>About us</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
-                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                            <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C' }} />
-                                            <Text style={styles.textList}>Lịch sử giao dịch</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ChangeThongTin')}>
-                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                            <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C' }} />
-                                            <Text style={styles.textList}>Thay đổi mật khẩu</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                                        <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                            <Icon name="user-circle-o" type="FontAwesome" style={{ color: '#2ABB9C' }} />
-                                            <Text style={styles.textList}>Đăng nhập</Text>
-                                        </View>
-                                    </TouchableOpacity>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this._signOutAsync}>
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
+                                    <Icon name="reply-all" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                    <Text style={styles.textList}>Đăng xuất</Text>
                                 </View>
-                            </View >
-                        )
-                    })
-                }
-            </ScrollView>
-        );
+                            </TouchableOpacity>
+                        </View>
+                    </View >
+                </ScrollView>
+            );
+        }
+        else {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Button iconLeft onPress={() => this.props.navigation.navigate('Login', {back: 'ThongTinScreen'})} style={{ backgroundColor: '#ff00ff' }} >
+                        {/* <Icon name="user-circle-o" type="FontAwesome" /> */}
+                        <Text style={styles.textCont}>Đăng nhập</Text>
+                    </Button>
+                </View>
+            )
+        }
     }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -169,7 +162,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
         marginLeft: 2,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 5,
+        paddingRight: 10,
     },
     viewContent: {
         flexDirection: 'row',
@@ -234,3 +229,10 @@ const styles = StyleSheet.create({
         marginTop: 16
     }
 });
+function mapStateToProps(state) {
+    return {
+        hoso: state.hoso
+    }
+}
+
+export default connect(mapStateToProps)(ThongTinScreen);

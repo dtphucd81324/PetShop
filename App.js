@@ -27,9 +27,10 @@ import ThongTinScreen from './src/screens/ThongTinScreen';
 import VideoScreen from './src/screens/VideoScreen';
 import BinhLuan from './src/screens/BinhLuan';
 import ThanhToan from './src/screens/ThanhToan';
-import ChangeThongTin from './src/screens/ChangeThongTin';
+import CapNhatThongTin from './src/screens/CapNhatThongTin';
 import LichSuGiaoDich from './src/screens/LichSuGiaoDich';
-import LienHe from './src/screens/LienHe';
+//import Test from './src/screens/Test';
+//import LienHe from './src/screens/LienHe';
 import DangKy from './src/screens/DangKy';
 //import { Feather } from 'react-native-vector-icons';
 import { Icon } from 'native-base';
@@ -42,37 +43,44 @@ import { Root } from "native-base";
 
 const defaultState =
 {
+  hoso: [],
   cart: [],
-  total: 0
+  total: 0,
 }
 
 const cartItems = (state = defaultState, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
-      return (
-        {
+      return{
+          ...state,
           cart: [...state.cart, action.payload],
-          total: state.total + action.payload.tc_giaBan
+          total: state.total + action.payload.giaKM,
+          //hoso: [...state.hoso, action.payload],
         }
-      )
-
-
+      
     case 'REMOVE_FROM_CART':
-      return (
-        {
+      return {
           cart: state.cart.filter(cart => cart.tc_id !== action.payload.tc_id),
-          total: state.total - action.payload.tc_giaBan
+          total: state.total - action.payload.giaKM
         }
-      )
     case 'THANH_TOAN':
-      return (
-        {
+      return{
           ...state,
           cart: [],
           total: 0
         }
-      )
-
+      
+    case 'DANG_NHAP':
+      return{
+          ...state,
+          hoso: action.payload
+      }
+      
+    case 'DANG_XUAT':
+      return{
+          ...state,
+          hoso: []
+        }
     default:
       return state;
   }
@@ -81,34 +89,35 @@ const cartItems = (state = defaultState, action) => {
 const store = createStore(cartItems);
 
 
-// const AppStack = createStackNavigator(
-//   {
-//     DangKy: DangKy,
-//     Login: Login
-//   },
-//   {
-//     headerMode: 'none',
-//   },
-//   // {
-//   //   navigationOptions: {
-//   //     headerBackTitle: null,
-//   //     headerTintColor: '#ff00ff',
-//   //     headerStyle: {
-//   //       backgroundColor: '#e91e63',
-//   //     },
-//   //     headerTitleStyle: {
-//   //       color: 'white',
-//   //     },
-//   //   },
-//   // },
-// );
+const AppStack = createStackNavigator(
+  {
+    DangKy: DangKy,
+    Login: Login,
+    //ThongTinScreen: ThongTinScreen
+  },
+  {
+    headerMode: 'none',
+  },
+  // {
+  //   navigationOptions: {
+  //     headerBackTitle: null,
+  //     headerTintColor: '#ff00ff',
+  //     headerStyle: {
+  //       backgroundColor: '#e91e63',
+  //     },
+  //     headerTitleStyle: {
+  //       color: 'white',
+  //     },
+  //   },
+  // },
+);
 
 const HomeStack = createStackNavigator(
   {
     Homepage: Homepage,
     ChiTiet: ChiTiet,
     VideoScreen: VideoScreen,
-    BinhLuan: BinhLuan, 
+    BinhLuan: BinhLuan,
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',
@@ -143,6 +152,7 @@ const GioHangStack = createStackNavigator(
   {
     GioHangScreen: GioHangScreen,
     ThanhToan: ThanhToan,
+    //Test: Test
   }, {
   initialRouteName: 'GioHangScreen',
   headerMode: 'none',
@@ -159,11 +169,11 @@ const GioHangStack = createStackNavigator(
 const ThongTinStack = createStackNavigator(
   {
     ThongTinScreen: ThongTinScreen,
-    ChangeThongTin: ChangeThongTin,
     LichSuGiaoDich: LichSuGiaoDich,
-    LienHe: LienHe,
+    CapNhatThongTin: CapNhatThongTin,
     //Login: Login
-    //AppStack: AppStack,
+    // DangKy: DangKy,
+    // Login: Login,
   }, {
   initialRouteName: 'ThongTinScreen',
   headerMode: 'none',
@@ -207,7 +217,7 @@ const TabNavigator = createBottomTabNavigator(
       }
     },
     ThongTinScreen: {
-      screen: ThongTinStack, 
+      screen: ThongTinStack,
       navigationOptions: {
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           navigation.dispatch(StackActions.popToTop());
@@ -230,20 +240,21 @@ const TabNavigator = createBottomTabNavigator(
 const TabBottomStack = createStackNavigator(
   {
     TabNavigator: TabNavigator
-  },{
-    headerMode: 'none',
-  }
+  }, {
+  headerMode: 'none',
+}
 )
 
 const AppSwitchNavigator = createSwitchNavigator(
   {
-  TabScreen:{screen: TabBottomStack},
-  //AppStack: AppStack
-  DangKy: {screen: DangKy},
-  Login: {screen: Login},
-  },{
-    headerMode: 'none', 
-  }
+    TabScreen: { screen: TabBottomStack },
+    AppStack: AppStack ,
+    //ThongTinScreen: {screen: ThongTinScreen},
+    // DangKy: { screen: DangKy },
+    // Login: { screen: Login },
+  }, {
+  headerMode: 'none',
+}
 )
 const AppContainer = createAppContainer(
   AppSwitchNavigator

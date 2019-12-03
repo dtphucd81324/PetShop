@@ -4,21 +4,7 @@ import { View, StyleSheet, Text, FlatList, ActivityIndicator, ScrollView, Image,
 import { HINH } from './Data';
 //import { Root } from "native-base";
 
-const filter = [
-    {
-        id: 1,
-        ten: 'Chó Corgi'
-    }, {
-        id: 2,
-        ten: 'Chó Husky'
-    }, {
-        id: 3,
-        ten: 'Chó Alaska'
-    }, {
-        id: 4,
-        ten: 'Chó Poodle'
-    },
-]
+
 export default class SearchScreen extends Component {
 
     constructor(props) {
@@ -43,13 +29,13 @@ export default class SearchScreen extends Component {
 
     async getThuCung() {
         try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_thucung")
+            await fetch("http://petshopct.herokuapp.com/public/thu-cung-api")
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
-                        dataSource: responseJson,
-                        arrayholder: responseJson,
-                        data: responseJson,
+                        dataSource: responseJson.danhsachthucung.data,
+                        arrayholder: responseJson.danhsachthucung.data,
+                        data: responseJson.danhsachthucung.data,
                         isLoading: false,
                     });
                 })
@@ -73,16 +59,16 @@ export default class SearchScreen extends Component {
     }
 
     StringtoInt(num) {
-        return parseInt(num);
+        num = parseInt(num);
+        return num;
     }
 
     currencyFormat(num) {
-        num = parseInt(num)
-        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ';
     }
 
     SearchFilter(text) {
-        const newData = this.arrayholder.filter(function (item) {
+        const newData = this.state.arrayholder.filter(function (item) {
             const itemData = item.tc_ten ? item.tc_ten.toUpperCase() : ''.toUpperCase();
             const textData = text.toUpperCase();
             return itemData.indexOf(textData) > -1;
@@ -106,45 +92,59 @@ export default class SearchScreen extends Component {
         );
     };
 
-    sortFilter(value) {
+    sortData(value) {
         if (value === 0) {
             const sortData = this.state.dataSource.sort(function (a, b) {
-                return a.tc_giaBan - b.tc_giaBan;
+                return a.tc_giaBan - b.tc_giaBan
             }
             );
             this.setState({ dataSource: sortData });
-            console.log(sortData); 
-            
         }
         if (value === 1) {
             const sortData = this.state.dataSource.sort(function (a, b) {
                 return b.tc_giaBan - a.tc_giaBan
-            });
+            }
+            );
             this.setState({ dataSource: sortData });
-            console.log(sortData); 
         }
-        
+
     }
 
     async Filter(idCategory) {
         await this.setState({ arrayholder: this.state.data });
         const filterCategory = this.state.arrayholder.filter(x => x.g_id === idCategory);
         this.setState({ dataSource: filterCategory, arrayholder: filterCategory, chonLoai: idCategory });
-        console.log(idCategory);
+        //console.log(idCategory);
     }
 
-    
+
     renderItem = ({ item }) => {
+        const percent = parseInt(item.giatri)
         return (
             <View style={styles.viewCard}>
                 <View style={styles.Card}>
                     <Image style={styles.Image} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
+                    {
+                        item.giatri != null &&
+                        <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+                            <Text style={{ color: 'white' }}>
+                                -{item.giatri}%
+                            </Text>
+                        </View>
+                    }
                     <Text style={styles.Text}>{item.tc_ten}</Text>
-                    <Text style={styles.TextCurren}>{this.currencyFormat(item.tc_giaBan)}</Text>
+                    <Text style={item.giatri != null ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                    {
+                        item.giatri != null &&
+                        <Text style={styles.giaMoi}>
+                            {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * ( 1 - (percent/100) ))}
+                        </Text>
+                    }
+                    
                 </View>
                 <View style={styles.viewButton}>
                     <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })} >
-                        <Icon name="eye" type="FontAwesome" />
+                        <Icon name="eye" type="FontAwesome" style={{ color: 'white' }} />
                         <Text style={styles.textCont}>Xem chi tiết</Text>
                     </TouchableOpacity>
                 </View>
@@ -169,7 +169,7 @@ export default class SearchScreen extends Component {
                             <Input
                                 style={styles.input}
                                 placeholder="Search"
-                                onChangeText={text => this.SearchFilter(text)}
+                                onChangeText={(text) => this.SearchFilter(text)}
                                 value={this.state.text}
                                 underlineColorAndroid="transparent"
                             />
@@ -177,20 +177,20 @@ export default class SearchScreen extends Component {
                     </Body>
                     <Right>
                         <Button
-                            style={{ backgroundColor: '#ff00ff'}}
+                            style={{ backgroundColor: '#ff00ff' }}
                             onPress={() =>
                                 ActionSheet.show(
                                     {
                                         options: [
-                                            {text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4"},
-                                            {text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced"},
-                                            {text: "Hủy", icon: "close", iconColor: "#25de5b"}
-                                             ],
+                                            { text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4" },
+                                            { text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced" },
+                                            { text: "Hủy", icon: "close", iconColor: "#25de5b" }
+                                        ],
                                         cancelButtonIndex: 2,
                                         title: "Lọc"
                                     },
                                     buttonIndex => {
-                                        this.sortFilter(buttonIndex);
+                                        this.sortData(buttonIndex);
                                     }
                                 )}
                         >
@@ -201,7 +201,7 @@ export default class SearchScreen extends Component {
                 <ScrollView horizontal={true} style={{ flexDirection: 'row', margin: 5 }}>
                     <View>
                         <TouchableOpacity style={styles.filter} onPress={() => { this.setState({ dataSource: this.state.data, arrayholder: this.state.data, chonLoai: 0 }) }}>
-                            <Text style={{ fontWeight: 'bold'}}>
+                            <Text style={{ fontWeight: 'bold', color: 'white' }}>
                                 Tất cả
                             </Text>
                         </TouchableOpacity>
@@ -209,9 +209,9 @@ export default class SearchScreen extends Component {
                     <View style={{ flexDirection: 'row' }}>
                         {
                             this.state.category.map(e => {
-                                return(
+                                return (
                                     <TouchableOpacity style={styles.filter} key={e.g_id} onPress={() => this.Filter(e.g_id)} >
-                                        <Text style={{ fontWeight: 'bold'}}>
+                                        <Text style={{ fontWeight: 'bold', color: 'white' }}>
                                             {e.g_ten}
                                         </Text>
                                     </TouchableOpacity>
@@ -225,7 +225,6 @@ export default class SearchScreen extends Component {
                         data={this.state.dataSource}
                         ItemSeparatorComponent={this.FlatViewItemSeparator}
                         renderItem={this.renderItem}
-                        //enableEmptySections={true}
                         keyExtractor={item => item.tc_id}
                         numColumns={2}
                     />
@@ -249,19 +248,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewCard: {
-        height: 280,
+        height: 320,
         width: 210,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 15,
     },
     Card: {
-        height: 220,
+        height: 260,
         width: 185,
         elevation: 3,
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 7
+        borderRadius: 7,
+        position: 'relative',
+        //justifyContent: 'center'
     },
     viewSearch: {
         borderRadius: 25,
@@ -327,5 +328,16 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         flexDirection: 'row',
         justifyContent: 'center',
+    },
+    giaMoi: {
+        color: 'red',
+        fontSize: 18,
+        textAlign: 'center'
+    },
+    giaCu: {
+        color: 'black',
+        fontSize: 18,
+        textDecorationLine: 'line-through',
+        textAlign: 'center'
     },
 })

@@ -1,30 +1,44 @@
 import React, { Component } from 'react';
-import { Icon, CardItem, Card, Left, Right, Body, Button } from 'native-base';
+import { Icon, CardItem, Card, Left, Body, Button, Header } from 'native-base';
 import { StyleSheet, View, TouchableOpacity, Text, Image, FlatList } from 'react-native';
 import { connect } from 'react-redux';
-import RNPaypal from 'react-native-paypal-android';
 
-const client = {
-    sandbox: 'Ab8TrmGWdj0gBEMT-ScrcED4uZFwv9pbesmu2lex5ey3isdJzOFIrqwuxJh99yLB2EivWaa1y0lMzC6Y',
-}
 
 class GioHangScreen extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            //hide: true
+        }
     }
 
-    componentDidMount() {
-        console.log(this.props.cart);
-        console.log(this.props.total);
+    // componentDidMount() {
+    //     console.log(this.props.hoso.length);
+    //     //console.log(this.props.cart);
+    //     // if(this.props.cart.length > 0){
+    //     //     this.setState({ hide: false })
+    //     // }
+    // }
+
+    Auth = () => {
+        if (this.props.hoso.length == 0) {
+            this.props.navigation.navigate('Login', { back: 'GioHangScreen' });
+
+        } else {
+            this.props.navigation.navigate('ThanhToan');
+            //console.log(this.props.hoso.length);
+        }
+        console.log(this.props.hoso);
+        // console.log(this.props.total);
+        // console.log(this.props.cart);
     }
 
-    StringtoInt(num){
+    StringtoInt(num) {
         return parseInt(num);
     }
 
     currencyFormat(num) {
-        num = parseInt(num)
         return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
     }
 
@@ -34,23 +48,32 @@ class GioHangScreen extends Component {
                 <Card>
                     <CardItem>
                         <Left>
-                            <CardItem>
+                            <View style={{position: 'relative'}}>
                                 <Image style={styles.imageCard} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
-                            </CardItem>
-                        </Left>
-                        <Body style={{ flexDirection: 'column' }}>
-                            <CardItem>
-                                <Text style={styles.txtCard}>{item.tc_ten}</Text>
-                            </CardItem>
-                            <CardItem>
-                                <Text style={styles.txtCard}>{this.currencyFormat(item.tc_giaBan)}</Text>
-                            </CardItem>
-                            <View style={styles.viewButton}>
-                                <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
-                                    <Icon name="highlight-off" type="MaterialIcons" />
-                                    <Text style={styles.txtButton}>Hủy</Text>
-                                </Button>
+                                {
+                                    item.km != null &&
+                                    <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center' }}>
+                                        <View style={{marginLeft: -10}}>
+                                            <Text style={{ color: 'white' }}>
+                                            -{item.km}%
+                                            </Text>
+                                        </View>
+                                    </View>
+                                }
                             </View>
+                        </Left>
+                        <Body style={{ flexDirection: 'column', marginLeft: 30, marginTop: 5 }}>
+                            <Text style={styles.txtCard}>{item.tc_ten}</Text>
+                            <Text style={item.km != 0 ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(item.tc_giaBan)}</Text>
+                            {
+                                item.km != 0 &&
+                                <Text style={styles.giaMoi}>{this.currencyFormat(item.giaKM)}</Text>
+                            }
+                            <Text style={styles.txtCard}>{(item.tc_tuoi)}</Text>
+                            <Button iconLeft onPress={() => { this.props.dispatch({ type: 'REMOVE_FROM_CART', payload: item }) }}>
+                                <Icon name="highlight-off" type="MaterialIcons" />
+                                <Text style={styles.txtButton}>Hủy</Text>
+                            </Button>
                         </Body>
                     </CardItem>
                 </Card>
@@ -58,79 +81,73 @@ class GioHangScreen extends Component {
         )
     };
 
-
     render() {
         return (
             <View style={styles.container}>
+                <Header transparent />
                 <FlatList
                     data={this.props.cart}
                     renderItem={this.renderItem}
                     numColumn={1}
-                    keyExtractor={item => item.ha_id}
+                    keyExtractor={item => item.ha_ten}
                 />
-                <TouchableOpacity>
+                <TouchableOpacity >
                     <View style={styles.viewTotal}>
-                        <Text style={styles.txtCard}>Tổng tiền</Text>
-                        <Text style={styles.txtCard}>{this.currencyFormat(this.props.total)}</Text>
+                        <Text style={styles.txtView}>Tổng tiền</Text>
+                        <Text style={styles.txtView}>{this.currencyFormat(this.props.total)}</Text>
                     </View>
                 </TouchableOpacity>
                 {
                     this.props.total > 0 &&
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ThanhToan')}>
+                    <TouchableOpacity onPress={this.Auth}>
                         <View style={styles.viewTotal}>
-                            <Text style={styles.txtCard}>Thanh toán</Text>
+                            <Text style={styles.txtView}>Thanh toán</Text>
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity >
                 }
             </View>
         )
     }
 }
 
-const mapStatetoProps = (state) => {
-    return {
-        cart: state.cart,
-        total: state.total
-    }
-}
 
-export default connect(mapStatetoProps)(GioHangScreen);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    background: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'space-around',
-        alignItems: 'center'
-    },
-    viewContent: {
-        textAlign: 'center',
-        color: 'blue',
-        fontSize: 24,
-        justifyContent: 'center'
-    },
     imageCard: {
-        height: 100,
-        width: 100,
+        height: 150,
+        width: 150,
     },
     txtCard: {
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
         color: 'black',
         fontSize: 18,
         marginHorizontal: 5,
         flexDirection: 'row'
     },
-    viewButton: {
-        flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        paddingHorizontal: 5,
-        marginLeft: 10,
-        justifyContent: 'center', 
-        alignItems: 'center',
+    giaMoi: {
+        color: 'red',
+        fontSize: 18,
+        textAlign: 'center',
+        marginHorizontal: 5,
+        flexDirection: 'row'
+    },
+    giaCu: {
+        color: 'black',
+        fontSize: 18,
+        textDecorationLine: 'line-through',
+        textAlign: 'center',
+        marginHorizontal: 5,
+        flexDirection: 'row'
+    },
+    txtView: {
+        fontWeight: 'bold',
+        color: 'white',
+        fontSize: 18,
+        marginHorizontal: 5,
+        flexDirection: 'row'
     },
     txtButton: {
         fontSize: 16,
@@ -151,23 +168,7 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         height: 50
     },
-    viewPaypal: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center'
-    },
-    btnPaypal: {
-        paddingVertical: 10,
-        marginHorizontal: 16,
-        borderRadius: 25,
-        marginBottom: 5,
-        height: 50,
-        justifyContent: 'space-around',
-        alignContent: 'center',
-        backgroundColor: '#ff00ff',
-    },
     cardCart: {
-        //borderBottomWidth: 1,
         borderTopWidth: 1,
         paddingHorizontal: 10,
         borderColor: 'silver',
@@ -176,3 +177,13 @@ const styles = StyleSheet.create({
         paddingTop: 16
     }
 });
+
+function mapStateToProps(state) {
+    return {
+        cart: state.cart,
+        total: state.total,
+        hoso: state.hoso,
+    }
+}
+
+export default connect(mapStateToProps)(GioHangScreen);

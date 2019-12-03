@@ -10,7 +10,7 @@ const client = {
   sandbox: 'Ab8TrmGWdj0gBEMT-ScrcED4uZFwv9pbesmu2lex5ey3isdJzOFIrqwuxJh99yLB2EivWaa1y0lMzC6Y',
 }
 
-class ThanhToan extends Component {
+class Test extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,41 +50,42 @@ class ThanhToan extends Component {
   sendData = () => {
     const data = {
       kh_taiKhoan: this.props.hoso[0].kh_taiKhoan,
-      dh_nguoiNhan: this.state.khachhang,
-      dh_dienThoai: this.state.dienthoai,
-      dh_tongGia: this.props.total,
-      dh_diaChi: this.state.diachi,
-      httt_id: this.state.httt,
-      ttdh_id: 1,
+    //   dh_nguoiNhan: this.state.khachhang,
+    //   dh_dienThoai: this.state.dienthoai,
+    //   dh_tongGia: this.props.total,
+    //   dh_diaChi: this.state.diachi,
+    //   httt_id: this.state.httt,
+    //   ttdh_id: 1,
       cart: this.props.cart
     }
     axios.post('http://10.0.2.2:8000/dathang', { data })
       .then(res => {
         console.log(res.data);
-        //console.log(res.data.donhang);
-        if (res.error) {
-          Toast.show({
-            text: "Đặt hàng không thành công !",
-            buttonText: "Okay",
-            type: 'danger',
-          })
-        }
-        else {
-          Toast.show({
-            text: "Đặt hàng thành công !",
-            buttonText: "Okay",
-            type: 'success',
-          });
-          this.props.dispatch({ type: 'THANH_TOAN' });
-          this.props.navigation.navigate('GioHangScreen');
-        }
+        //console.log(this.props.cart);
+        //console.log(this.props.hoso);
+        // if (res.error) {
+        //   Toast.show({
+        //     text: "Đặt hàng không thành công !",
+        //     buttonText: "Okay",
+        //     type: 'danger',
+        //   })
+        // }
+        // else {
+        //   Toast.show({
+        //     text: "Đặt hàng thành công !",
+        //     buttonText: "Okay",
+        //     type: 'success',
+        //   });
+        //   this.props.dispatch({ type: 'THANH_TOAN' });
+        //   this.props.navigation.navigate('GioHangScreen');
+        // }
       }).catch(error => {
         console.log(error);
-        Toast.show({
-          text: "Đặt hàng không thành công !",
-          buttonText: "Okay",
-          type: 'danger',
-        })
+        // Toast.show({
+        //   text: "Đặt hàng không thành công !",
+        //   buttonText: "Okay",
+        //   type: 'danger',
+        // })
       })
   }
 
@@ -157,52 +158,13 @@ class ThanhToan extends Component {
                         currency: 'USD',
                         mode: RNPaypal.constants.mode.PAYMENT_INTENT_SALE
                       });
-                      const data = {
-                        kh_taiKhoan: this.props.hoso[0].kh_taiKhoan,
-                        dh_nguoiNhan: this.state.khachhang,
-                        dh_dienThoai: this.state.dienthoai,
-                        dh_tongGia: this.props.total,
-                        dh_diaChi: this.state.diachi,
-                        httt_id: this.state.httt,
-                        ttdh_id: 1,
-                        cart: this.props.cart
-                      }
-                      axios.post('http://10.0.2.2:8000/dathang', { data })
-                        .then(res => {
-                          console.log(res.data);
-                          //console.log(res.data.donhang);
-                          if (res.error) {
-                            Toast.show({
-                              text: "Đặt hàng không thành công !",
-                              buttonText: "Okay",
-                              type: 'danger',
-                            })
-                          }
-                          else {
-                            Toast.show({
-                              text: "Đặt hàng thành công !",
-                              buttonText: "Okay",
-                              type: 'success',
-                            });
-                            this.props.dispatch({ type: 'THANH_TOAN' });
-                            this.props.navigation.navigate('GioHangScreen');
-                          }
-                        }).catch(error => {
-                          console.log(error);
-                          Toast.show({
-                            text: "Đặt hàng không thành công !",
-                            buttonText: "Okay",
-                            type: 'danger',
-                          })
-                        })
-                      //console.log(pay);// SUCESSS
+                      //this.sendData;
+                      console.log(pay);// SUCESSS
+                      this.props.dispatch({ type: 'THANH_TOAN' });
+                      //alert('Bạn đã thanh toán thành công');
                     } catch (e) {
                       console.log(e);// NO MONEY :()
-                      Toast.show({
-                        text: "Đặt hàng không thành công !",
-                        buttonText: "Okay",
-                        type: 'danger',
-                      })// NO MONEY :()
+                      alert('Bạn đã thanh toán thất bại')
                     }
                   }}
                 >
@@ -214,8 +176,8 @@ class ThanhToan extends Component {
               {
                 this.state.httt === 2 &&
                 <Button rounded
-                  onPress={this.sendData}
                   style={styles.btnPaypal}
+                  onPress={this.sendData}
                 >
                   <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Thanh toán tại cửa hàng</Text>
                 </Button>
@@ -282,4 +244,4 @@ function mapStateToProps(state) {
     hoso: state.hoso
   }
 }
-export default connect(mapStateToProps)(ThanhToan);
+export default connect(mapStateToProps)(Test);

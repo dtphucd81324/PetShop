@@ -2,41 +2,100 @@
 import React, { Component } from 'react';
 import {
     StyleSheet, Text, View,
-    TouchableOpacity, Image, TextInput, StatusBar,
+    TouchableOpacity, Image, TextInput,
     AsyncStorage, ActivityIndicator, ScrollView
 } from 'react-native';
-import { Icon, Button, Header, Left, Right } from 'native-base';
+import { Icon, Button, Header, Left, Right, Toast } from 'native-base';
 //import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
-import Homepage from './Homepage';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 
-const userInfo = {
-    email: 'admin',
-    password: '123456'
-}
-
-export default class Login extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: ''
+            userName: '',
+            passWord: '',
+            loading: false,
+            errorUserName: false,
+            errorPassWord: false,
+            showToast: false,
+            back: '',
+            //tk: null
         }
-        //this._loadData();
     };
 
-    // _loadData = async () => {
-    //     const logged = await AsyncStorage.getItem('logged');
-    //     this.props.navigation.navigate(logged !== '1' ? 'Login' : 'Homepage');
-    // }
+    check = () => {
+        this.state.userName === '' ? this.setState({ errorUserName: true }) : this.setState({ errorUserName: false });
+        this.state.passWord === '' ? this.setState({ errorPassWord: true }) : this.setState({ errorPassWord: false });
+    }
+
+    componentDidMount(){
+        this.setState({back: this.props.navigation.state.params.back});
+        
+    }
+
+    _signInAsync = async () => {
+        this.check();
+        if (this.state.userName != '' && this.state.passWord != '') {
+            this.setState({ errorUserName: false, errorPassWord: false, });
+            const data = {
+                kh_taiKhoan: this.state.userName,
+                kh_matKhau: this.state.passWord,
+            }
+             axios.post('http://10.0.2.2:8000/login', { data })
+                .then(res => {
+                    //console.log(res.data.tk)
+                    //console.log(res);
+                    if (res.data.error) {
+                        this.setState({ errorUserName: true, errorPassWord: true });
+                        this.setState({ loading: true });
+                        Toast.show({
+                            text: "Sai tên đăng nhập hoặc mật khẩu !!!",
+                            buttonText: "Okay",
+                            buttonTextStyle: { color: "white" },
+                            buttonStyle: { backgroundColor: "red" },
+                            position: "bottom",
+                            type: "danger"
+                        })
+                    } else {
+                        console.log(res.data.kh)
+                        Toast.show({
+                            text: "Đăng nhập thành công !!!",
+                            buttonText: "Okay",
+                            buttonTextStyle: { color: "white" },
+                            buttonStyle: { backgroundColor: "green" },
+                            position: "bottom",
+                            type: "success"
+                        })
+                        this.props.dispatch({ type: 'DANG_NHAP', payload: res.data.kh });
+                        this.setState({ loading: true });
+                        if(this.state.back === 'ThongTinScreen'){
+                            this.props.navigation.navigate('ThongTinScreen')
+                        }else if(this.state.back === 'GioHangScreen'){
+                            this.props.navigation.navigate('ThanhToan')
+                        }
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+        }
+    }
 
     render() {
         return (
             <ScrollView>
                 <Header transparent>
                     <Left>
-                        <Button onPress={() => this.props.navigation.navigate('ThongTinScreen')} style={{ backgroundColor: '#ff00ff' }}>
+                        <Button onPress={() => {
+                            if(this.state.back === 'ThongTinScreen'){
+                                this.props.navigation.navigate('ThongTinScreen')
+                            }else if(this.state.back === 'GioHangScreen'){
+                                this.props.navigation.navigate('GioHangScreen')
+                            }
+                        }} style={{ backgroundColor: '#ff00ff' }}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
@@ -48,28 +107,33 @@ export default class Login extends Component {
                     </View>
                     <View style={styles.container}>
                         <TextInput style={styles.inputBox}
-                            placeholder="Email"
+                            placeholder="Tài khoản"
                             placeholderTextColor="#ffffff"
                             keyboardType="email-address"
                             returnKeyType='next'
                             autoCorrect={false}
-                            onChangeText={(email) => this.setState({ email })}
-                            value={this.state.email}
+                            onChangeText={(userName) => this.setState({ userName })}
+                            value={this.state.userName}
                             onSubmitEditing={() => this.refs.txtPassword.focus()}
                         />
                         <TextInput style={styles.inputBox}
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             returnKeyType='go'
                             secureTextEntry={true}
                             placeholderTextColor="#ffffff"
-                            onChangeText={(password) => this.setState({ password })}
-                            value={this.state.password}
+                            onChangeText={(passWord) => this.setState({ passWord })}
+                            value={this.state.passWord}
                             autoCorrect={false}
                             ref={"txtPassword"}
                         />
                         <TouchableOpacity style={styles.button}
-                            onPress={this._login}>
-                            <Text style={styles.buttonText}>Đăng nhập</Text>
+                            onPress={this._signInAsync} disabled={this.state.loading}>
+                                {
+                                    !this.state.loading && <Text style={styles.buttonText}>Đăng nhập</Text>
+                                }
+                                {
+                                    this.state.loading && <ActivityIndicator size="large" color="white" />
+                                }
                         </TouchableOpacity>
                     </View>
                     <View style={styles.container}>
@@ -85,45 +149,12 @@ export default class Login extends Component {
             </ScrollView>
         )
     }
-
-    _login = async () => {
-        if (userInfo.email === this.state.email && userInfo.password === this.state.password) {
-            alert('Login successful!!!');
-            await AsyncStorage.setItem('logged', '1');
-            this.props.navigation.navigate('Homepage');
-        } else {
-            alert('Login failed!!!');
-        }
-    }
-
 }
-
-
-// class AuthLoadingScreen extends Component {
-
-//     constructor(props) {
-//         super(props);
-
-//     }
-
-//     render() {
-//         return (
-//             <View style={styles.container}>
-//                 <ActivityIndicator />
-//                 <StatusBar barStyle="default" />
-//             </View>
-//         );
-//     }
-
-
-// }
 
 
 const styles = StyleSheet.create({
     container: {
-        //backgroundColor: '#455a64',
         backgroundColor: 'white',
-        //flexGrow: 1,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -144,11 +175,9 @@ const styles = StyleSheet.create({
 
     logoContainer: {
         justifyContent: 'flex-end',
-        //justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
         height: 120,
-        //flexGrow: 1,
         flex: 1,
     },
     logo: {
@@ -178,7 +207,8 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         width: 300,
         paddingVertical: 13,
-        marginVertical: 10
+        marginVertical: 10,
+        //marginTop: 50
     },
 
     buttonText: {
@@ -200,3 +230,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 }); 
+
+function mapStateToProps(state){
+    return{
+        hoso: state.hoso
+    }
+}
+
+export default connect(mapStateToProps)(Login);
