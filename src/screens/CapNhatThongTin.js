@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView, Toast } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet, TextInput, ScrollView, Toast, ActivityIndicator } from 'react-native';
 import { Icon, Button, Header, Left, Right, Item, Input, DatePicker } from 'native-base';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 
-class LienHe extends Component {
+class CapNhatThongTin extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,7 +44,7 @@ class LienHe extends Component {
     }
 
     getData = () => {
-        return fetch("http://10.0.2.2:8000/thongtinkh/" + this.props.hoso[0].kh_taiKhoan, {
+        return fetch("http://petshopct.herokuapp.com/public/thongtinkh/" + this.props.hoso[0].kh_taiKhoan, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -89,7 +89,7 @@ class LienHe extends Component {
                 kh_ngaySinh: this.state.birthDate,
                 kh_gioiTinh: this.state.sex,
             }
-            axios.post('http://10.0.2.2:8000/capnhatthongtin', { data })
+            axios.post('http://petshopct.herokuapp.com/public/capnhatthongtin', { data })
                 .then(res => {
                     console.log(res.data.kh);
                     if (res.error) {
@@ -103,8 +103,6 @@ class LienHe extends Component {
                             position: "bottom",
                             type: "danger"
                         })
-                        //this.props.dispatch({ type: 'DANG_XUAT' });
-
                     }
                     else {
                         Toast.show({
@@ -130,6 +128,16 @@ class LienHe extends Component {
                         type: "danger"
                     })
                 })
+        }else{
+            this.setState({ loading: false });
+            Toast.show({
+                text: "Cập nhật không thành công",
+                buttonText: "Okay",
+                buttonTextStyle: { color: "white" },
+                buttonStyle: { backgroundColor: "red" },
+                position: "bottom",
+                type: "danger"
+            })
         }
     }
     render() {
@@ -137,7 +145,7 @@ class LienHe extends Component {
             <ScrollView>
                 <Header transparent>
                     <Left>
-                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#2ABB9C' }}>
+                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#f74877' }}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
@@ -146,7 +154,7 @@ class LienHe extends Component {
                 {
                     this.state.isLoading &&
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                        <ActivityIndicator size="large" color="#ff00ff" />
+                        <ActivityIndicator size="large" color="#f74877" />
                     </View>
                 }
                 {
@@ -155,58 +163,51 @@ class LienHe extends Component {
                         <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginBottom: 20 }}>
                             <Text style={styles.headerTitle}>Thay đổi thông tin</Text>
                         </View>
-                        <View style={styles.body}>
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Tên đăng nhập"
-                                autoCapitalize="none"
-                                value={this.state.userName}
-                                onChangeText={(userName) => this.setState({ userName })}
-                            />
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Mật khẩu mới"
-                                autoCapitalize="none"
-                                value={this.state.passWord}
-                                onChangeText={(passWord) => this.setState({ passWord })}
-                                secureTextEntry={true}
-                            />
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Họ tên"
-                                autoCapitalize="none"
-                                value={this.state.name}
-                                onChangeText={(name) => this.setState({ name })}
-                            />
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Email"
-                                autoCapitalize="none"
-                                value={this.state.mail}
-                                onChangeText={(mail) => this.setState({ mail })}
-
-                            />
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Số điện thoại"
-                                autoCapitalize="none"
-                                value={this.state.phone}
-                                onChangeText={(phone) => this.setState({ phone })}
-
-                            />
-                            <TextInput
-                                style={styles.textInput}
-                                placeholder="Địa chỉ"
-                                autoCapitalize="none"
-                                value={this.state.address}
-                                onChangeText={(address) => this.setState({ address })}
-                            />
-                            <Item regular style={styles.textInput}>
+                        <View style={{ flex: 1, justifyContent: 'center', textAlign: 'center', paddingHorizontal: 10, }}>
+                            <Item regular style={styles.Item}>
+                                <Icon name="user" type="Feather" style={styles.Icon} />
+                                <Input placeholder="Tên đăng nhập" value={this.state.userName} onChangeText={(userName) => this.setState({ userName })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon name="lock" type="Feather" style={styles.Icon} />
+                                <Input secureTextEntry placeholder="Mật khẩu" value={this.state.passWord} onChangeText={(passWord) => this.setState({ passWord })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon name="smile" type="Feather" style={styles.Icon} />
+                                <Input placeholder="Họ tên" value={this.state.name} onChangeText={(name) => this.setState({ name })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon name="at-sign" type="Feather" style={styles.Icon} />
+                                <Input placeholder="Email" value={this.state.mail} onChangeText={(mail) => this.setState({ mail })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon name="phone" type="Feather" style={styles.Icon} />
+                                <Input placeholder="Số điện thoại" value={this.state.phone} onChangeText={(phone) => this.setState({ phone })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon name="home" type="Feather" style={styles.Icon} />
+                                <Input placeholder="Địa chỉ" value={this.state.address} onChangeText={(address) => this.setState({ address })} />
+                            </Item>
+                            <Item regular style={styles.Item}>
+                                <Icon type='FontAwesome' name='calendar' style={styles.Icon} />
+                                <DatePicker
+                                    locale={"vi"}
+                                    defaultDate={new Date(this.state.birthDate)}
+                                    timeZoneOffsetInMinutes={undefined}
+                                    modalTransparent={false}
+                                    animationType={"fade"}
+                                    androidMode={"spinner"}
+                                    placeHolderText="Ngày sinh"
+                                    onDateChange={(birthDate) => this.setState({ birthDate })}
+                                    disabled={false}
+                                />
+                            </Item>
+                            <Item regular style={{ borderRadius: 20, marginBottom: 5, borderColor: '#f74877',borderWidth: 1, backgroundColor: '#FFFFFF', height: 45}}>
                                 <View style={{ flexDirection: 'row', marginRight: 40 }}>
-                                    <Icon name='heart' type='Entypo' style={styles.Icon} />
+                                    <Icon name='transgender-alt' type='FontAwesome' style={styles.Icon} />
                                     <Text style={{ fontSize: 16, marginLeft: 5 }}>
                                         Giới tính
-                                </Text>
+                                    </Text>
                                 </View>
                                 <TouchableOpacity onPress={() => this.setState({ sex: 1 })}>
                                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 40 }}>
@@ -215,7 +216,7 @@ class LienHe extends Component {
                                         </View>
                                         <Text style={{ fontSize: 16 }}>
                                             Nam
-                                    </Text>
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => this.setState({ sex: 0 })}>
@@ -225,26 +226,13 @@ class LienHe extends Component {
                                         </View>
                                         <Text style={{ fontSize: 16 }}>
                                             Nữ
-                                    </Text>
+                                        </Text>
                                     </View>
                                 </TouchableOpacity>
                             </Item>
-                            <Item regular style={styles.textInput}>
-                                <Icon type='Feather' name='gift' />
-                                <DatePicker
-                                    defaultDate={new Date(this.state.birthDate)}
-                                    locale={"vi"}
-                                    timeZoneOffsetInMinutes={undefined}
-                                    modalTransparent={false}
-                                    animationType={"fade"}
-                                    androidMode={"spinner"}
-                                    onDateChange={(birthDate) => this.setState({ birthDate })}
-                                    disabled={false}
-                                />
-                            </Item>
                             <TouchableOpacity style={styles.signInContainer} onPress={this.sendData} disabled={this.state.loading}>
                                 {
-                                    !this.state.loading && <Text style={{ color: 'white' }}>Xác nhận</Text>
+                                    !this.state.loading && <Text style={{ color: 'white', fontSize: 18 }}>Cập nhật</Text>
                                 }
                                 {
                                     this.state.loading && <ActivityIndicator size="large" color="white" />
@@ -284,21 +272,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    body: {
-        flex: 10,
-        backgroundColor: '#F6F6F6',
-        justifyContent: 'center'
-    },
-    textInput: {
-        height: 45,
-        marginHorizontal: 20,
-        backgroundColor: '#FFFFFF',
-        fontFamily: 'Avenir',
-        paddingLeft: 20,
+    Item: {
         borderRadius: 20,
         marginBottom: 5,
-        borderColor: '#2ABB9C',
-        borderWidth: 1
+        borderColor: '#f74877',
+        borderWidth: 1,
+        backgroundColor: '#FFFFFF',
+    },
+    Icon: {
+        color: '#f74877'
     },
     signInTextStyle: {
         color: '#FFF',
@@ -309,7 +291,7 @@ const styles = StyleSheet.create({
     },
     signInContainer: {
         marginHorizontal: 20,
-        backgroundColor: '#2ABB9C',
+        backgroundColor: '#f74877',
         borderRadius: 20,
         height: 45,
         alignItems: 'center',
@@ -327,7 +309,7 @@ const styles = StyleSheet.create({
         width: 20,
         borderRadius: 15,
         borderWidth: 2,
-        borderColor: '#ACACAC',
+        borderColor: '#f74877',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -345,4 +327,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(LienHe);
+export default connect(mapStateToProps)(CapNhatThongTin);

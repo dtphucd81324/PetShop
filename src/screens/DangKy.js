@@ -17,14 +17,12 @@ export default class DangKy extends Component {
       userName: '',
       passWord: '',
       name: '',
-      //birthDate: new Date(),
+      birthDate: new Date(),
       sex: null,
       phone: '',
       mail: '',
       address: '',
-      status: '',
-      wholeResult: '',
-      checked: null,
+      
     };
   }
 
@@ -35,10 +33,10 @@ export default class DangKy extends Component {
     var kh_diaChi = this.state.address;
     var kh_hoTen = this.state.name;
     var kh_dienThoai = this.state.phone;
-    //var kh_ngaySinh: this.state.birthDate;
+    var kh_ngaySinh = this.state.birthDate;
     var kh_email = this.state.mail;
     var kh_gioiTinh = this.state.sex;
-    axios.post('http://10.0.2.2:8000/dangky/create', {
+    axios.post('http://petshopct.herokuapp.com/public/dangky/create', {
       kh_taiKhoan: kh_taiKhoan,
       kh_matKhau: kh_matKhau,
       kh_diaChi: kh_diaChi,
@@ -46,23 +44,11 @@ export default class DangKy extends Component {
       kh_dienThoai: kh_dienThoai,
       kh_email: kh_email,
       kh_gioiTinh: kh_gioiTinh,
-      kh_ngaySinh: '1997-10-20'
+      kh_ngaySinh: kh_ngaySinh
     })
       .then(res => {
-        if (res.data.kh) {
+        if (res.error) {
           console.log(res.data);
-          Toast.show({
-            text: "Đăng ký thành công !!!",
-            buttonText: "Okay",
-            buttonTextStyle: { color: "white" },
-            buttonStyle: { backgroundColor: "green" },
-            position: "bottom",
-            type: "success"
-          })
-          this.props.dispatch({ type: 'DANG_XUAT' });
-          this.props.navigation.navigate('Login');
-        }
-        else{
           Toast.show({
             text: "Đăng ký không thành công !!!",
             buttonText: "Okay",
@@ -71,6 +57,18 @@ export default class DangKy extends Component {
             position: "bottom",
             type: "danger"
           })
+        }
+        else {
+          Toast.show({
+            text: "Đăng ký thành công !!!",
+            buttonText: "Okay",
+            buttonTextStyle: { color: "white" },
+            buttonStyle: { backgroundColor: "green" },
+            position: "bottom",
+            type: "success"
+          })
+          //this.props.dispatch({ type: 'DANG_XUAT' });
+          this.props.navigation.navigate('Login');
         }
       }).catch(error => {
         console.log(error);
@@ -94,7 +92,7 @@ export default class DangKy extends Component {
       <ScrollView>
         <Header transparent>
           <Left>
-            <Button onPress={() => this.props.navigation.navigate('Login')} style={{ backgroundColor: '#ff00ff' }}>
+            <Button onPress={() => this.props.navigation.navigate('Login')} style={{ backgroundColor: '#f74877' }}>
               <Icon name="undo" type="Ionicons" />
             </Button>
           </Left>
@@ -131,9 +129,10 @@ export default class DangKy extends Component {
               <Input placeholder="Địa chỉ" onChangeText={(address) => this.setState({ address })} />
             </Item>
             <Item regular style={styles.Item}>
-              <Icon type='Feather' name='gift' style={styles.Icon} />
+              <Icon type='FontAwesome' name='calendar' style={styles.Icon} />
               <DatePicker
                 locale={"vi"}
+                defaultDate={new Date(this.state.birthDate)}
                 timeZoneOffsetInMinutes={undefined}
                 modalTransparent={false}
                 animationType={"fade"}
@@ -145,7 +144,7 @@ export default class DangKy extends Component {
             </Item>
             <Item regular style={{ paddingTop: 10, paddingBottom: 10, flexDirection: 'row', borderRadius: 50, }}>
               <View style={{ flexDirection: 'row', marginRight: 40 }}>
-                <Icon name='heart' type='Entypo' style={styles.Icon} />
+                <Icon name='transgender-alt' type='FontAwesome' style={styles.Icon} />
                 <Text style={{ fontSize: 16, marginLeft: 5 }}>
                   Giới tính
                 </Text>
@@ -177,9 +176,16 @@ export default class DangKy extends Component {
                   Đăng ký
               </Text>
               </Button>
-              <Text>
-              </Text>
             </View>
+            {/* <View style={styles.container}>
+              <View style={styles.registerContent}>
+                <Text style={{ fontSize: 18, marginRight: 5 }}>Bạn đã có tài khoản?</Text>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('Login')}>
+                  <Text style={styles.textRegister}>Đăng nhập</Text>
+                </TouchableOpacity>
+              </View>
+            </View> */}
           </View>
         </View>
       </ScrollView>
@@ -189,11 +195,30 @@ export default class DangKy extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 15
+  },
+  registerContent: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    paddingVertical: 16,
+    flexDirection: 'row'
+  },
+  textRegister: {
+    fontSize: 18,
+    color: '#f74877',
+    marginRight: 2,
+    fontWeight: 'bold'
+  },
   btnDangky: {
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 50,
-    backgroundColor: '#ff00ff'
+    backgroundColor: '#f74877'
   },
   textContainer: {
     fontSize: 28,
@@ -205,10 +230,10 @@ const styles = StyleSheet.create({
   },
   Item: {
     borderRadius: 50,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   Icon: {
-    color: '#ff00ff'
+    color: '#f74877'
   },
   registerContent: {
     //flexGrow: 1,
@@ -218,7 +243,7 @@ const styles = StyleSheet.create({
   },
   textRegister: {
     fontSize: 18,
-    color: '#ff00ff',
+    color: '#f74877',
     marginRight: 2,
     fontWeight: "bold"
   },
@@ -226,7 +251,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 7,
-    backgroundColor: '#f66',
+    backgroundColor: '#f74877',
   },
   circle: {
     marginLeft: 5,

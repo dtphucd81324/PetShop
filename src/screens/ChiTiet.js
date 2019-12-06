@@ -125,6 +125,9 @@ class ChiTiet extends Component {
         }
 
     }
+    sendData = () => {
+        
+    }
 
     comment = () => {
         if (this.state.comment != '') {
@@ -165,7 +168,7 @@ class ChiTiet extends Component {
         if (this.state.isLoading) {
             return (
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size="large" color="#ff00ff" />
+                <ActivityIndicator size="large" color="#f74877" />
               </View>
             )
           }
@@ -179,7 +182,7 @@ class ChiTiet extends Component {
                     <ScrollView>
                         <Header transparent>
                             <Left>
-                                <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff' }}>
+                                <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#f74877' }}>
                                     <Icon name="undo" type="Ionicons" />
                                 </Button>
                             </Left>
@@ -203,9 +206,9 @@ class ChiTiet extends Component {
                                                 <Text style={styles.txtChitiet}>{this.state.item.tc_ten}</Text>
                                             </View>
                                             <View style={{ marginTop: 10, paddingBottom: 10 }}>
-                                                <Text style={this.state.item.km != 0 ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(this.state.item.tc_giaBan))}</Text>
+                                                <Text style={(this.state.item.km != 0 && this.state.item.km != null ) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(this.state.item.tc_giaBan))}</Text>
                                                 {
-                                                    this.state.item.km != 0 && <Text style={styles.giaMoi}>{this.currencyFormat(this.state.item.tc_giaBan * (100 - this.state.percent) / 100)}</Text>
+                                                    (this.state.item.km != 0 && this.state.item.km != null ) && <Text style={styles.giaMoi}>{this.currencyFormat(this.state.item.tc_giaBan * (100 - this.state.percent) / 100)}</Text>
                                                 }
                                             </View>
                                         </View>
@@ -270,7 +273,7 @@ class ChiTiet extends Component {
                                                     <View style={{ margin: 5, justifyContent: 'center', alignItems: 'center' }}>
                                                         <Text>{this.state.item.tc_moTa}</Text>
                                                         <View style={{ margin: 5, justifyContent: 'center', alignItems: 'center' }}>
-                                                            <Button iconLeft style={{ backgroundColor: '#ff00ff', width: 100 }}
+                                                            <Button iconLeft style={{ backgroundColor: '#f74877', width: 110 }}
                                                                 onPress={() => {
                                                                     this.setModalVisible(!this.state.modalVisible);
                                                                 }}>
@@ -282,7 +285,7 @@ class ChiTiet extends Component {
                                                 </ScrollView>
                                             </View>
                                         </Modal>
-                                        <Button iconLeft style={{ backgroundColor: '#ff00ff' }}
+                                        <Button iconLeft style={{ backgroundColor: '#f74877' }}
                                             onPress={() => {
                                                 this.setModalVisible(true);
                                             }}>
@@ -338,11 +341,11 @@ class ChiTiet extends Component {
                     </ScrollView>
                 </View>
                 <View style={styles.viewButton}>
-                    <Button iconLeft onPress={this.buy} style={{ backgroundColor: '#ff00ff' }} >
+                    <Button iconLeft onPress={this.buy} style={{ backgroundColor: '#f74877' }} >
                         <Icon name="shopping-cart" type="Feather" />
                         <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
                     </Button>
-                    <Button iconLeft style={{ backgroundColor: '#ff00ff' }} onPress={() => this.props.navigation.navigate('VideoScreen', { data: this.state.danhsachhinhanhlienquan })}>
+                    <Button iconLeft style={{ backgroundColor: '#f74877' }} onPress={() => this.props.navigation.navigate('VideoScreen', { data: this.state.danhsachhinhanhlienquan })}>
                         <Icon name="eye" type="Feather" />
                         <Text style={styles.textCont}>Xem Video</Text>
                     </Button>

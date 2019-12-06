@@ -51,7 +51,7 @@ class GioHangScreen extends Component {
                             <View style={{position: 'relative'}}>
                                 <Image style={styles.imageCard} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
                                 {
-                                    item.km != null &&
+                                    (item.km != 0 && item.km != null ) &&
                                     <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center' }}>
                                         <View style={{marginLeft: -10}}>
                                             <Text style={{ color: 'white' }}>
@@ -64,9 +64,9 @@ class GioHangScreen extends Component {
                         </Left>
                         <Body style={{ flexDirection: 'column', marginLeft: 30, marginTop: 5 }}>
                             <Text style={styles.txtCard}>{item.tc_ten}</Text>
-                            <Text style={item.km != 0 ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(item.tc_giaBan)}</Text>
+                            <Text style={(item.km != 0 && item.km != null ) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(item.tc_giaBan)}</Text>
                             {
-                                item.km != 0 &&
+                                (item.km != 0 && item.km != null ) &&
                                 <Text style={styles.giaMoi}>{this.currencyFormat(item.giaKM)}</Text>
                             }
                             <Text style={styles.txtCard}>{(item.tc_tuoi)}</Text>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: '#ff00ff',
+        backgroundColor: '#dcdcdc',
         paddingVertical: 10,
         marginHorizontal: 16,
         borderRadius: 25,

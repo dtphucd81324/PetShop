@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Thumbnail, Button } from 'native-base';
-import { StyleSheet, View, SafeAreaView, ScrollView, Text, ActivityIndicator, AsyncStorage, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Text, ActivityIndicator, AsyncStorage, TouchableOpacity } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 
@@ -102,20 +102,20 @@ class ThongTinScreen extends Component {
                         </View>
                         <View style={{ flex: 1 }}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('LichSuGiaoDich')}>
-                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                    <Icon name="history" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#f74877', }}>
+                                    <Icon name="history" type="FontAwesome" style={{ color: '#f74877' }} />
                                     <Text style={styles.textList}>Lịch sử giao dịch</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('CapNhatThongTin', {back: 'ThongTinScreen'})}>
-                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                    <Icon name="refresh" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#f74877', }}>
+                                    <Icon name="refresh" type="FontAwesome" style={{ color: '#f74877' }} />
                                     <Text style={styles.textList}>Cập nhật thông tin</Text>
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._signOutAsync}>
-                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#2ABB9C', }}>
-                                    <Icon name="reply-all" type="FontAwesome" style={{ color: '#2ABB9C' }} />
+                                <View style={{ flexDirection: 'row', margin: 10, padding: 10, borderBottomWidth: 1, borderColor: '#f74877', }}>
+                                    <Icon name="reply-all" type="FontAwesome" style={{ color: '#f74877' }} />
                                     <Text style={styles.textList}>Đăng xuất</Text>
                                 </View>
                             </TouchableOpacity>
@@ -127,8 +127,7 @@ class ThongTinScreen extends Component {
         else {
             return (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                    <Button iconLeft onPress={() => this.props.navigation.navigate('Login', {back: 'ThongTinScreen'})} style={{ backgroundColor: '#ff00ff' }} >
-                        {/* <Icon name="user-circle-o" type="FontAwesome" /> */}
+                    <Button iconLeft onPress={() => this.props.navigation.navigate('Login', {back: 'ThongTinScreen'})} style={{ backgroundColor: '#f74877' }} >
                         <Text style={styles.textCont}>Đăng nhập</Text>
                     </Button>
                 </View>
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         paddingLeft: 16,
-        color: 'silver'
+        color: '#f74877'
 
     },
     titleBar: {
@@ -193,7 +192,7 @@ const styles = StyleSheet.create({
         overflow: "hidden"
     },
     dm: {
-        backgroundColor: "#ff00ff",
+        backgroundColor: "#f74877",
         position: "absolute",
         top: 20,
         width: 40,
@@ -203,7 +202,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     active: {
-        backgroundColor: "#34FFB9",
+        backgroundColor: "#f74877",
         position: "absolute",
         bottom: 28,
         left: 10,
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     add: {
-        backgroundColor: "#ff00ff",
+        backgroundColor: "#f74877",
         position: "absolute",
         bottom: 0,
         right: 0,

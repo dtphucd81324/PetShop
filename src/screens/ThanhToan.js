@@ -58,7 +58,7 @@ class ThanhToan extends Component {
       ttdh_id: 1,
       cart: this.props.cart
     }
-    axios.post('http://10.0.2.2:8000/dathang', { data })
+    axios.post('http://petshopct.herokuapp.com/public/dathang', { data })
       .then(res => {
         console.log(res.data);
         //console.log(res.data.donhang);
@@ -94,14 +94,14 @@ class ThanhToan extends Component {
       <ScrollView>
         <Header transparent>
           <Left>
-            <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff' }}>
+            <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#f74877' }}>
               <Icon name="undo" type="Ionicons" />
             </Button>
           </Left>
           <Right />
         </Header>
         <View style={{ margin: 10, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#ff00ff' }}>THANH TOÁN</Text>
+          <Text style={{ fontSize: 28, fontWeight: 'bold', color: '#f74877' }}>THANH TOÁN</Text>
         </View>
         <View style={{ margin: 20 }}>
           <Text style={styles.txtTT}>Khách hàng</Text>
@@ -125,7 +125,7 @@ class ThanhToan extends Component {
           </View>
           <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-around', margin: 10 }}>
             {
-              this.state.isLoading && <ActivityIndicator size="large" color="#f66" />
+              this.state.isLoading && <ActivityIndicator size="large" color="#f74877" />
             }
             {
               !this.state.isLoading && this.state.ht.map(e => {
@@ -167,7 +167,7 @@ class ThanhToan extends Component {
                         ttdh_id: 1,
                         cart: this.props.cart
                       }
-                      axios.post('http://10.0.2.2:8000/dathang', { data })
+                      axios.post('http://petshopct.herokuapp.com/public/dathang', { data })
                         .then(res => {
                           console.log(res.data);
                           //console.log(res.data.donhang);
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'space-around',
     alignContent: 'center',
-    backgroundColor: '#ff00ff',
+    backgroundColor: '#f74877',
   },
   circle: {
     height: 25,
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: '#f66',
+    backgroundColor: '#f74877',
   },
 });
 

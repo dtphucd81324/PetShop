@@ -45,7 +45,7 @@ class Login extends Component {
                 kh_taiKhoan: this.state.userName,
                 kh_matKhau: this.state.passWord,
             }
-             axios.post('http://10.0.2.2:8000/login', { data })
+             axios.post('http://petshopct.herokuapp.com/public/login', { data })
                 .then(res => {
                     //console.log(res.data.tk)
                     //console.log(res);
@@ -95,7 +95,7 @@ class Login extends Component {
                             }else if(this.state.back === 'GioHangScreen'){
                                 this.props.navigation.navigate('GioHangScreen')
                             }
-                        }} style={{ backgroundColor: '#ff00ff' }}>
+                        }} style={{ backgroundColor: '#f74877' }}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
@@ -195,7 +195,6 @@ const styles = StyleSheet.create({
 
     inputBox: {
         width: 300,
-        //backgroundColor: 'rgba(255,255,255,0.3)',
         backgroundColor: '#1c313a',
         borderRadius: 25,
         paddingHorizontal: 16,
@@ -208,7 +207,6 @@ const styles = StyleSheet.create({
         width: 300,
         paddingVertical: 13,
         marginVertical: 10,
-        //marginTop: 50
     },
 
     buttonText: {
@@ -225,7 +223,7 @@ const styles = StyleSheet.create({
     },
     textRegister: {
         fontSize: 18,
-        color: '#ff00ff',
+        color: '#f74877',
         marginRight: 2,
         fontWeight: 'bold'
     }

@@ -5,7 +5,7 @@ import { HINH } from './Data';
 //import { Root } from "native-base";
 
 
-export default class SearchScreen extends Component {
+class TimKiem extends Component {
 
     constructor(props) {
         super(props);
@@ -107,7 +107,6 @@ export default class SearchScreen extends Component {
             );
             this.setState({ dataSource: sortData });
         }
-
     }
 
     async Filter(idCategory) {
@@ -125,7 +124,7 @@ export default class SearchScreen extends Component {
                 <View style={styles.Card}>
                     <Image style={styles.Image} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
                     {
-                        item.giatri != null &&
+                        (item.giatri != null && item.giatri != 0) &&
                         <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                             <Text style={{ color: 'white' }}>
                                 -{item.giatri}%
@@ -133,14 +132,14 @@ export default class SearchScreen extends Component {
                         </View>
                     }
                     <Text style={styles.Text}>{item.tc_ten}</Text>
-                    <Text style={item.giatri != null ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                    <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
                     {
-                        item.giatri != null &&
+                        (item.giatri != null && item.giatri != 0) &&
                         <Text style={styles.giaMoi}>
-                            {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * ( 1 - (percent/100) ))}
+                            {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * (1 - (percent / 100)))}
                         </Text>
                     }
-                    
+
                 </View>
                 <View style={styles.viewButton}>
                     <TouchableOpacity style={styles.viewDetail} iconLeft onPress={() => this.props.navigation.navigate('ChiTiet', { item: item })} >
@@ -155,7 +154,7 @@ export default class SearchScreen extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" color="#ff00ff" />
+                    <ActivityIndicator size="large" color="#f74877" />
                 </View>
             )
         }
@@ -165,7 +164,7 @@ export default class SearchScreen extends Component {
                     <Left />
                     <Body>
                         <Item style={styles.Item}>
-                            <Icon name="search" style={{ marginLeft: 5 }} />
+                            <Icon name="search" style={{ marginLeft: 5, color: '#f74877' }} />
                             <Input
                                 style={styles.input}
                                 placeholder="Search"
@@ -177,20 +176,20 @@ export default class SearchScreen extends Component {
                     </Body>
                     <Right>
                         <Button
-                            style={{ backgroundColor: '#ff00ff' }}
+                            style={{ backgroundColor: '#f74877' }}
                             onPress={() =>
                                 ActionSheet.show(
                                     {
-                                        options: [
-                                            { text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4" },
-                                            { text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced" },
-                                            { text: "Hủy", icon: "close", iconColor: "#25de5b" }
+                                        options: ["Giá tăng dần", "Giá giảm dần", "Hủy"
+                                            // { text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4" },
+                                            // { text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced" },
+                                            // { text: "Hủy", icon: "close", iconColor: "#25de5b" }
                                         ],
                                         cancelButtonIndex: 2,
                                         title: "Lọc"
                                     },
                                     buttonIndex => {
-                                        this.sortData(buttonIndex);
+                                        this.sortData(buttonIndex)
                                     }
                                 )}
                         >
@@ -237,7 +236,8 @@ export default class SearchScreen extends Component {
 const styles = StyleSheet.create({
     Item: {
         borderWidth: 1,
-        backgroundColor: '#ff00ff',
+        borderColor: '#f74877',
+        backgroundColor: 'white',
         borderRadius: 50,
         margin: 5,
         width: 250
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
         // width: 150,
         // height: 40,
         borderWidth: 1,
-        backgroundColor: '#ff00ff',
+        backgroundColor: '#f74877',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderRadius: 25,
@@ -323,7 +323,7 @@ const styles = StyleSheet.create({
     viewDetail: {
         width: 180,
         height: 50,
-        backgroundColor: '#ff00ff',
+        backgroundColor: '#f74877',
         alignItems: 'center',
         borderRadius: 25,
         flexDirection: 'row',
@@ -341,3 +341,5 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
 })
+
+export default TimKiem;

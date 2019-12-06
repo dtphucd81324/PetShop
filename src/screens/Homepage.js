@@ -54,7 +54,13 @@ class Homepage extends Component {
 
     async getGiongThuCung() {
         try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_giong")
+            await fetch("http://petshopct.herokuapp.com/public/admin/list_giong", {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
@@ -100,7 +106,7 @@ class Homepage extends Component {
                             <View style={{ position: 'relative' }}>
                                 <Image style={{ width: 200, height: 200 }} source={{ uri: 'http://res.cloudinary.com/petshop/image/upload/' + item.ha_ten + '.png' }} />
                                 {
-                                    item.giatri != null &&
+                                    (item.giatri != null && item.giatri != 0) &&
                                     <View style={{ position: 'absolute', width: 40, height: 40, backgroundColor: '#f66', right: 0, justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
                                         <Text style={{ color: 'white' }}>
                                             -{item.giatri}%
@@ -116,9 +122,9 @@ class Homepage extends Component {
                         </CardItem>
                         <CardItem style={{ flexDirection: 'column', height: 50, paddingTop: -10, justifyContent: 'center' }}>
                             <View>
-                                <Text style={item.giatri != null ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                                <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
                                 {
-                                    item.giatri != null &&
+                                    (item.giatri != null && item.giatri != 0) &&
                                     <Text style={styles.giaMoi}>
                                         {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * (1 - (percent / 100)))}
                                     </Text>
@@ -136,7 +142,7 @@ class Homepage extends Component {
         if (this.state.isLoading) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" color="#ff00ff" />
+                    <ActivityIndicator size="large" color="#f74877" />
                 </View>
             )
         }

@@ -22,7 +22,7 @@ export default class VideoScreen extends Component {
             <ScrollView>
                 <Header transparent>
                     <Left>
-                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#ff00ff' }}>
+                        <Button onPress={() => this.props.navigation.goBack()} style={{ backgroundColor: '#f74877' }}>
                             <Icon name="undo" type="Ionicons" />
                         </Button>
                     </Left>
