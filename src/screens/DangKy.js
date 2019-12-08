@@ -22,69 +22,102 @@ export default class DangKy extends Component {
       phone: '',
       mail: '',
       address: '',
-      
+      errorUserName: false,
+      errorPassword: false,
+      errorAddress: false,
+      errorName: false,
+      errorMail: false,
+      errorPhone: false,
     };
   }
 
+  kiemtra = () => {
+    let error = true;
+    this.state.userName === '' ? this.setState({ errorUserName: true }) : this.setState({ errorUserName: false });
+    this.state.passWord === '' ? this.setState({ errorPassword: true }) : this.setState({ errorPassword: false });
+    this.state.address === '' ? this.setState({ errorAddress: true }) : this.setState({ errorAddress: false });
+    this.state.name === '' ? this.setState({ errorName: true }) : this.setState({ errorName: false });
+    this.state.phone === '' ? this.setState({ errorPhone: true }) : this.setState({ errorPhone: false });
+    this.state.mail === '' ? this.setState({ errorMail: true }) : this.setState({ errorMail: false });
+    if (this.state.userName == '' || this.state.address == '' || this.state.name == '' || this.state.phone == '' || this.state.mail == '') {
+      return error
+    } else {
+      error = false;
+      return error;
+    }
+  }
 
   sendData = async () => {
-    var kh_taiKhoan = this.state.userName;
-    var kh_matKhau = this.state.passWord;
-    var kh_diaChi = this.state.address;
-    var kh_hoTen = this.state.name;
-    var kh_dienThoai = this.state.phone;
-    var kh_ngaySinh = this.state.birthDate;
-    var kh_email = this.state.mail;
-    var kh_gioiTinh = this.state.sex;
-    axios.post('http://petshopct.herokuapp.com/public/dangky/create', {
-      kh_taiKhoan: kh_taiKhoan,
-      kh_matKhau: kh_matKhau,
-      kh_diaChi: kh_diaChi,
-      kh_hoTen: kh_hoTen,
-      kh_dienThoai: kh_dienThoai,
-      kh_email: kh_email,
-      kh_gioiTinh: kh_gioiTinh,
-      kh_ngaySinh: kh_ngaySinh
-    })
-      .then(res => {
-        if (res.error) {
-          console.log(res.data);
+    const validation = this.kiemtra();
+    if (validation == false) {
+      var kh_taiKhoan = this.state.userName;
+      var kh_matKhau = this.state.passWord;
+      var kh_diaChi = this.state.address;
+      var kh_hoTen = this.state.name;
+      var kh_dienThoai = this.state.phone;
+      var kh_ngaySinh = this.state.birthDate;
+      var kh_email = this.state.mail;
+      var kh_gioiTinh = this.state.sex;
+      axios.post("http://petshopct.herokuapp.com/public/dangky/create", {
+        kh_taiKhoan: kh_taiKhoan,
+        kh_matKhau: kh_matKhau,
+        kh_diaChi: kh_diaChi,
+        kh_hoTen: kh_hoTen,
+        kh_dienThoai: kh_dienThoai,
+        kh_email: kh_email,
+        kh_gioiTinh: kh_gioiTinh,
+        kh_ngaySinh: kh_ngaySinh
+      })
+        .then(res => {
+          if (res.error) {
+            this.setState({ errorUserName: true, errorPassWord: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
+            //console.log(res.data);
+            Toast.show({
+              text: "Dữ liệu nhập chưa đúng!!!",
+              buttonText: "Okay",
+              buttonTextStyle: { color: "white" },
+              buttonStyle: { backgroundColor: "red" },
+              position: "bottom",
+              type: "danger"
+            })
+          }
+          else {
+            this.setState({ errorUserName: false, errorPassWord: false, errorAddress: false, errorName: false, errorPhone: false, errorMail: false});
+            Toast.show({
+              text: "Đăng ký thành công !!!",
+              buttonText: "Okay",
+              buttonTextStyle: { color: "white" },
+              buttonStyle: { backgroundColor: "green" },
+              position: "bottom",
+              type: "success"
+            })
+            //this.props.dispatch({ type: 'DANG_XUAT' });
+            this.props.navigation.navigate('Login');
+          }
+        }).catch(error => {
+          console.log(error);
+          this.setState({ errorUserName: true, errorPassWord: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
           Toast.show({
-            text: "Đăng ký không thành công !!!",
+            text: "Đăng ký không thành công!!!",
             buttonText: "Okay",
             buttonTextStyle: { color: "white" },
             buttonStyle: { backgroundColor: "red" },
             position: "bottom",
             type: "danger"
           })
-        }
-        else {
-          Toast.show({
-            text: "Đăng ký thành công !!!",
-            buttonText: "Okay",
-            buttonTextStyle: { color: "white" },
-            buttonStyle: { backgroundColor: "green" },
-            position: "bottom",
-            type: "success"
-          })
-          //this.props.dispatch({ type: 'DANG_XUAT' });
-          this.props.navigation.navigate('Login');
-        }
-      }).catch(error => {
-        console.log(error);
-        Toast.show({
-          text: "Đăng ký không thành công !!!",
-          buttonText: "Okay",
-          buttonTextStyle: { color: "white" },
-          buttonStyle: { backgroundColor: "red" },
-          position: "bottom",
-          type: "danger"
         })
+    } else {
+      this.setState({ errorUserName: true, errorPassWord: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
+      Toast.show({
+        text: "Lỗi, chưa nhập đủ các trường!!!",
+        buttonText: "Okay",
+        buttonTextStyle: { color: "white" },
+        buttonStyle: { backgroundColor: "red" },
+        position: "bottom",
+        type: "danger"
       })
+    }
   }
-
-
-
 
 
   render() {
@@ -177,15 +210,6 @@ export default class DangKy extends Component {
               </Text>
               </Button>
             </View>
-            {/* <View style={styles.container}>
-              <View style={styles.registerContent}>
-                <Text style={{ fontSize: 18, marginRight: 5 }}>Bạn đã có tài khoản?</Text>
-                <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('Login')}>
-                  <Text style={styles.textRegister}>Đăng nhập</Text>
-                </TouchableOpacity>
-              </View>
-            </View> */}
           </View>
         </View>
       </ScrollView>

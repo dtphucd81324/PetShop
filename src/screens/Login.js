@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import {
     StyleSheet, Text, View,
     TouchableOpacity, Image, TextInput,
-    AsyncStorage, ActivityIndicator, ScrollView
+    ActivityIndicator, ScrollView
 } from 'react-native';
 import { Icon, Button, Header, Left, Right, Toast } from 'native-base';
-//import {createSwitchNavigator, createStackNavigator, createAppContainer} from 'react-navigation';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
@@ -40,15 +39,13 @@ class Login extends Component {
     _signInAsync = async () => {
         this.check();
         if (this.state.userName != '' && this.state.passWord != '') {
-            this.setState({ errorUserName: false, errorPassWord: false, });
+            this.setState({ errorUserName: false, errorPassWord: false });
             const data = {
                 kh_taiKhoan: this.state.userName,
                 kh_matKhau: this.state.passWord,
             }
-             axios.post('http://petshopct.herokuapp.com/public/login', { data })
+             axios.post("http://petshopct.herokuapp.com/public/login", { data })
                 .then(res => {
-                    //console.log(res.data.tk)
-                    //console.log(res);
                     if (res.data.error) {
                         this.setState({ errorUserName: true, errorPassWord: true });
                         this.setState({ loading: true });
@@ -61,7 +58,8 @@ class Login extends Component {
                             type: "danger"
                         })
                     } else {
-                        console.log(res.data.kh)
+                        //console.log(res.data.kh)
+                        this.setState({ errorUserName: false, errorPassWord: false, });
                         Toast.show({
                             text: "Đăng nhập thành công !!!",
                             buttonText: "Okay",
@@ -69,7 +67,7 @@ class Login extends Component {
                             buttonStyle: { backgroundColor: "green" },
                             position: "bottom",
                             type: "success"
-                        })
+                        });
                         this.props.dispatch({ type: 'DANG_NHAP', payload: res.data.kh });
                         this.setState({ loading: true });
                         if(this.state.back === 'ThongTinScreen'){
@@ -80,7 +78,26 @@ class Login extends Component {
                     }
                 }).catch(error => {
                     console.log(error);
+                    this.setState({ errorUserName: false, errorPassWord: false, });
+                    Toast.show({
+                        text: "Đăng nhập không thành công !!!",
+                        buttonText: "Okay",
+                        buttonTextStyle: { color: "white" },
+                        buttonStyle: { backgroundColor: "red" },
+                        position: "bottom",
+                        type: "danger"
+                    })
                 });
+        }else{
+            this.setState({ errorUserName: true, errorPassWord: true });
+            Toast.show({
+                text: "Bạn chưa nhập tài khoản hoặc mật khẩu!!!",
+                buttonText: "Okay",
+                buttonTextStyle: { color: "white" },
+                buttonStyle: { backgroundColor: "red" },
+                position: "bottom",
+                type: "danger"
+            })
         }
     }
 
@@ -128,12 +145,13 @@ class Login extends Component {
                         />
                         <TouchableOpacity style={styles.button}
                             onPress={this._signInAsync} disabled={this.state.loading}>
-                                {
+                                {/* {
                                     !this.state.loading && <Text style={styles.buttonText}>Đăng nhập</Text>
                                 }
                                 {
                                     this.state.loading && <ActivityIndicator size="large" color="white" />
-                                }
+                                } */}
+                                <Text style={styles.buttonText}>Đăng nhập</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.container}>

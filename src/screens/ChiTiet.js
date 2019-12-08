@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { CardItem, Card, Icon, Button, Header, Left, Right, Content, Textarea, Form, Toast, Item, Input } from 'native-base';
-import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
+import { CardItem, Card, Icon, Button, Header, Left, Right, Toast, Item, Input } from 'native-base';
+import { StyleSheet, View, Text, Image, SafeAreaView, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 //import Video from 'react-native-video';
 //import { parse } from '@babel/parser';
 import Carousel from 'react-native-snap-carousel';
+import axios from 'axios';
 
 class ChiTiet extends Component {
     static navigationOptions = {
@@ -35,21 +36,27 @@ class ChiTiet extends Component {
             const percent = parseInt(km);
             this.setState({ percent: percent });
         }
-        this.setState({ item: { ...this.state.item, tc_giaBan: this.stringToInt(this.state.item.tc_giaBan), km: this.state.percent, giaKM: this.stringToInt(this.state.item.tc_giaBan) * (100 - this.state.percent)/100}, isLoading: false })
-        console.log(this.state.percent);
-        console.log(this.state.item.giaKM)
+        this.setState({ item: { ...this.state.item, tc_giaBan: this.stringToInt(this.state.item.tc_giaBan), km: this.state.percent, giaKM: this.stringToInt(this.state.item.tc_giaBan) * (100 - this.state.percent) / 100 }, isLoading: false })
+        //console.log(this.state.percent);
+        //console.log(this.state.item.giaKM)
     }
 
     async getData() {
         try {
-            await fetch("http://petshopct.herokuapp.com/public/thu-cung-api/" + this.state.item.tc_id)
+            await fetch("http://petshopct.herokuapp.com/public/thu-cung-api/" + this.state.item.tc_id, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
                         dataSource: responseJson.thucung,
                         binhluan: responseJson.binhluan,
                         danhsachhinhanhlienquan: responseJson.danhsachhinhanhlienquan,
-                        //isLoading: false,
+                        isLoading: false,
                     });
                     //console.log(responseJson);
                     //console.log(this.state.dataSource);
@@ -126,7 +133,7 @@ class ChiTiet extends Component {
 
     }
     sendData = () => {
-        
+
     }
 
     comment = () => {
@@ -137,11 +144,33 @@ class ChiTiet extends Component {
                     bl_noiDung: this.state.comment,
                     tc_id: this.state.item.tc_id
                 }
-                axios.post('http://petshopct.herokuapp.com/public/binhluan', { data })
+                axios.post("http://petshopct.herokuapp.com/public/binhluan-api/" + this.state.item.tc_id, { data })
                     .then(res => {
-                        console.log(res.data.binhluan);
+                        console.log(res.data);
+                        if (res.error) {
+                            Toast.show({
+                                text: "Bạn chưa nhập bình luận",
+                                buttonText: "Okay",
+                                position: "bottom",
+                                type: "danger"
+                            })
+                        } else {
+                            Toast.show({
+                                text: "Bạn đã bình luận",
+                                buttonText: "Okay",
+                                position: "bottom",
+                                type: "success"
+                            });
+                            //this.props.navigation.navigate('ChiTiet');
+                        }
                     }).catch(error => {
                         console.log(error);
+                        Toast.show({
+                            text: "Có lỗi xảy ra trong lúc bình luận",
+                            buttonText: "Okay",
+                            position: "bottom",
+                            type: "danger"
+                        })
                     })
             } else {
                 Toast.show({
@@ -150,6 +179,7 @@ class ChiTiet extends Component {
                     position: "bottom",
                     type: "warning"
                 })
+                //this.props.navigation.navigate('Login');
             }
         }
     }
@@ -167,11 +197,11 @@ class ChiTiet extends Component {
     render() {
         if (this.state.isLoading) {
             return (
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size="large" color="#f74877" />
-              </View>
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" color="#f74877" />
+                </View>
             )
-          }
+        }
         const { params } = this.props.navigation.state;
         const gender = this.state.item.tc_gioiTinh === 1 ? "Đực" : "Cái";
         const tiemchung = this.state.item.tc_trangThaiTiemChung === 1 ? "Đã tiêm chủng" : "Chưa tiêm chủng";
@@ -206,9 +236,9 @@ class ChiTiet extends Component {
                                                 <Text style={styles.txtChitiet}>{this.state.item.tc_ten}</Text>
                                             </View>
                                             <View style={{ marginTop: 10, paddingBottom: 10 }}>
-                                                <Text style={(this.state.item.km != 0 && this.state.item.km != null ) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(this.state.item.tc_giaBan))}</Text>
+                                                <Text style={(this.state.item.km != 0 && this.state.item.km != null) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(this.state.item.tc_giaBan))}</Text>
                                                 {
-                                                    (this.state.item.km != 0 && this.state.item.km != null ) && <Text style={styles.giaMoi}>{this.currencyFormat(this.state.item.tc_giaBan * (100 - this.state.percent) / 100)}</Text>
+                                                    (this.state.item.km != 0 && this.state.item.km != null) && <Text style={styles.giaMoi}>{this.currencyFormat(this.state.item.tc_giaBan * (100 - this.state.percent) / 100)}</Text>
                                                 }
                                             </View>
                                         </View>
@@ -216,7 +246,6 @@ class ChiTiet extends Component {
                                 </View>
                             </Card>
                         </SafeAreaView>
-
                         <View style={{ marginTop: 10, marginBottom: 5, backgroundColor: 'white', borderWidth: 2, borderColor: 'silver', shadowOffset: { width: 2, height: 2 }, shadowColor: '#DFDFDF', shadowOpacity: 0.2, }}>
                             <View>
                                 <Text style={{ fontSize: 22, fontWeight: 'bold', marginLeft: 10, color: 'blue', marginTop: 10 }}>
@@ -296,6 +325,16 @@ class ChiTiet extends Component {
                                 </View>
                             </View>
                         </View>
+                        <View style={styles.viewButton}>
+                            <Button iconLeft onPress={this.buy} style={{ backgroundColor: '#f74877' }} >
+                                <Icon name="shopping-cart" type="Feather" />
+                                <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
+                            </Button>
+                            <Button iconLeft style={{ backgroundColor: '#f74877' }} onPress={() => this.props.navigation.navigate('VideoScreen', { data: this.state.danhsachhinhanhlienquan })}>
+                                <Icon name="eye" type="Feather" />
+                                <Text style={styles.textCont}>Xem Video</Text>
+                            </Button>
+                        </View>
                         <View style={{ marginTop: 10, backgroundColor: 'white' }}>
                             <Text style={{ fontSize: 22, fontWeight: 'bold', marginLeft: 10, color: 'blue', marginTop: 10 }}>
                                 Bình luận
@@ -306,9 +345,9 @@ class ChiTiet extends Component {
                                         <Icon name="send" type="Feather" />
                                     </Button>
                                     <Input placeholder="Nhập nội dung bình luận" onChangeText={(comment) => this.setState({ comment })} />
-                                    <Text>
+                                    {/* <Text>
                                         {this.state.comment}
-                                    </Text>
+                                    </Text> */}
                                 </Item>
                                 <View style={{ marginTop: 10 }}>
                                     {
@@ -316,11 +355,11 @@ class ChiTiet extends Component {
                                         this.state.binhluan.map(e => {
                                             return (
                                                 <View key={e.bl_id} style={{ marginTop: 10, borderWidth: 1, borderRadius: 15, borderColor: 'lightgray', padding: 10, flexDirection: 'row' }}>
-                                                    <Icon name="user" type="Feather" style={{fontSize: 16}}  />
+                                                    <Icon name="user" type="Feather" style={{ fontSize: 16 }} />
                                                     <Text style={{ fontSize: 16, color: 'grey', marginLeft: 3 }}>
                                                         {e.kh_taiKhoan}:
                                                     </Text>
-                                                    <Text style={{ fontSize: 18, marginLeft: 10}}>
+                                                    <Text style={{ fontSize: 18, marginLeft: 10 }}>
                                                         {e.bl_noiDung}
                                                     </Text>
                                                 </View>
@@ -339,16 +378,6 @@ class ChiTiet extends Component {
                             </View>
                         </View>
                     </ScrollView>
-                </View>
-                <View style={styles.viewButton}>
-                    <Button iconLeft onPress={this.buy} style={{ backgroundColor: '#f74877' }} >
-                        <Icon name="shopping-cart" type="Feather" />
-                        <Text style={styles.textCont}>Thêm vào giỏ hàng</Text>
-                    </Button>
-                    <Button iconLeft style={{ backgroundColor: '#f74877' }} onPress={() => this.props.navigation.navigate('VideoScreen', { data: this.state.danhsachhinhanhlienquan })}>
-                        <Icon name="eye" type="Feather" />
-                        <Text style={styles.textCont}>Xem Video</Text>
-                    </Button>
                 </View>
             </View>
         )

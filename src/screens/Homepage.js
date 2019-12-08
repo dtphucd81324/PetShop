@@ -15,16 +15,13 @@ class Homepage extends Component {
         this.state = {
             dataSource: [],
             isLoading: true,
-            //loai: [],
-            //loaithucung: [],
-            category: [],
+            giong: [],
         };
     };
 
     async componentDidMount() {
         await this.getData();
-        //this.getLoaiThuCung();
-        await this.getGiongThuCung();
+        //await this.getGiongThuCung();
         this.setState({ isLoading: false });
     }
 
@@ -40,11 +37,10 @@ class Homepage extends Component {
             .then((responseJson) => {
                 this.setState({
                     dataSource: responseJson.danhsachthucung.data,
-                    //loaithucung: responseJson.loaithucung
+                    giong: responseJson.giong
+                    
                 });
-                //console.log(responseJson);
                 console.log(responseJson);
-                //console.log(this.state.loaithucung);
             })
             .catch((error) => {
                 console.error(error);
@@ -52,35 +48,33 @@ class Homepage extends Component {
     }
 
 
-    async getGiongThuCung() {
-        try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_giong", {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({
-                        category: responseJson,
-                    });
-                    //console.log(responseJson);
-                })
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    // async getGiongThuCung() {
+    //     try {
+    //         await fetch("http://petshopct.herokuapp.com/public/admin/list_giong", {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json',
+    //             }
+    //         })
+    //             .then((response) => response.json())
+    //             .then((responseJson) => {
+    //                 this.setState({
+    //                     category: responseJson,
+    //                 });
+    //                 //console.log(responseJson);
+    //             })
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
-    StringtoInt(num) {
-        num = parseInt(num);
-        return num;
+    stringToInt(num) {
+        return parseInt(num);
     }
 
     currencyFormat(num) {
-        num = parseInt(num)
-        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ'
+        return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' VNĐ';
     }
 
     FlatViewItemSeparator = () => {
@@ -96,7 +90,6 @@ class Homepage extends Component {
     };
 
     renderItem = ({ item }) => {
-        //const km = item.giatri;
         const percent = parseInt(item.giatri);
         return (
             <View style={{ flex: 1 }}>
@@ -122,13 +115,12 @@ class Homepage extends Component {
                         </CardItem>
                         <CardItem style={{ flexDirection: 'column', height: 50, paddingTop: -10, justifyContent: 'center' }}>
                             <View>
-                                <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                                <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(item.tc_giaBan))}</Text>
                                 {
                                     (item.giatri != null && item.giatri != 0) &&
                                     <Text style={styles.giaMoi}>
-                                        {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * (1 - (percent / 100)))}
+                                        {this.currencyFormat(this.stringToInt(item.tc_giaBan) * (1 - (percent / 100)))}
                                     </Text>
-
                                 }
                             </View>
                         </CardItem>
@@ -151,13 +143,13 @@ class Homepage extends Component {
                 <Header transparent style={{ backgroundColor: '#dcdcdc', marginBottom: 20 }}>
                     <Left />
                     <Body style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
-                        <Image source={require('../images/petshopt.png')} style={{ width: '100%', height: '100%' }} />
+                        <Image source={require('../images/petshopt.png')} style={{ width: 200 }} />
                     </Body>
                     <Right />
                 </Header>
                 <View>
                     {
-                        this.state.category.map(e => {
+                        this.state.giong.map(e => {
                             return (
                                 <View key={e.g_id}>
                                     <View style={styles.carousel}>
@@ -168,7 +160,7 @@ class Homepage extends Component {
                                     <SafeAreaView>
                                         <Carousel
                                             data={this.state.dataSource.filter(function (item, index) {
-                                                return item.g_id === e.g_id && index < 12
+                                                return item.g_id === e.g_id && index < 14
                                             })}
                                             renderItem={this.renderItem}
                                             sliderWidth={400}
@@ -214,13 +206,13 @@ const styles = StyleSheet.create({
         height: 70,
         width: '100%',
         paddingLeft: 15,
-        backgroundColor: '#dcdcdc',
+        backgroundColor: 'white',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
 
     textContent: {
-        fontSize: 24,
+        fontSize: 28,
         color: 'black',
         fontWeight: 'bold'
     },

@@ -34,7 +34,7 @@ class GioHangScreen extends Component {
         // console.log(this.props.cart);
     }
 
-    StringtoInt(num) {
+    stringToInt(num) {
         return parseInt(num);
     }
 
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignContent: 'center',
-        backgroundColor: '#dcdcdc',
+        backgroundColor: '#f74877',
         paddingVertical: 10,
         marginHorizontal: 16,
         borderRadius: 25,

@@ -29,7 +29,6 @@ class CapNhatThongTin extends Component {
 
     kiemtra = () => {
         let error = true;
-
         this.state.passWord === '' ? this.setState({ errorPassword: true }) : this.setState({ errorPassword: false });
         this.state.address === '' ? this.setState({ errorAddress: true }) : this.setState({ errorAddress: false });
         this.state.name === '' ? this.setState({ errorName: true }) : this.setState({ errorName: false });
@@ -53,7 +52,7 @@ class CapNhatThongTin extends Component {
         }).then((response) => {
             return response.json();
         }).then((responseJson) => {
-            console.log(responseJson)
+            //console.log(responseJson)
             this.setState({
                 userName: responseJson.kh['kh_taiKhoan'],
                 //matkhaumoi: responseJson.kh['kh_matKhau'],
@@ -66,7 +65,7 @@ class CapNhatThongTin extends Component {
             })
         }).catch((error) => {
             console.log(error);
-            this.getData();
+            //this.getData();
         })
     }
 
@@ -89,12 +88,13 @@ class CapNhatThongTin extends Component {
                 kh_ngaySinh: this.state.birthDate,
                 kh_gioiTinh: this.state.sex,
             }
-            axios.post('http://petshopct.herokuapp.com/public/capnhatthongtin', { data })
+            axios.post("http://petshopct.herokuapp.com/public/capnhatthongtin", { data })
                 .then(res => {
-                    console.log(res.data.kh);
+                    //console.log(res.data.kh);
                     if (res.error) {
+                        this.setState({ errorPassword: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
                         //console.log(res.data.kh);
-                        this.setState({ loading: false })
+                        //this.setState({ loading: false })
                         Toast.show({
                             text: "Cập nhật không thành công",
                             buttonText: "Okay",
@@ -105,6 +105,7 @@ class CapNhatThongTin extends Component {
                         })
                     }
                     else {
+                        this.setState({ errorPassword: false, errorAddress: false, errorName: false, errorPhone: false, errorMail: false});
                         Toast.show({
                             text: "Cập nhật thành công",
                             buttonText: "Okay",
@@ -118,7 +119,8 @@ class CapNhatThongTin extends Component {
 
                 }).catch(error => {
                     console.log(error);
-                    this.setState({ loading: false });
+                    this.setState({ errorPassword: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
+                    //this.setState({ loading: false });
                     Toast.show({
                         text: "Cập nhật không thành công",
                         buttonText: "Okay",
@@ -129,7 +131,8 @@ class CapNhatThongTin extends Component {
                     })
                 })
         }else{
-            this.setState({ loading: false });
+            this.setState({ errorPassword: true, errorAddress: true, errorName: true, errorPhone: true, errorMail: true});
+            //this.setState({ loading: false });
             Toast.show({
                 text: "Cập nhật không thành công",
                 buttonText: "Okay",
@@ -231,12 +234,13 @@ class CapNhatThongTin extends Component {
                                 </TouchableOpacity>
                             </Item>
                             <TouchableOpacity style={styles.signInContainer} onPress={this.sendData} disabled={this.state.loading}>
-                                {
+                                {/* {
                                     !this.state.loading && <Text style={{ color: 'white', fontSize: 18 }}>Cập nhật</Text>
                                 }
                                 {
                                     this.state.loading && <ActivityIndicator size="large" color="white" />
-                                }
+                                } */}
+                                <Text style={{ color: 'white', fontSize: 18 }}>Cập nhật</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

@@ -31,7 +31,7 @@ class ThongTinScreen extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.hoso);
+        //console.log(this.props.hoso);
         this.setState({ isLoading: false })
     }
 
@@ -59,13 +59,13 @@ class ThongTinScreen extends Component {
 
 
     render() {
-        // if (this.state.isLoading) {
-        //     return (
-        //         <View style={{ flex: 1, justifyContent: 'center' }}>
-        //             <ActivityIndicator size="large" color="#ff00ff" />
-        //         </View>
-        //     )
-        // }
+        if (this.state.isLoading) {
+            return (
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" color="#ff00ff" />
+                </View>
+            )
+        }
         let img = this.state.avatarSource == null ?
             <Thumbnail large
                 source={require('../images/images.jpg')}
@@ -84,11 +84,6 @@ class ThongTinScreen extends Component {
                         <View style={{ alignSelf: "center", }}>
                             <View style={styles.profileImage}>
                                 {img}
-                            </View>
-                            <View style={styles.dm}>
-                                <TouchableOpacity>
-                                    <Icon name="chat" type="MaterialIcons" size={18} color="#DFD8C8"></Icon>
-                                </TouchableOpacity>
                             </View>
                             <View style={styles.add}>
                                 <TouchableOpacity onPress={this.showImage}>
@@ -201,16 +196,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    active: {
-        backgroundColor: "#f74877",
-        position: "absolute",
-        bottom: 28,
-        left: 10,
-        padding: 4,
-        height: 20,
-        width: 20,
-        borderRadius: 10
-    },
+    // active: {
+    //     backgroundColor: "#f74877",
+    //     position: "absolute",
+    //     bottom: 28,
+    //     left: 10,
+    //     padding: 4,
+    //     height: 20,
+    //     width: 20,
+    //     borderRadius: 10
+    // },
     add: {
         backgroundColor: "#f74877",
         position: "absolute",

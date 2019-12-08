@@ -108,6 +108,7 @@ const HomeStack = createStackNavigator(
     Homepage: Homepage,
     ChiTiet: ChiTiet,
     VideoScreen: VideoScreen,
+    //Login: DangNhapStack,
   }, {
   initialRouteName: 'Homepage',
   headerMode: 'none',
@@ -124,7 +125,8 @@ const HomeStack = createStackNavigator(
 const TimKiemStack = createStackNavigator(
   {
     TimKiem: TimKiem,
-    ChiTiet: ChiTiet
+    ChiTiet: ChiTiet,
+    //Login: DangNhapStack,
   }, {
   initialRouteName: 'TimKiem',
   headerMode: 'none',

@@ -63,7 +63,7 @@ class LichSuGiaoDich extends Component {
     }
 
     renderItem = ({ item }) => {
-        const giaMoi = ((100 - item.giatri) / 100) * item.tc_giaBan;
+        const giaMoi = ((100 - item.giatri) / 100) * this.stringToInt(item.tc_giaBan);
         return (
             <View>
                 <Card>
@@ -151,7 +151,7 @@ class LichSuGiaoDich extends Component {
                                         </View>
                                         <Button iconLeft onPress={() => {
                                             this.setModalVisible(true)
-                                            return fetch('http://petshopct.herokuapp.com/public/chitietdonhang/' + e.dh_id, {
+                                            return fetch("http://petshopct.herokuapp.com/public/chitietdonhang/" + e.dh_id, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Accept': 'application/json',

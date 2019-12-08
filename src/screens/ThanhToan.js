@@ -58,7 +58,7 @@ class ThanhToan extends Component {
       ttdh_id: 1,
       cart: this.props.cart
     }
-    axios.post('http://petshopct.herokuapp.com/public/dathang', { data })
+    axios.post("http://petshopct.herokuapp.com/public/dathang", { data })
       .then(res => {
         console.log(res.data);
         //console.log(res.data.donhang);
@@ -167,7 +167,7 @@ class ThanhToan extends Component {
                         ttdh_id: 1,
                         cart: this.props.cart
                       }
-                      axios.post('http://petshopct.herokuapp.com/public/dathang', { data })
+                      axios.post("http://petshopct.herokuapp.com/public/dathang", { data })
                         .then(res => {
                           console.log(res.data);
                           //console.log(res.data.donhang);

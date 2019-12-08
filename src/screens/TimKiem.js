@@ -12,55 +12,48 @@ class TimKiem extends Component {
         this.state = {
             isLoading: true,
             text: '',
-            category: [],
+            giong: [],
             chonLoai: 0,
             dataSource: [],
         };
         this.arrayholder = [];
-        this.data = []
-    };
-
+        this.data = [];
+    }
 
     async componentDidMount() {
         await this.getThuCung();
-        await this.getGiongThuCung();
+        //await this.getGiongThuCung();
         this.setState({ isLoading: false });
     }
 
     async getThuCung() {
         try {
-            await fetch("http://petshopct.herokuapp.com/public/thu-cung-api")
+            await fetch("http://petshopct.herokuapp.com/public/thu-cung-api", {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.setState({
                         dataSource: responseJson.danhsachthucung.data,
                         arrayholder: responseJson.danhsachthucung.data,
                         data: responseJson.danhsachthucung.data,
+                        giong: responseJson.giong,
                         isLoading: false,
                     });
+                    console.log(responseJson);
                 })
         } catch (error) {
             console.error(error);
         }
     }
 
-    async getGiongThuCung() {
-        try {
-            await fetch("http://petshopct.herokuapp.com/public/admin/list_giong")
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    this.setState({
-                        category: responseJson,
-                    });
-                })
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
-    StringtoInt(num) {
-        num = parseInt(num);
-        return num;
+    stringToInt(num) {
+        return parseInt(num);
     }
 
     currencyFormat(num) {
@@ -80,29 +73,18 @@ class TimKiem extends Component {
         console.log(newData);
     }
 
-    FlatViewItemSeparator = () => {
-        return (
-            <View
-                style={{
-                    height: 0.3,
-                    width: '90%',
-                    backgroundColor: '#080808',
-                }}
-            />
-        );
-    };
-
     sortData(value) {
         if (value === 0) {
             const sortData = this.state.dataSource.sort(function (a, b) {
-                return a.tc_giaBan - b.tc_giaBan
+                return a.tc_giaBan - b.tc_giaBan;
             }
             );
             this.setState({ dataSource: sortData });
+            console.log(this.state.dataSource);
         }
         if (value === 1) {
             const sortData = this.state.dataSource.sort(function (a, b) {
-                return b.tc_giaBan - a.tc_giaBan
+                return b.tc_giaBan - a.tc_giaBan;
             }
             );
             this.setState({ dataSource: sortData });
@@ -132,11 +114,11 @@ class TimKiem extends Component {
                         </View>
                     }
                     <Text style={styles.Text}>{item.tc_ten}</Text>
-                    <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.StringtoInt(item.tc_giaBan))}</Text>
+                    <Text style={(item.giatri != null && item.giatri != 0) ? styles.giaCu : styles.giaMoi}>{this.currencyFormat(this.stringToInt(item.tc_giaBan))}</Text>
                     {
                         (item.giatri != null && item.giatri != 0) &&
                         <Text style={styles.giaMoi}>
-                            {this.currencyFormat(this.StringtoInt(item.tc_giaBan) * (1 - (percent / 100)))}
+                            {this.currencyFormat(this.stringToInt(item.tc_giaBan) * (1 - (percent / 100)))}
                         </Text>
                     }
 
@@ -159,7 +141,7 @@ class TimKiem extends Component {
             )
         }
         return (
-            <ScrollView showsHorizontalScrollIndicator={false}>
+            <ScrollView>
                 <Header transparent searchBar rounded>
                     <Left />
                     <Body>
@@ -169,30 +151,29 @@ class TimKiem extends Component {
                                 style={styles.input}
                                 placeholder="Search"
                                 onChangeText={(text) => this.SearchFilter(text)}
-                                value={this.state.text}
+                                //value={this.state.text}
                                 underlineColorAndroid="transparent"
                             />
                         </Item>
                     </Body>
                     <Right>
-                        <Button
-                            style={{ backgroundColor: '#f74877' }}
-                            onPress={() =>
-                                ActionSheet.show(
-                                    {
-                                        options: ["Giá tăng dần", "Giá giảm dần", "Hủy"
-                                            // { text: "Giá cao nhất", icon: "arrow-up", iconColor: "#2c8ef4" },
-                                            // { text: "Giá thấp nhất", icon: "analytics", iconColor: "#f42ced" },
-                                            // { text: "Hủy", icon: "close", iconColor: "#25de5b" }
-                                        ],
-                                        cancelButtonIndex: 2,
-                                        title: "Lọc"
-                                    },
-                                    buttonIndex => {
-                                        this.sortData(buttonIndex)
-                                    }
-                                )}
-                        >
+                        <Button onPress={() =>
+                            ActionSheet.show(
+                                {
+                                    options: [
+                                        { text: "Giá tăng dần", icon: "arrow-up", iconColor: "#2c8ef4" },
+                                        { text: "Giá giảm dần", icon: "analytics", iconColor: "#f42ced" },
+                                        { text: "Hủy", icon: "close", iconColor: "#ea943b" },
+                                    ],
+                                    cancelButtonIndex: 2,
+                                    title: "Lọc"
+                                },
+                                buttonIndex => {
+                                    this.sortData(buttonIndex)
+                                }
+                            )}
+                            style={{backgroundColor: '#f74877'}}
+                            >
                             <Icon name="filter" type="Feather" />
                         </Button>
                     </Right>
@@ -207,7 +188,7 @@ class TimKiem extends Component {
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         {
-                            this.state.category.map(e => {
+                            this.state.giong.map(e => {
                                 return (
                                     <TouchableOpacity style={styles.filter} key={e.g_id} onPress={() => this.Filter(e.g_id)} >
                                         <Text style={{ fontWeight: 'bold', color: 'white' }}>
@@ -222,10 +203,10 @@ class TimKiem extends Component {
                 <View style={{ flex: 1, flexDirection: 'row' }}>
                     <FlatList
                         data={this.state.dataSource}
-                        ItemSeparatorComponent={this.FlatViewItemSeparator}
                         renderItem={this.renderItem}
-                        keyExtractor={item => item.tc_id}
                         numColumns={2}
+                        style={{ marginRight: 5 }}
+                        keyExtractor={item => item.tc_ten}
                     />
                 </View>
             </ScrollView>
@@ -255,8 +236,8 @@ const styles = StyleSheet.create({
         paddingTop: 15,
     },
     Card: {
-        height: 260,
-        width: 185,
+        height: 240,
+        width: 160,
         elevation: 3,
         borderWidth: 1,
         borderColor: '#ccc',
@@ -285,7 +266,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     Image: {
-        width: 185,
+        width: 160,
         height: 155,
         resizeMode: 'stretch',
         borderRadius: 7
@@ -310,8 +291,6 @@ const styles = StyleSheet.create({
         color: 'red'
     },
     filter: {
-        // width: 150,
-        // height: 40,
         borderWidth: 1,
         backgroundColor: '#f74877',
         justifyContent: 'space-around',
